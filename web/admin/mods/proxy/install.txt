@@ -1,0 +1,268 @@
+############################################################## 
+## MOD Title: Block Open Proxy Registrants
+## MOD Author: TerraFrost < N/A > (Jim Wigginton) http://www.frostjedi.com/terra/wordpress/
+## MOD Description: Prevents those using open proxies from registering by scanning
+##                  for open proxies on those who attempt registration.
+## MOD Version: 2.0.0
+##
+## Installation Level: Intermediate
+## Installation Time: 5 Minutes
+##
+## Files To Edit: 4
+##      includes/usercp_register.php
+##      language/lang_english/lang_main.php
+##      language/lang_english/lang_admin.php
+##      includes/constants.php
+##
+## Included Files: 8
+##      proxy/connect.php
+##      proxy/serve.php
+##      proxy/index.htm
+##      admin/admin_proxy.php
+##      templates/subSilver/admin/proxy_main_body.tpl
+##      templates/subSilver/admin/proxy_test_body.tpl
+##      templates/subSilver/admin/proxy_list_body.tpl
+##      includes/sub_proxy.php
+## License: http://opensource.org/licenses/gpl-license.php GNU Public License v2
+##############################################################
+## For security purposes, please check: http://www.phpbb.com/mods/
+## for the latest version of this MOD. Although MODs are checked
+## before being allowed in the MODs Database there is no guarantee
+## that there are no security problems within the MOD. No support
+## will be given for MODs not found within the MODs Database which
+## can be found at http://www.phpbb.com/mods/
+##############################################################
+## Author Notes:
+##
+##   For all practical purposes, open proxies allow people to spoof IP addresses.  This can
+##   pose a problem when trying to ban someone or when trying make a complaint to an ISP.
+##   This MODification is an attempt to resolve that problem.
+##
+##   At this point, you may be wondering - do open proxies have legitimate uses?  Can this
+##   MODification block well intentioned users?  To answer that, let's consider where open
+##   proxies typically come from - viruses.  Those infected may be well intentioned.
+##   unfortunately, users in this situation are also considerable liabilities, since would-
+##   be hackers could use their computer to perform attacks on message boards and evade
+##   accountability / punishment.
+##
+##   Alternative attempts to solve this problem using real-time proxy detection are much slower
+##   and much less accurate than this MODification due to the fact that they conduct their tests
+##   in serial rather than in parallel.  As such, testing eight different ports requires
+##   8*(connection delay) seconds, whereas this MODification only requires (connection delay)
+##   seconds.
+##
+##   Attempts to solve this problem using DNS-based blackhole lists are flawed, as well.  The
+##   following website elaborates:
+##
+##   http://www.paulgraham.com/spamhausblacklist.html
+##
+##   If, despite this flaw, you're still interested in using DNS-based blackhole lists, then
+##   you can try out another one of my MODifications - Block DNSBL Blacklisted Registrants:
+##
+##   http://www.frostjedi.com/terra/scripts/phpbb/dnsbl.zip
+##
+##   Moving on, if the MOD isn't working for you, then you may need to replace all occurances of
+##   gethostbyname($server_name) in admin/admin_proxy.php and includes/sub_proxy.php with
+##   '127.0.0.1'.  The reason why this isn't what's in admin_proxy.php is that it doesn't work on virtual
+##   hosts (which are, incidently, more common than hosts that would benifit from the above).
+##
+##   If you're interested in adapting this code to a more general proxy detector, you might
+##   find contrib/check.psd useful (it's basically a "check proxy" image - as opposed to just
+##   plain text).
+##
+##   Also, I'd like to thank markus_petrux for helping to identify / fix a few bugs.
+##
+##   Additional information on what all can be done with this MOD can be found here:
+##   http://www.frostjedi.com/terra/wordpress/?p=3
+##
+##   A working stand-alone demo of the techniques used in this mod can be found here:
+##   http://www.frostjedi.com/terra/scripts/proxy.php
+##
+##   The latest version of this mod can be found here:
+##   http://www.frostjedi.com/terra/scripts/phpbb/proxy.zip
+##
+##   For support / comments / whatever, visit here:
+##   http://www.frostjedi.com/phpbb/viewforum.php?f=33
+##
+############################################################## 
+## MOD History: 
+##
+##     x.x.x: - add an option to allow people to submit the proxies they discover to dsbl.org.
+##              (thanks, spamlinks!)
+##            - cache port numbers by indexing their location in $ports?
+##     2.0.0: - removed the Configurator (you can now configure it via the normal install).
+##            - uses a seperate table - phpbb_proxy - to keep track of cached information.
+##            - the code that actually performs the checks is now in a seperate file.  as
+##              a consequence, anyone should now be able to checks for proxies whereever they'd
+##              like, provided they're familiar with phpBB's inner workings.
+##            - can now test ip addresses via the ACP, view recently used proxies, etc.
+##            - a few other small changes here and there.
+##            - added a comment to the Author Notes that might improve compatability (thanks, terra!)
+##     1.0.7: - HTTP/1.1 requests now used instead of HTTP/1.0 requests.
+##            - construction of addresses should be more accurate.
+##            - fixed a bug preventing people from updating their profiles (thanks, Neilfarted!)
+##            - fixed a bug allowing local users to do things they shouldn't (thanks,
+##              markus_petrux!)
+##     1.0.6: - rewrote connect.php (again) and the stuff that is to be placed in
+##              includes/usercp_register.php.  the PHP CLI executable is no longer
+##              required (inspired by suggestions from markus_petrux).
+##            - added ability to specify timeout in acp.
+##            - added ability to ban the ip's of open proxy registrants.
+##     1.0.5: - added a MOD to custom configure this MOD.
+##            - users are only tested once per session (at most).
+##            - CLI path checks are now internal to the mod
+##     1.0.4: - rewrote connect.php
+##            - added some ports, took away others.
+##            - replaced proc_open calls with popen.
+##            - proxy type now specified in lang_main.php.
+##            - added cli path checks
+##     1.0.3: - should now work on boards on subdomains
+##              (problem found & fixed by Zeyr - thanks!)
+##     1.0.2: - removed sql query that got the script_path
+##            - will no longer break phpBB's running on PHP 3.0.9+
+##            - message_die message moved to lang_main.php.
+##     1.0.1: - MAJOR speed improvements
+##            - board address no longer needs to be specified in connect.php
+##     1.0.0: - initial release
+############################################################## 
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD 
+############################################################## 
+
+#
+#-----[ COPY ]------------------------------------------
+#
+copy admin/admin_proxy.php to admin/admin_proxy.php
+copy templates/subSilver/admin/proxy_main_body.tpl to templates/subSilver/admin/proxy_main_body.tpl
+copy templates/subSilver/admin/proxy_test_body.tpl to templates/subSilver/admin/proxy_test_body.tpl
+copy templates/subSilver/admin/proxy_list_body.tpl to templates/subSilver/admin/proxy_list_body.tpl
+copy includes/sub_proxy.php to includes/sub_proxy.php
+copy proxy/connect.php to proxy/connect.php
+copy proxy/serve.php to proxy/serve.php
+copy proxy/index.htm to proxy/index.htm
+#
+#-----[ SQL ]-------------------------------------------
+#
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('proxy_enable',1),
+   ('proxy_ban',0),('proxy_delay',1),('proxy_ports','005008fd0c3819bc1f401f90'),
+   ('proxy_cache_time',0),('proxy_block',1),('proxy_sort','last_checked,DESC'),
+   ('proxy_user_agent','phpBB Open Proxy Detector');
+CREATE TABLE phpbb_proxies (
+   ip_address char(8) DEFAULT '0' NOT NULL,
+   status tinyint(2) DEFAULT '0' NOT NULL,
+   port char(4) DEFAULT '0' NULL,
+   last_checked int(11) DEFAULT '0' NOT NULL,
+   PRIMARY KEY (ip_address)
+);
+#
+#-----[ OPEN ]------------------------------------------
+#
+includes/usercp_register.php
+#
+#-----[ FIND ]------------------------------------------
+#
+if ( $mode == 'register' && !isset($HTTP_POST_VARS['agreed']) && !isset($HTTP_GET_VARS['agreed']) )
+#
+#-----[ BEFORE, ADD ]-----------------------------------
+#
+$start_conditions = $mode == 'register' && !$userdata['session_logged_in'];
+$check_conditions = isset($HTTP_POST_VARS['submit']);
+include($phpbb_root_path.'includes/sub_proxy.'.$phpEx);
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+language/lang_english/lang_main.php
+#
+#-----[ FIND ]------------------------------------------
+#
+$lang['A_critical_error'] = 'A Critical Error Occurred';
+#
+#-----[ AFTER, ADD ]------------------------------------
+#
+$lang['proxy_detected'] = 'Open %s HTTP Proxy Server Detected on Port %d.';
+$lang['proxy_blocked'] = 'Registration attempt blocked.';
+$lang['proxy_t0'] = 'Transparent';
+$lang['proxy_t1'] = 'Anonymous';
+$lang['proxy_t2'] = 'High Anonymity';
+#
+#-----[ OPEN ]------------------------------------------
+#
+includes/constants.php
+#
+#-----[ FIND ]------------------------------------------
+#
+define('VOTE_USERS_TABLE', $table_prefix.'vote_voters');
+#
+#-----[ AFTER, ADD ]------------------------------------
+#
+define('PROXY_TABLE', $table_prefix.'proxies');
+#
+#-----[ FIND ]------------------------------------------
+#
+?>
+#
+#-----[ BEFORE, ADD ]-----------------------------------
+#
+define('PROXY_ERROR',99);
+define('PROXY_TRANSPARE',65);
+define('PROXY_ANONYMOUS',66);
+define('PROXY_HIGH_ANON',67);
+#
+#-----[ OPEN ]------------------------------------------
+#
+language/lang_english/lang_admin.php
+#
+#-----[ FIND ]------------------------------------------
+# this is a partial match
+#
+$lang['Install_No_PCRE']
+#
+#-----[ AFTER, ADD ]------------------------------------
+#
+$lang['proxy_title'] = 'Block Open Proxy Registrants';
+$lang['proxy_desc'] = 'This page will allow you to customize Block Open Proxy Registrants, to check individual IP addresses, and to view recently used proxies.';
+$lang['proxy_test'] = 'Check IP Address';
+$lang['proxy_test_desc'] = 'Checks whether or not an IP address of your chosing is a proxy using the current settings.  Can conduct checks even when Block Open Proxy Registrants has been disabled.';
+$lang['proxy_ip'] = 'IP Address';
+$lang['proxy_enable'] = 'Block Open Proxy Registrants';
+$lang['proxy_ban'] = 'Ban Open Proxies';
+$lang['proxy_ban_explain'] = 'Bans IP addresses revealed to be open proxies.';
+$lang['proxy_timeout'] = 'Connection Timeout';
+$lang['proxy_timeout_explain'] = 'The larger the value, the more accurate proxy detection will be, but the longer the users attempting to register will have to wait.';
+$lang['proxy_seconds'] = 'seconds';
+$lang['proxy_minutes'] = 'minutes';
+$lang['proxy_hours'] = 'hours';
+$lang['proxy_days'] = 'days';
+$lang['proxy_weeks'] = 'weeks';
+$lang['proxy_months'] = 'months';
+$lang['proxy_years'] = 'years';
+$lang['proxy_type'] = 'Type';
+$lang['proxy_last_checked'] = 'Last Checked';
+$lang['proxy_port'] = 'Port';
+$lang['proxy_ports'] = 'Ports to scan';
+$lang['proxy_ports_explain'] = 'In theory, up to 64 ports can be simultaneously scanned, but in practice, the total number should be kept to a bare minimum.';
+$lang['proxy_cache_time'] = 'Cache Time';
+$lang['proxy_cache_time_explain'] = 'Determines how frequently the same IP address will be checked. Entering 0 will result in IP addresses never being checked twice.';
+$lang['proxy_user_agent'] = 'User Agent String';
+$lang['proxy_user_agent_explain'] = 'Determines how HTTP requests ought to identify themselves when attempting to connect to a proxy.';
+$lang['proxy_debug'] = 'Debug Information';
+$lang['proxy_settings'] = 'MOD Configuration';
+$lang['proxy_list_desc'] = 'Lists the three most recently confirmed proxies.';
+$lang['proxy_sample_http_1'] = 'Sample HTTP Request 1';
+$lang['proxy_sample_http_2'] = 'Sample HTTP Request 2';
+$lang['proxy_sample_sql'] = 'Sample SQL Query';
+$lang['proxy_exec_time'] = 'Execution Time';
+$lang['proxy_none'] = 'No Proxy Severs Detected.';
+$lang['proxy_connect_error'] = 'Unable to connect to %s to spawn processes<br /><b>Error %d</b>: %s';
+$lang['proxy_testing'] = 'Checking <b>%s</b>...';
+$lang['proxy_hostname'] = 'Hostname <b>%s</b>';
+$lang['proxy_check'] = 'Check';
+$lang['proxy_view_list'] = 'View Complete List';
+$lang['proxy_deleted'] = '%s has been deleted.';
+$lang['proxy_download'] = 'Download As Text';
+$lang['proxy_return'] = 'Click %sHere%s to return to the previous page';
+$lang['proxy_name'] = 'Block Open Proxies';
+#
+#-----[ SAVE/CLOSE ALL FILES ]--------------------------
+#
+# EoM

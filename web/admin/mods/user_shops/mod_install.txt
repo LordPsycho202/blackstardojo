@@ -1,0 +1,297 @@
+## EasyMod 0.3.0 Compatible
+############################################################## 
+## MOD Title: User Shop Addon
+## MOD Author: Zarath < null@null.com > ( Jamie ) http://www.zarath.com
+## MOD Description: Adds user shops to your forums!
+## MOD Version: 2.0.1
+## 
+## Installation Level: Easy
+## Installation Time: 5 Minutes 
+## Files To Edit: includes/constants.php
+##		  includes/page_header.php
+##		  language/lang_english/lang_main.php
+##		  language/lang_english/lang_shop.php
+##		  templates/subSilver/overall_header.tpl
+## Included Files: shop_users.php
+##		   shop_users_edit.php
+##		   shop_users_view.php
+##		   admin/admin_user_shops.php
+##		   images/icon_user_shop.gif
+##		   templates/shop/shop_users_body.tpl
+##		   templates/shop/shop_users_config.tpl
+##		   templates/shop/shop_users_view.tpl
+##		   templates/admin/user_shops_body.tpl
+## License: http://opensource.org/licenses/gpl-license.php GNU General Public License v2
+############################################################## 
+## Author Notes: Please check
+## http://forums.zarath.com if you're having any troubles before
+## posting. Any major problems or bug fixes will be posted there. 
+## Also make sure you're using the latest version of the mod.
+## Which is available at http://www.zarath.com
+############################################################## 
+## MOD History:
+## v1.0.0  First version.
+## v2.0.0  Second version
+##	- Compatibility with shop 3.x
+##	- Compatibility with EasyMod
+##	- Language Files
+##	- DBAL Compliant
+##	- Search Feature added
+##	- Several bug fixes added
+## v2.0.1  Update
+##	- Fixed several lang variables missing
+##	- Fixed PMing owner when item is bought
+############################################################## 
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD 
+##############################################################
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+#
+You can also run the following SQL query to add the user shops to your main shop list, and remove the code from your overall_header.tpl
+INSERT INTO `phpbb_shops` (`shopname`, `shoptype`, `url`) VALUES('User Shops', 'Miscellaneous', 'shop_users.php'); # This may be renamed.
+
+# 
+#-----[ COPY ]------------------------------------------ 
+#
+copy shop_users.php to shop_users.php
+copy shop_users_edit.php to shop_users_edit.php
+copy shop_users_view.php to shop_users_view.php
+copy admin/admin_user_shops.php to admin/admin_user_shops.php
+copy images/icon_user_shop.gif to templates/subSilver/images/icon_user_shop.gif
+copy templates/shop/shop_users_body.tpl to templates/subSilver/shop/shop_users_body.tpl
+copy templates/shop/shop_users_config.tpl to templates/subSilver/shop/shop_users_config.tpl
+copy templates/shop/shop_users_view.tpl to templates/subSilver/shop/shop_users_view.tpl
+copy templates/admin/user_shops_body.tpl to templates/subSilver/admin/user_shops_body.tpl
+
+#
+#-----[ SQL ]------------------------------------------
+#
+# You can either alter the table prefix and run this through phpMyAdmin or
+# upload the sql_install.php file to your forum index and run it from an
+# admin account. No need to do both... SQL install file is made for MySQL.
+#
+CREATE TABLE `phpbb_user_shops` (
+  `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
+  `user_id` INT( 10 ) NOT NULL ,
+  `username` VARCHAR( 32 ) NOT NULL ,
+  `shop_name` VARCHAR( 32 ) NOT NULL ,
+  `shop_type` VARCHAR( 32 ) NOT NULL ,
+  `shop_opened` INT( 10 ) NOT NULL ,
+  `shop_updated` INT( 10 ) NOT NULL,
+  `shop_status` TINYINT( 1 ) DEFAULT '0' NOT NULL ,
+  `amount_earnt` INT( 10 ) DEFAULT '0' NOT NULL ,
+  `amount_holding` INT( 10 ) DEFAULT '0' NOT NULL ,
+  `items_sold` INT( 10 ) DEFAULT '0' NOT NULL ,
+  `items_holding` INT( 10 ) DEFAULT '0' NOT NULL ,
+  PRIMARY KEY ( `user_id` ) ,
+  INDEX ( `id` ) 
+);
+
+CREATE TABLE `phpbb_user_shops_items` (
+  `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
+  `shop_id` INT( 10 ) NOT NULL ,
+  `item_id` INT( 10 ) NOT NULL ,
+  `real_id` INT( 10 ) NOT NULL ,
+  `seller_notes` VARCHAR( 255 ) NOT NULL ,
+  `cost` INT( 10 ) NOT NULL ,
+  `time_added` INT( 10 ) NOT NULL ,
+  INDEX ( `shop_id` ) ,
+  PRIMARY KEY ( `id` ) 
+);
+
+INSERT INTO `phpbb_config` (config_name, config_value) VALUES ('u_shops_enabled', '0');
+
+INSERT INTO `phpbb_config` (config_name, config_value) VALUES ('u_shops_open_cost', '0');
+
+INSERT INTO `phpbb_config` (config_name, config_value) VALUES ('u_shops_tax_percent', '0');
+
+INSERT INTO `phpbb_config` (config_name, config_value) VALUES ('u_shops_max_items', '100');
+
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+includes/constants.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+DEFINE('USER_SHOPS_TABLE', $table_prefix . 'user_shops');
+DEFINE('USER_SHOP_ITEMS_TABLE', $table_prefix . 'user_shops_items');
+
+#
+#-----[ OPEN ]------------------------------------------ 
+#
+includes/page_header.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+	'PAGE_TITLE' => $page_title,
+
+#
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+	'L_USER_SHOPS' => $lang['user_shops'],
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+	'U_FAQ' => append_sid('faq.'.$phpEx),
+
+#
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+	'U_USER_SHOPS' => append_sid('shop_users.'.$phpEx),
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+#
+ language/lang_english/lang_main.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+$lang['user_shops'] = 'User Shops';
+
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+#
+ language/lang_english/lang_shop.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+// User Shop Variables //
+$lang['ushop_shop_list'] = 'User Shop List';
+
+$lang['ushop_shops_closed'] = 'The user shops are currently closed, please try back later!';
+$lang['ushop_none_opened'] = 'Currently no shops opened!';
+$lang['ushop_no_items_found'] = 'Could not find that item in any shops!';
+$lang['ushop_edit_shop'] = 'edit your shop';
+$lang['ushop_open_own_shop'] = 'open your own shop';
+$lang['ushop_information'] = 'Information';
+$lang['ushop_no_items'] = 'There are currently no items to purchase from this shop!';
+$lang['ushop_no_such_item'] = 'No such item exists in an open store!';
+$lang['ushop_edit_your_shop'] = 'Edit Your Shop';
+$lang['ushop_edit_p_shop'] = 'Edit Personal Shop';
+$lang['ushop_edit_shop_items'] = 'Edit Shop Items';
+$lang['ushop_already_opened'] = 'You have already opened a shop!';
+$lang['ushop_not_enough_money'] = 'You do not have enough %s to open a shop. It requires at least %s %1$s.';
+$lang['ushop_shop_opened'] = 'Your shop has been opened!';
+$lang['ushop_shop_updated'] = 'Your shop\'s settings have been successfully updated!';
+$lang['ushop_shop_full'] = 'Your shop currently has too many items in it, you must remove some before you can add more!';
+$lang['ushop_default_notes'] = 'None.';
+$lang['ushop_item_added'] = 'Item has been successfully removed from your inventory and added to your shop!';
+$lang['ushop_dont_own_item'] = 'You don\'t own that item, so you can\'t add it to your shop!';
+$lang['ushop_item_removed'] = 'The item has been removed from your shop and placed back in your inventory.';
+$lang['ushop_item_not_in_store'] = 'You can\'t remove an item that isn\'t in your store!';
+$lang['ushop_item_updated'] = 'This item has successfully been updated!';
+$lang['ushop_cant_update'] = 'You can\'t update an item that isn\'t in your store!';
+$lang['ushop_nothing_to_withdraw'] = 'There is nothing for you to withdraw!';
+$lang['ushop_withdrawn'] = 'You have successfully withdrawn the %s %s that your store earned.';
+$lang['ushop_shop_restocking'] = 'This shop is currently closed for restocking.';
+$lang['ushop_shop_closed'] = 'This shop is currently closed.';
+$lang['ushop_already_owned'] = 'You cannot purchase an item you already own!';
+$lang['ushop_bought'] = 'You have successfully purchased %s for %s %s from %s owned by %s.';
+$lang['ushop_open_shop'] = 'You have not yet opened a shop.<br /><br />To open a shop, click %shere%s.';
+$lang['ushop_cost_to_open'] = 'It will cost you %s %s to open a shop.';
+$lang['ushop_description'] = 'Description';
+$lang['ushop_seller_notes'] = 'Seller Notes';
+$lang['ushop_none'] = 'None';
+$lang['ushop_remove'] = 'Remove';
+$lang['ushop_update_settings'] = 'Update Settings';
+$lang['ushop_items_sold'] = 'Items Sold';
+$lang['ushop_items_left'] = 'Items Left';
+$lang['ushop_withdraw'] = 'Withdraw Holdings';
+$lang['ushop_holding'] = 'Holding';
+$lang['ushop_earned'] = 'Earned';
+$lang['ushop_opened'] = 'Shop Opened';
+$lang['ushop_restocking'] = 'Restocking';
+$lang['ushop_status'] = 'Shop Status';
+$lang['ushop_shop_settings'] = 'Shop Settings';
+$lang['ushop_no_items_in_store'] = 'There are currently no items in your store!';
+$lang['ushop_item_display'] = 'Item Display';
+
+$lang['ushop_u_index'] = 'Click %shere%s to return to user shop listing.';
+$lang['ushop_u_edit'] = 'Click %shere%s to return to your shop\'s settings it!';
+$lang['ushop_u_shop'] = 'Click %shere%s to return to the %s shop\'s inventory.';
+$lang['ushop_u_click'] = 'Click %shere%s to %s.';
+
+// PM Variables
+$lang['ushop_pm_title'] = 'Your shop has sold an item!';
+$lang['ushop_pm_automated'] = 'Automated Message';
+$lang['ushop_pm_sold'] = 'Your shop has successfully sold %s for %s %s to %s!';
+
+// Ignore this variable if you don't have wrapping shop installed! //
+$lang['ushop_wrapped'] = 'A large box wrapped in brilliantly coloured paper and tied off tightly. What is hidden inside could be anything, from riches to junk.';
+
+// User Shop Admin Variables //
+$lang['ushop_index_explain'] = 'In this area you can edit the user shop configuration and close user shops.';
+$lang['ushop_index_table1'] = 'User Shops Editor';
+$lang['ushop_vars_updated'] = 'The user shops have successfully been updated!';
+$lang['ushop_click_back'] = 'Please click %shere%s to return to the main user shop configuration.';
+$lang['ushop_does_not_exist'] = 'This shop does not exist!';
+$lang['ushop_items_returned'] = 'All items have successfully been returned to %s.';
+$lang['ushop_shop_deleted'] = 'This shop and all items listed in it successfully removed.';
+
+// User Shop Admin Template Variables //
+$lang['ushop_total_shops'] = 'Total Shops';
+$lang['ushop_total_items'] = 'Total Shop Items';
+$lang['ushop_open'] = 'Open';
+$lang['ushop_closed'] = 'Closed';
+$lang['ushop_percent_taken'] = 'Percent Taken on Sales';
+$lang['ushop_max_items'] = 'Max Items Per Shop';
+$lang['ushop_open_cost'] = 'Cost to Open Shop';
+$lang['ushop_return_items'] = 'Return Items';
+$lang['ushop_close_shop'] = 'Close Shop';
+$lang['ushop_update_config'] = 'Update Configuration';
+$lang['ushop_atitle_1'] = 'User Shop Information';
+$lang['ushop_atitle_2'] = 'User Shop Configuration';
+$lang['ushop_atitle_3'] = 'Close User Shop';
+$lang['ushop_atitle_4'] = 'Close User\'s Shop';
+
+$lang['ushop_total_points'] = 'Total %s Held';
+$lang['ushop_total_earnt'] = 'Total %s Earnt';
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+templates/subSilver/overall_header.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+#
+ alt="{L_FAQ}" hspace="3" />{L_FAQ}</a> 
+
+#
+#-----[ IN-LINE FIND ]------------------------------------------
+#
+ hspace="3" />{L_FAQ}</a>
+
+#
+#-----[ IN-LINE AFTER, ADD ]------------------------------------------
+#
+&nbsp; &nbsp;<a href="{U_USER_SHOPS}" class="mainmenu"><img src="templates/subSilver/images/icon_user_shop.gif" width="12" height="13" border="0" alt="{L_USER_SHOPS}" hspace="3" />{L_USER_SHOPS}</a>
+
+#
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------
+#
+# EoM

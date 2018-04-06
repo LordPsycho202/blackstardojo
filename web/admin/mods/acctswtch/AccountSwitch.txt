@@ -1,0 +1,781 @@
+## EasyMod 0.3.0 Compatible
+##############################################################
+## Title: Account Switch Hack
+## Author: Kai <kai@winternightex.com> 
+##	   www.winternightex.com
+##	   Kai WT on phpbbhacks.com 
+##
+## Description: This hack lets users switch between any number 
+##		of linked accounts 
+##
+## Version History: 
+##		2.0.0 - Current version.  Added support through 2.0.15
+##		      - Added ability to designate primary account
+##		      - Switching accounts now redirects you to the 
+##			current page instead of the index
+##		      - Added the ability to allow only admins to use Account Switch			
+##		1.1.2 - Updated for 2.0.6 and to use language files		
+##		1.1.1 - Updated for 2.0.4
+##		1.1.0 - Fixes included to prevent alpha PIDs and the PID 00000
+##		1.0.0 - Initial version.
+## 
+## Installation Level: 
+##		Difficult
+##
+## Verified Compatability:
+##		2.0.0 to 2.0.17
+##
+## Files To Edit: 
+##		login.php	
+##		viewtopic.php
+##		admin/admin_board.php	
+##		includes/page_header.php
+##		includes/usercp_register.php
+##		language/lang_english/lang_main.php
+##		language/lang_english/lang_admin.php		
+##		templates/subSilver/profile_add_body.tpl
+##		templates/subSilver/overall_header.tpl
+##		templates/subSilver/viewtopic_body.tpl
+##		templates/subSilver/admin/board_config_body.tpl
+##
+## Included Files: 
+##		pid.php
+##		templates/subSilver/pid.tpl
+##		Primer.txt
+##
+## Notes: 
+##  This hack requires modification of the phpBB database.  If you are incapable of or 
+##  are not comfortable with doing so, please do not attempt installation of this hack.
+##  Please read Primer.txt for notes on the operation of this hack and it is suggested 
+##  this document be made available for the users of the board as well.
+############################################################## 
+## Please Check: 
+##	http://www.phpbbhacks.com
+##	http://www.204art.com/item.php?galleryid=2
+##   
+## for support and the latest version of this hack
+############################################################## 
+
+
+## ALWAYS back up all files to be edited before starting installation!  ##
+#
+#-----[ COPY ]------------------------------------------
+#
+
+copy pid.php to pid.php
+copy pid.tpl to templates/subSilver/pid.tpl
+
+# 
+#-----[ SQL ]------------------------------------------ 
+# 
+ALTER TABLE phpbb_users ADD PID VARCHAR(5) DEFAULT NULL;
+
+ALTER TABLE phpbb_users ADD primary_acct INT(1) DEFAULT NULL;
+
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('as_adminonly', '0'); 
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+login.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($HTTP_POST_VARS['logout']) || isset($HTTP_GET_VARS['logout']) )
+{
+	if( ( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) ) && (!$userdata['session_logged_in'] || isset($HTTP_POST_VARS['admin'])) )
+	{
+		$username = isset($HTTP_POST_VARS['username']) ? phpbb_clean_username($HTTP_POST_VARS['username']) : '';
+		$password = isset($HTTP_POST_VARS['password']) ? $HTTP_POST_VARS['password'] : '';
+
+
+# 
+#-----[ REPLACE WITH ]------------------------------------------ 
+# 
+
+//************************Account Switch Hack Start***********************************
+if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($HTTP_POST_VARS['logout']) || isset($HTTP_GET_VARS['logout']) || isset($HTTP_POST_VARS['switch']) || isset($HTTP_GET_VARS['switch']))
+{
+	if(( ( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) ) && (!$userdata['session_logged_in'] || isset($HTTP_POST_VARS['admin'])) ) || ((((isset($HTTP_POST_VARS['switch'])) || (isset($HTTP_GET_VARS['switch']))) &&($userdata['session_logged_in']))
+))
+	{
+		if(((isset($HTTP_POST_VARS['switch'])) || (isset($HTTP_GET_VARS['switch']))) &&($userdata['session_logged_in']))
+		{
+			$jump = isset($HTTP_POST_VARS['jump']) ? phpbb_clean_username($HTTP_POST_VARS['jump']) : '';
+
+			$sql = "SELECT username, user_password 
+				FROM ".USERS_TABLE." 
+				WHERE username = '" . str_replace("\'", "''", $userdata['username']) . "'";
+			$currentresult = $db->sql_query($sql);
+			$currentarray = $db->sql_fetchrow($currentresult);
+
+			$sql = "SELECT user_id, username, user_password 
+				FROM ".USERS_TABLE." 
+				WHERE username = '" . str_replace("\'", "''", $jump) . "'"; 
+			$boxresult = $db->sql_query($sql);
+			$boxarray = $db->sql_fetchrow($boxresult);
+			if ($currentarray['PID'] == $boxarray['PID'])
+			{
+				session_end($userdata['session_id'], $userdata['user_id']);	
+				$username = $boxarray['username'];
+				$password = $boxarray['user_password'];
+			}
+		}
+		else if( ( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) ) && (!$userdata['session_logged_in'] || isset($HTTP_POST_VARS['admin'])) )
+		{
+			$username = isset($HTTP_POST_VARS['username']) ? phpbb_clean_username($HTTP_POST_VARS['username']) : '';
+			$password = isset($HTTP_POST_VARS['password']) ? $HTTP_POST_VARS['password'] : '';
+
+			$passwordnocrypt = isset($HTTP_POST_VARS['password']) ? $HTTP_POST_VARS['password'] : '';
+			$password = md5($passwordnocrypt);
+		}
+//************************Account Switch Hack End***********************************
+
+
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+				if( md5($password) == $row['user_password'] && $row['user_active'] )
+{
+
+
+
+# 
+#-----[ REPLACE WITH ]------------------------------------------ 
+# 
+
+				//************************Account Switch Hack***********
+				$admin = empty($admin) ? $row['user_level'] : $admin;
+				if( $password == $row['user_password'] && $row['user_active'] )
+				{
+				//************************Account Switch Hack***********	
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+viewtopic.php
+
+
+
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+
+
+$sql = "SELECT u.username, u.user_id, u.user_posts, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.user_regdate, u.user_msnm, u.user_viewemail, u.user_rank, u.user_rank2, u.user_rank3, u.user_rank4, u.user_rank5, u.user_sig, u.user_sig_bbcode_uid, u.user_avatar, u.user_avatar_type, u.user_allowavatar, u.user_allowsmile, p.*,  pt.post_text, pt.post_subject, pt.bbcode_uid
+	FROM " . POSTS_TABLE . " p, " . USERS_TABLE . " u, " . POSTS_TEXT_TABLE . " pt
+	WHERE p.topic_id = $topic_id
+		$limit_posts_time
+		AND pt.post_id = p.post_id
+		AND u.user_id = p.poster_id
+	ORDER BY p.post_time $post_time_order
+	LIMIT $start, ".$board_config['posts_per_page'];
+#
+#-----[ IN-LINE FIND ]------------------------------------------ 
+#
+
+
+p.*,  pt.post_text,
+
+# 
+#-----[ IN-LINE BEFORE, ADD ]------------------------------------------ 
+# 
+
+ u.PID, 
+
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+	$poster_joined = ( $postrow[$i]['user_id'] != ANONYMOUS ) ? $lang['Joined'] . ': ' . create_date($lang['DATE_FORMAT'], $postrow[$i]['user_regdate'], $board_config['board_timezone']) : '';
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+
+	//***********Account Switch Hack*******************
+	$pid = $postrow[$i]['PID'];
+	$poster_pri = '';
+	if ($pid != '')
+	{
+		$sql = "SELECT * FROM " . USERS_TABLE . " WHERE PID = '$pid' AND primary_acct = '1'"; 
+		if ( !($result = $db->sql_query($sql)) )
+		{
+			message_die(GENERAL_ERROR, "Could not access userdata.", '', __LINE__, __FILE__, $sql);
+		}
+		if ($row = $db->sql_fetchrow($result))
+			$poster_pri = $row['username'];		
+	}
+	//***********Account Switch Hack*******************
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+		'POSTER_JOINED' => $poster_joined,
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+
+		//********Account Switch Hack*********
+		'POSTER_PRI' => $poster_pri,
+		//********Account Switch Hack*********
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+#
+admin/admin_board.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+$html_yes = ( $new['allow_html'] ) ? "checked=\"checked\"" : "";
+$html_no = ( !$new['allow_html'] ) ? "checked=\"checked\"" : "";
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+
+//****************Account Switch Hack******************* 
+$asadmin_yes = ( $new['as_adminonly'] ) ? "checked=\"checked\"" : ""; 
+$asadmin_no = ( !$new['as_adminonly'] ) ? "checked=\"checked\"" : ""; 
+//*********************Account Switch Hack************************ 
+
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+	"L_RESET" => $lang['Reset'], 
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+
+//***********Account Switch Mod**************** 
+	"L_ACCOUNT_SWITCH" => $lang['account_switch'], 
+//***********Account Switch Mod**************** 
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+	"HTML_NO" => $html_no,
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+
+	//***********Account Switch Mod**************** 
+	"ASADMIN_YES" => $asadmin_yes, 
+	"ASADMIN_NO" => $asadmin_no, 
+	//***********Account Switch Mod**************** 
+
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+includes/page_header.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+
+			$nav_links_html .= sprintf($nav_link_proto, $nav_item, $nested_array['url'], $nested_array['title']);
+		}
+	}
+}
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+
+//******************************Account Switch Hack Start**********
+$switchcount = 0;	
+$switchflag = 0;
+$sql = "SELECT * FROM " . USERS_TABLE . " WHERE PID = " . $userdata['PID'] . " ORDER BY username ASC";
+if (!($accounts = $db->sql_query($sql)))
+	$switchcontext = "<option>No Results</option>";
+else
+{
+	while ($accountrow = $db->sql_fetchrow($accounts))
+	{
+		$switchcount = $switchcount + 1;
+		$name = $accountrow['username'];
+		$switchcontext = $switchcontext . "<option value=\"$name\">$name</option>";
+		$level = $accountrow['user_level'];
+		if ($level == '1')
+			$switchflag = 1;
+	}
+}
+$request = $_SERVER['REQUEST_URI'] ? $_SERVER['REQUEST_URI'] : "/index.php";
+$base = $board_config['script_path'];
+//$request = preg_replace($base, '', $request);
+
+$assql = "SELECT * FROM " . CONFIG_TABLE . " WHERE config_name = 'as_adminonly'"; 
+if ( !($asresult = $db->sql_query($assql)) ) 
+{ 
+	message_die(GENERAL_ERROR, "Couldn't obtain user email information.", "", __LINE__, __FILE__, $sql); 
+} 
+$allow = $db->sql_fetchrow($asresult); 
+if ($userdata['session_logged_in'])
+{
+	if ($allow['config_value'] == 0) 
+	{ 
+		$template->assign_block_vars('switch_as_allowed', array());
+	}
+	else
+	{
+		if ($switchflag == '1')
+			$template->assign_block_vars('switch_as_allowed', array());
+		else
+			$template->assign_block_vars('switch_as_disallowed', array());
+	}
+}
+
+//*****************************Account Switch Hack End*************
+
+
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+	'L_LOG_ME_IN' => $lang['Log_me_in'],
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+
+	//***************Account Switch Hack ****************
+	'L_AS_TAG' => $lang['AS_Tag'],
+	//***************Account Switch Hack ****************
+
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+	'U_GROUP_CP' => append_sid('groupcp.'.$phpEx),
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+
+	//***************Account Switch Hack ****************
+	'REQUEST_URI'=> $request,
+	//***************Account Switch Hack ****************
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+	'NAV_LINKS' => $nav_links_html)
+
+# 
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+	//****Account Switch Hack****** 
+	'SWITCH' => $switchcontext,
+	//****Account Switch Hack****** 
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+includes/usercp_register.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+		if ( $mode == 'editprofile' )
+		{
+			if ( $email != $userdata['user_email'] && $board_config['require_activation'] != USER_ACTIVATION_NONE && $userdata['user_level'] != ADMIN )
+			{
+
+# 
+#-----[ BEFORE, ADD ]------------------------------------------ 
+# 
+		//***************************Account Switch Hack Start*****************
+		$linkname = isset($HTTP_POST_VARS['linkname']) ? phpbb_clean_username($HTTP_POST_VARS['linkname']) : '';
+		if ( $mode == 'editprofile' && $linkname)
+		{
+			$linkpass = isset($HTTP_POST_VARS['linkpass']) ? $HTTP_POST_VARS['linkpass'] : '';
+			$linkpass = md5($linkpass);
+			$sql = "SELECT * FROM " . USERS_TABLE . " WHERE username = '$linkname'";
+			if ( !($pidresult = $db->sql_query($sql)) )
+				message_die(GENERAL_ERROR, "No result");				
+			$resultarray = $db->sql_fetchrow($pidresult);
+			$pidcheck = $resultarray['PID'];			
+			$passcheck = $resultarray['user_password'];
+			if($passcheck != $linkpass)
+			{
+				message_die(GENERAL_ERROR, "Wrong password for link account.");
+			}
+			
+			$linkpid = isset($HTTP_POST_VARS['linkpid']) ? $HTTP_POST_VARS['linkpid'] : '';
+			if (($linkpid != $pidcheck) && ($pidcheck != NULL))
+				{
+					message_die(GENERAL_ERROR, "Wrong Personnel ID for link account.");
+				}
+		
+			else
+			{
+				$pid = $linkpid;
+				$linksql = "UPDATE " . USERS_TABLE . " SET PID = $pid WHERE username = '$username'";
+				$linkresult = $db->sql_query($linksql);
+			}
+			
+		}
+		//****************************Account Switch Hack End********************
+
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+
+			else
+			{
+				$user_active = 1;
+				$user_actkey = '';
+			}
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+
+			//**************************Account Switch Hack******************************
+			$primary = isset($HTTP_POST_VARS['primary']) ? $HTTP_POST_VARS['primary'] : '0';
+			$pid = $userdata['PID'];
+			if (($primary == 1) && ($pid != ''))
+			{
+				$sql = "SELECT * FROM " . USERS_TABLE . " WHERE PID = $pid AND primary_acct = 1";
+				if ( !($result = $db->sql_query($sql)) )
+				{
+					message_die(GENERAL_ERROR, 'Could not query users table', '', __LINE__, __FILE__, $sql);
+				}		
+				if ( !($row = $db->sql_fetchrow($result)) )
+				{
+					$prisql = "UPDATE " . USERS_TABLE . " SET primary_acct = 1 WHERE user_id = $user_id";
+					if ( !($priresult = $db->sql_query($prisql)) )
+					{
+						message_die(GENERAL_ERROR, 'Could not update users table', '', __LINE__, __FILE__, $prisql);
+					}	
+				}
+				else
+				{
+					do {
+						$overrideacct = $row['user_id'];
+						$prisql = "UPDATE " . USERS_TABLE . " SET primary_acct = 0 WHERE user_id = $overrideacct";
+						if ( !($priresult = $db->sql_query($prisql)) )
+						{
+							message_die(GENERAL_ERROR, 'Could not update users table', '', __LINE__, __FILE__, $prisql);
+						}
+					} while ($row = $db->sql_fetchrow($result));
+					
+					$prisql = "UPDATE " . USERS_TABLE . " SET primary_acct = 1 WHERE user_id = $user_id";
+					if ( !($priresult = $db->sql_query($prisql)) )
+					{
+						message_die(GENERAL_ERROR, 'Could not update users table', '', __LINE__, __FILE__, $prisql);
+					}
+				}
+				
+			}
+			else if ($primary == 0)
+			{
+				$prisql = "UPDATE " . USERS_TABLE . " SET primary_acct = 0 WHERE user_id = $user_id";
+				if ( !($priresult = $db->sql_query($prisql)) )
+				{
+					message_die(GENERAL_ERROR, 'Could not update users table', '', __LINE__, __FILE__, $prisql);
+				}
+			}
+			//**************************Account Switch Hack******************************
+
+
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+
+	$yim = $userdata['user_yim'];
+
+ 
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+	//*************************Account Switch Hack Start*********************
+	$pid = $userdata['PID'];
+	$primary = ($userdata['primary_acct'] == 1) ? "checked" : '';
+	//*************************Account Switch Hack End **********************
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+	$template->assign_vars(array(
+		'USERNAME' => isset($username) ? $username : '',
+		'CUR_PASSWORD' => isset($cur_password) ? $cur_password : '',
+		'NEW_PASSWORD' => isset($new_password) ? $new_password : '',
+		'PASSWORD_CONFIRM' => isset($password_confirm) ? $password_confirm : '',
+		'EMAIL' => isset($email) ? $email : '',
+		
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+		//*******Account Switch Hack********
+		'PID' => $pid,
+		'PRIMARY' => $primary,
+		//*******Account Switch Hack********
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+		'L_ALWAYS_ADD_SIGNATURE' => $lang['Always_add_sig'],
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+
+
+		//***************Account Switch Hack*****************
+		'L_AS_EXPLAIN' => $lang['AS_Explain'],
+		'L_AS_USERNAME' => $lang['AS_Username'],
+		'L_AS_PASSWORD' => $lang['AS_Password'],
+		'L_AS_PID' => $lang['AS_PID'],
+		'L_AS_GET' => $lang['AS_Get'],
+		'L_AS_ADMIN' => $lang['AS_Admin'],
+		'L_AS_PRIMARY' => $lang['AS_Primary'],
+		//***************Account Switch Hack*****************
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+language/lang_english/lang_main.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+$lang['Error_login'] = 'You have specified an incorrect or inactive username, or an invalid password.';
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+
+//*********Account Switch Hack Start*************
+$lang['AS_Tag'] = 'Account Switch';
+//*********Account Switch Hack End*************
+
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+$lang['Always_notify_explain'] = 'Sends an e-mail when someone replies to a topic you have posted in. This can be changed whenever you post.';
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+//*******Account Switch Hack Start***********
+$lang['AS_Explain'] = 'Enter a Username and password pair of the account you would like to link this one to and your PID below. If your PID already appears below, this account is already linked.';
+$lang['AS_Username'] = 'Link to Username';
+$lang['AS_Password'] = 'Password for Username';
+$lang['AS_PID'] = 'Personnel ID';
+$lang['AS_Get'] = 'Don\'t have a PID yet?<br/><a href=\'pid.php\'>Click here</a> to obtain one.';
+$lang['AS_Admin'] = 'This feature is for use by Admins only';
+$lang['AS_Primary'] = 'Make this my primary account.  This username will be displayed in post made by other linked accounts.';
+//*******Account Switch Hack End***********
+
+
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+language/lang_english/lang_admin.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+$lang['Allow_HTML'] = 'Allow HTML';
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+
+//********Account Switch Hack************
+$lang['account_switch'] = 'Allow only Admins to use the Account Switch';
+//********Account Switch Hack************
+
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+#
+templates/subSilver/profile_add_body.tpl
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+<!-- BEGIN switch_avatar_block -->
+
+# 
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+
+	<!-- Account Switch Hack Start -->
+	<!-- BEGIN switch_as_allowed -->
+	<tr>
+	<th class="thSides" colspan="2" height="12" valign="middle">Account Switch Settings</th>
+	</tr>
+	<tr align="center">
+	  <td class="row1" colspan="2">
+		<table width=90%" cellspacing="2" cellpadding="0" border="0">
+		<tr>
+			<td width="80%" aligh="left"><span class="gensmall">{L_AS_EXPLAIN}</span></td>
+			<td width="10%">&nbsp;</td>
+			<td width="20%" align="left"><span class="gensmall">{L_AS_GET}</td>
+		</tr>
+		</table>
+	  </td>
+	<tr>
+	<tr align="left">
+	<td><span class="gen">{L_AS_USERNAME}</span></td>
+	<td><input type="text" class="post" style="width: 150px"  name="linkname" size="20" maxlength="255" value="{LINKNAME}" /></td>
+	</tr><tr>
+	<td><span class="gen">{L_AS_PASSWORD}</span></td>
+	<td><input type="password" class="post" style="width: 150px"  name="linkpass" size="20" maxlength="255" value="{LINKPASS}" /></td>
+	</tr><tr>
+	<td><span class="gen">{L_AS_PID}</span></td>
+	<td><input type="password" class="post" style="width: 150px"  name="linkpid" size="20" maxlength="255" value="{PID}" /></td>
+	</tr><tr>
+	<td><span class="gen">{L_AS_PRIMARY}</span></td>
+	<td><input type="checkbox" name="primary" value="1" {PRIMARY}></td>
+	</tr>
+	<!-- END switch_as_allowed -->
+
+	<!-- BEGIN switch_as_disallowed -->
+	<tr>
+	<th class="thSides" colspan="2" height="12" valign="middle">Account Switch Settings</th>
+	</tr>
+	<tr align="center">
+	  <td class="row1" colspan="2">
+		<table width=90%" cellspacing="2" cellpadding="0" border="0">
+		<tr>
+			<td width="80%" aligh="left"><span class="gensmall">{L_AS_ADMIN}</span></td>
+		</tr>
+		</table>
+	  </td>
+	<tr>
+	<tr align="left">
+	<td><span class="gen">{L_AS_USERNAME}</span></td>
+	<td><input type="text" class="post" style="width: 150px"  name="linkname" size="20" maxlength="255" value="{LINKNAME}" /></td>
+	</tr><tr>
+	<td><span class="gen">{L_AS_PASSWORD}</span></td>
+	<td><input type="password" class="post" style="width: 150px"  name="linkpass" size="20" maxlength="255" value="{LINKPASS}" /></td>
+	</tr><tr>
+	<td><span class="gen">{L_AS_PID}</span></td>
+	<td><input type="password" class="post" style="width: 150px"  name="linkpid" size="20" maxlength="255" value="{PID}" /></td>
+	</tr>
+	<!-- END switch_as_disallowed -->
+
+	<!-- Account Switch Hack End -->
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+#
+templates/subSilver/overall_header.tpl
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+<body bgcolor="{T_BODY_BGCOLOR}" text="{T_BODY_TEXT}" link="{T_BODY_LINK}" vlink="{T_BODY_VLINK}">
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+
+<!-- Account Switch Hack Start -->
+<!-- BEGIN switch_user_logged_out -->
+<form method="post" action="{S_LOGIN_ACTION}">
+  <table width="100%" cellpadding="3" cellspacing="1" border="0" class="forumline">
+	<tr> 
+	  <td class="row1" align="right" valign="middle" height="28"><span class="gensmall">{L_USERNAME}: 
+		<input class="post" type="text" name="username" size="10" />
+		&nbsp;&nbsp;&nbsp;{L_PASSWORD}: 
+		<input class="post" type="password" name="password" size="10" />
+		<br/>
+		&nbsp;&nbsp; &nbsp;&nbsp;{L_LOG_ME_IN}
+		<input class="text" type="checkbox" name="autologin" />
+		&nbsp;&nbsp;&nbsp; 
+		<input type="submit" class="mainoption" name="login" value="{L_LOGIN}" />
+		</span> </td>
+	</tr>
+  </table>
+</form>
+<!-- END switch_user_logged_out -->
+
+<!-- BEGIN switch_user_logged_in -->
+<form method="post" action="{S_LOGIN_ACTION}">
+  <table width="100%" cellpadding="3" cellspacing="1" border="0" class="forumline">
+	<tr> 
+	  <td class="row1" align="right" valign="middle" height="28"><span class="gensmall"> 
+<!-- END switch_user_logged_in -->
+
+<!-- BEGIN switch_as_allowed -->	
+		&nbsp;&nbsp;&nbsp;{L_AS_TAG}:
+		<select name="jump">
+		{SWITCH}
+		</select>
+		<input type="hidden" name="redirect" value="{REQUEST_URI}">
+		<input type="submit" class="mainoption" name="switch" value="Switch" />
+<!-- END switch_as_allowed -->
+
+
+<!-- BEGIN switch_user_logged_in -->
+		</span> </td>
+	</tr>
+  </table>
+</form>
+<!-- END switch_user_logged_in -->
+<!-- Account Switch Hack End -->
+
+
+# 
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+templates/subSilver/admin/board_config_body.tpl
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+
+	<tr>
+		<td class="row1">{L_ALLOW_HTML}</td>
+		<td class="row2"><input type="radio" name="allow_html" value="1" {HTML_YES} /> {L_YES}&nbsp;&nbsp;<input type="radio" name="allow_html" value="0" {HTML_NO} /> {L_NO}</td>
+	</tr>
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+
+	<!--  Account Switch Start -->
+      <tr> 
+         <td class="row1">{L_ACCOUNT_SWITCH}</td> 
+         <td class="row2"><input type="radio" name="as_adminonly" value="1" {ASADMIN_YES} /> Yes&nbsp;&nbsp;<input type="radio" name="as_adminonly" value="0" {ASADMIN_NO} />No</td> 
+      </tr> 
+      <!--  Account Switch End -->
+
+# 
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------ 
+# 
+
+
+
+# End

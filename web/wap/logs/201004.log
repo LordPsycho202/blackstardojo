@@ -1,0 +1,56 @@
+2010-04-07 08:46:57	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2010-04-07 08:46:57	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2010-04-07 14:27:25	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2010-04-07 14:27:25	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2010-04-15 22:06:23	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2010-04-15 22:06:23	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2010-04-15 22:33:55	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2010-04-15 22:33:55	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2010-04-23 02:33:05	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2010-04-23 02:33:05	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2010-04-23 04:39:09	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2010-04-23 04:39:09	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2010-04-23 04:46:21	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2010-04-23 04:46:21	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 

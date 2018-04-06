@@ -1,0 +1,120 @@
+2008-05-02 20:47:21	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-02 20:47:21	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-03 18:40:13	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-03 18:40:14	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-06 01:47:58	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-06 01:47:58	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-08 15:31:07	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-08 15:31:08	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-08 22:40:16	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-08 22:40:16	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-09 18:59:01	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-09 18:59:01	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-11 10:52:29	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-11 10:52:30	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-11 13:15:45	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-11 13:15:45	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-11 13:16:38	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-11 13:16:38	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-11 13:16:45	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-11 13:16:45	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-12 20:26:05	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-12 20:26:05	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-15 10:13:53	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-15 10:13:53	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-16 08:58:35	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-16 08:58:35	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-16 14:58:44	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-16 14:58:44	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2008-05-29 07:34:38	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2008-05-29 07:34:38	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 

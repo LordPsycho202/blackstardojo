@@ -1,0 +1,240 @@
+/*
+  The Elveron theme is based on the original 
+  subSilver Theme for phpBB version 2+
+  Created by subBlue design
+  http://www.subBlue.com
+
+  The Elveron theme is created by 
+  Ulf Frisk, http://www.elveron.com
+  Michael Schaeffer, http://www.noobsupport.com
+*/
+
+
+
+/* Elveron skin border */
+table.bordermaintable { background-color: #53683F; height: 100%; border-top: 0px solid #000000; border-left: 0px solid #000000; border-right: 0px solid #000000; border-bottom: 0px solid #000000; }
+table.border { height: 100%; border-top: 0px solid #000000; border-left: 0px solid #000000; border-right: 0px solid #000000; border-bottom: 0px solid #000000; }
+td.border_left { height: 100%; width: 20px; background-repeat: repeat-y; background-image: url(images/bg_left.gif); }
+td.border_left_logo { height: 61px; width: 20px; background-repeat: repeat-y; background-image: url(images/bg_left_logo.gif); }
+td.border_right { height: 100%; width: 20px; background-repeat: repeat-y; background-image: url(images/bg_right.gif); }
+td.border_right_logo { height: 61px; width: 20px; background-repeat: repeat-y; background-image: url(images/bg_right_logo.gif); }
+
+/* Elveron skin stuff */
+table.maintable { margin-left: 0px; background-color: transparent; width: 701px; height: 100%; border-top: 0px solid #000000; border-left: 0px solid #000000; border-right: 0px solid #000000; border-bottom: 0px solid #000000; }
+table.maintableinner { margin-left: 0px; background-color: transparent; width: 740px; height: 100%; border-top: 0px solid #000000; border-left: 0px solid #000000; border-right: 0px solid #000000; border-bottom: 0px solid #000000; }
+table.maintablebody	{ background-color: transparent; border: 0px #000000 solid; }
+td.header_background { border-top: 0px solid #113311; border-left: 0px solid black; border-right: 0px solid black; border-bottom: 0px solid #113311; height: 61px; background-repeat: repeat-x; background-image: url(images/logo_background.gif); }
+td.logo { border-top: 0px solid #113311; border-left: 0px solid black; border-right: 0px solid black; border-bottom: 0px solid #113311; height: 61px; background-repeat: no-repeat; background-image: url(images/logo.gif); }
+td.footer_background { border-top: 0px solid #113311; border-left: 0px solid black; border-right: 0px solid black; border-bottom: 0px solid #113311; height: 32px; background-repeat: repeat-x; background-image: url(images/footer.gif);}
+
+/* Elveron skin top menu */
+.topmenu a { text-decoration: none; }
+.topmenu a:hover { text-decoration: none; }
+.topmenu td { white-space: nowrap; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #DFDFDF; }
+td.b_spacer { width: 5px; height: 25px; border: 0px; }
+td.b_center { height: 25px; border: 0px; background-image: url(images/button_middle.gif); }
+td.b_right { width: 7px; height: 25px; border: 0px; background-image: url(images/button_right.gif); }
+td.b_left_red { width: 22px; height: 25px; border: 0px; background-image: url(images/button_left_red.gif); }
+td.b_left_grey { width: 22px; height: 25px; border: 0px; background-image: url(images/button_left_grey.gif); }
+td.b_left_normal { width: 22px; height: 25px; border: 0px; background-image: url(images/button_left_normal.gif); }
+
+
+ /* General page style. The scroll bar colours only visible in IE5.5+ */
+body {
+	background-color: #000000;
+	margin: 0px;
+	background-image: url(images/bg.gif);
+	scrollbar-face-color: #212121;
+	scrollbar-highlight-color: #404040;
+	scrollbar-shadow-color: #000000;
+	scrollbar-3dlight-color: #616161;
+	scrollbar-arrow-color:  #A1A1A1;
+	scrollbar-track-color: #000000;
+	scrollbar-darkshadow-color: #000000;
+}
+
+/* General font families for common tags */
+font,th,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; }
+a:link,a:active,a:visited { color : #DFDFDF; text-decoration: none; }
+a:hover		{ text-decoration: underline; color : #FFFFFF; }
+hr	{ height: 0px; border: solid #CCCCCC 0px; border-top-width: 1px; }
+
+
+/* This is the border line & background colour round the entire page */
+.bodyline	{ background-color: #000000; border: 1px #212121 solid; }
+
+/* This is the outline round the main forum tables */
+.forumline { border: 1px solid #242D1C; background: #242D1C; margin-top: 1px; margin-bottom: 1px; }
+
+
+/* Main table cell colours and backgrounds */
+td.row1	{ background-color: #445533; }
+td.row2	{ background-color: #445533; }
+td.row3	{ background-color: #334422; }
+
+
+/*
+  This is for the table cell above the Topics, Post & Last posts on the index.php page
+  By default this is the fading out gradiated silver background.
+  However, you could replace this with a bitmap specific for each forum
+*/
+td.rowpic {
+		background-color: #000000;
+}
+
+/* Header cells - the blue and silver gradient backgrounds */
+th	{
+	color: #FFFFFF; font-size: 12px; font-weight : bold;
+	background-color: #334422;
+}
+
+td.cat,td.catHead,td.catSides,td.catLeft,td.catRight,td.catBottom {
+    background-color:#000000; border: #FFCC66; border-style: solid; 
+}
+
+
+/*
+  Setting additional nice inner borders for the main table cells.
+  The names indicate which sides the border will be on.
+  Don't worry if you don't understand this, just ignore it :-)
+*/
+td.cat,td.catHead,td.catBottom { border-width: 0px 0px 0px 0px; }
+th.thHead,th.thSides,th.thTop,th.thLeft,th.thRight,th.thBottom,th.thCornerL,th.thCornerR { font-weight: bold; border: #FFCC66; border-style: solid;  }
+td.row3Right,td.spaceRow { background-color: #334422; border: #FFCC66; border-style: solid; }
+
+th.thHead,td.catHead { color: #FFFFFF; font-size: 11px; border-width: 0px 0px 0px 0px;  background: #242D1C; }
+th.thSides,td.catSides,td.spaceRow	 { border-width: 0px 0px 0px 0px;  background: #242D1C; }
+th.thRight,td.catRight,td.row3Right	 { color: #FFFFFF; border-width: 0px 0px 0px 0px;  background: #334422; }
+th.thLeft,td.catLeft	  { padding-top: 3px; padding-right: 10px; padding-bottom: 3px; padding-left: 20px; color: #FFFFFF; border-width: 0px 0px 0px 0px; background: #242D1C; background-image: url(images/box_left_icon.gif); background-repeat: no-repeat; background-position: left; }
+th.thBottom,td.catBottom  { border-width: 0px 0px 0px 0px;  background: #242D1C; }
+th.thTop	 { color: #FFFFFF; font-size: 11px; border-width: 0px 0px 0px 0px;  background: #242D1C; }
+th.thCornerL { color: #FFFFFF; font-size: 11px; border-width: 0px 0px 0px 0px;  background: #242D1C; }
+th.thCornerR { color: #FFFFFF; font-size: 11px; border-width: 0px 0px 0px 0px;  background: #242D1C; }
+
+
+/* The largest text used in the index page title and toptic title etc. */
+.maintitle,h1,h2 { font-size: 20px; font-family: "Verdana", Verdana, Arial, Helvetica, sans-serif; text-decoration: none; color : #FFFFFF; }
+
+
+/* General text */
+.gen { font-size : 12px; }
+.genmed { font-size : 11px; }
+.gensmall { font-size : 10px; }
+.gen,.genmed,.gensmall { color : #FFFFCC; text-decoration: none; }
+a.gen,a.genmed,a.gensmall { color: #AEAEAE; text-decoration: none; }
+a.gen:visited,a.genmed:visited,a.gensmall:visited	{ color: #AEAEAE; text-decoration: none; }
+a.gen:hover,a.genmed:hover,a.gensmall:hover	{ color: #FFFFCC; text-decoration: none; }
+
+
+/* The register, login, search etc links at the top of the page */
+.mainmenu		{ font-size : 11px; color : #FFFFCC; }
+a.mainmenu		{ text-decoration: none; color : #AEAEAE;  }
+a.mainmenu:visited { text-decoration: none; color : #AEAEAE; }
+a.mainmenu:hover{ text-decoration: none; color : #FFFFFF; }
+
+
+/* Forum category titles */
+.cattitle		{ font-weight: bold; font-size: 11px ; letter-spacing: 1px; color : #FFFFFF; }
+a.cattitle		{ text-decoration: none; color : #DFDFDF; }
+a.cattitle:visited { text-decoration: none; color : #DFDFDF; }
+a.cattitle:hover{  color: #FFFFFF; text-decoration: none; }
+
+
+/* Forum title: Text and link to the forums used in: index.php */
+.forumlink		{ font-weight: bold; font-size: 11px; color : #AEAEAE; }
+a.forumlink 	{ text-decoration: none; color : #AEAEAE; }
+a.forumlink:visited { text-decoration: none; color : #AEAEAE; }
+a.forumlink:hover{ text-decoration: none; color : #FFFFFF; }
+
+
+/* Used for the navigation text, (Page 1,2,3 etc) and the navigation bar when in a forum */
+.nav			{ font-weight: bold; font-size: 11px; color : #FFFFFF;}
+a.nav			{ text-decoration: none; color : #AEAEAE; }
+a.nav:visited { text-decoration: none; color : #AEAEAE; }
+a.nav:hover		{ text-decoration: none; color : #FFFFFF; }
+
+
+/* titles for the topics: could specify viewed link colour too */
+.topictitle			{ font-weight: bold; font-size: 11px; color : #FFDDAA; }
+a.topictitle:link   { text-decoration: none; color : #FFFFCC; }
+a.topictitle:visited { text-decoration: none; color : #FFFFCC; }
+a.topictitle:hover	{ text-decoration: underline; color : #FFFFFF; }
+
+
+/* Name of poster in viewmsg.php and viewtopic.php and other places */
+.name			{ font-size : 11px; color : #FFFFFF;}
+
+/* Location, number of posts, post date etc */
+.postdetails		{ font-size : 10px; color : #FFFFCC; }
+
+
+/* The content of the posts (body of text) */
+.postbody { font-size : 12px; color: #FFFFCC; }
+a.postlink:link	{ text-decoration: none; color : #AEAEAE; }
+a.postlink:visited { text-decoration: none; color : #AEAEAE; }
+a.postlink:hover { text-decoration: none; color : #FFFFFF; }
+
+
+/* Quote & Code blocks */
+.code {
+	font-family: Courier, 'Courier New', sans-serif; font-size: 11px; color: #00CC33;
+	background-color: #616161; border: #BFBFBF; border-style: solid;
+	border-left-width: 1px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px
+}
+
+.quote {
+	font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: #FFFFCC; line-height: 125%;
+	background-color: transparent; border: #BFBFBF; border-style: solid;
+	border-left-width: 1px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px
+}
+
+/* Copyright and bottom info */
+.copyright { font-size: 10px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #FFFFFF; letter-spacing: -1px; }
+a.copyright { color: #DFDFDF; text-decoration: none; }
+a.copyright:link { color : #DFDFDF; text-decoration: none; }
+a.copyright:visited { color : #DFDFDF; text-decoration: none; }
+a.copyright:hover { color: #FFFFFF; text-decoration: underline; }
+
+
+/* Form elements */
+input,textarea, select {
+	color : #FFFFFF;
+	font: normal 11px Verdana, Arial, Helvetica, sans-serif;
+	border-color : #FFFFFF;
+}
+
+/* The text input fields background colour */
+input.post, textarea.post, select {
+	background-color : #353E2C;
+}
+
+input { text-indent : 2px; }
+
+/* The buttons used for bbCode styling in message post */
+input.button {
+	background-color : #353E2C;
+	color : #FFFFCC;
+	font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+/* The main submit button option */
+input.mainoption {
+	background-color : #353E2C;
+	font-weight : bold;
+}
+
+/* None-bold submit button */
+input.liteoption {
+	background-color : #353E2C;
+	font-weight : normal;
+}
+
+/* This is the line in the posting page which shows the rollover
+  help line. This is actually a text box, but if set to be the same
+  colour as the background no one will know ;)
+*/
+.helpline { background-color: #212121; border-style: none; }
+
+
+/* Import the fancy styles for IE only (NS4.x doesn't use the @import function) */
+@import url("formIE.css");

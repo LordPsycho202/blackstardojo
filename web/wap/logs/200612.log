@@ -1,0 +1,20 @@
+2006-12-16 20:16:46	Insert into PRIVMSGS_TABLE failed.
+	INSERT INTO phpbb_privmsgs 
+	        ( privmsgs_type, privmsgs_subject, 
+	        privmsgs_from_userid, privmsgs_to_userid, 
+	        privmsgs_date, privmsgs_ip, 
+	        privmsgs_enable_bbcode, privmsgs_enable_html, 
+	        privmsgs_enable_smilies, privmsgs_attach_sig ) 
+	    VALUES ( 2, 'Re: I'm sorry', 70, 2, 
+	        1166258200, '4266ba16', 1, 0, 
+	        1, 1 )
+2006-12-16 22:58:17	Insert into PRIVMSGS_TABLE failed.
+	INSERT INTO phpbb_privmsgs 
+	        ( privmsgs_type, privmsgs_subject, 
+	        privmsgs_from_userid, privmsgs_to_userid, 
+	        privmsgs_date, privmsgs_ip, 
+	        privmsgs_enable_bbcode, privmsgs_enable_html, 
+	        privmsgs_enable_smilies, privmsgs_attach_sig ) 
+	    VALUES ( 2, 'Re: I'm sorry', 70, 2, 
+	        1166258200, '4266ba15', 1, 0, 
+	        1, 1 )

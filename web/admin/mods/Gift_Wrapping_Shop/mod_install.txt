@@ -1,0 +1,340 @@
+## EasyMod 0.3.0 Compatible
+##############################################################
+## MOD Title: Wrapping Shop
+## MOD Author: Zarath < null@null.com > ( Jamie ) http://www.zarath.com
+## MOD Description: Adds a wrapping shop to your shop list
+## MOD Version: 1.0.1
+##
+## Installation Level: Easy
+## Installation Time: ~5 Minutes
+## Files To Edit:	shop.php,
+##			shop_actions.php,
+##			includes/functions.php
+##			language/lang_english/lang_main.php
+## Included Files:	shop_wrap.php
+## 			templates/shop/shop_wrap_body.tpl
+## License: http://opensource.org/licenses/gpl-license.php GNU General Public License v2
+##############################################################
+## For security purposes, please check: http://www.phpbb.com/mods/
+## for the latest version of this MOD. Although MODs are checked
+## before being allowed in the MODs Database there is no guarantee
+## that there are no security problems within the MOD. No support
+## will be given for MODs not found within the MODs Database which
+## can be found at http://www.phpbb.com/mods/
+##############################################################
+## Author Notes: Please note, I will not give any kind of email 
+##               or PM support. Post on http://forums.knightsofchaos.com
+##		 or http://www.phpbbhacks.com
+##
+##		 All my mods & services are at http://www.zarath.com
+##
+##############################################################
+## MOD History:
+##
+##   2006-09-10 - Version 1.0.0
+##      - Initial Release
+##
+##   2006-09-20 - Version 1.0.1
+##      - EasyMod Compatible
+##
+##############################################################
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD
+##############################################################
+
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+# 
+Alter the shop_wrap.php file before uploading to change the cost for 
+presents with bows, without bows and the resale value of bows.
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+# 
+Images need to go into your shop/images/wrapped/ folder (create this).
+No images are included with this mod, you'll need to make your own.
+
+# 
+#-----[ COPY ]------------------------------------------ 
+# Remember to add the template to each of your template folders!
+#
+copy shop_wrap.php to shop_wrap.php
+copy templates/shop/shop_wrap_body.tpl to templates/subSilver/shop/shop_wrap_body.tpl
+
+#
+#-----[ SQL ]------------------------------------------
+#
+# You can either alter the table prefix and run this through phpMyAdmin or
+# upload the sql_install.php file to your forum index and run it from an
+# admin account. No need to do both... SQL install file is made for MySQL.
+#
+ALTER TABLE `phpbb_user_items` ADD `wrapped` VARCHAR(255) DEFAULT '0';
+INSERT INTO `phpbb_shops` (`shopname`, `shoptype`, `url`) VALUES('Wrapping Shop', 'Gift Wrapping', 'shop_wrap.php');
+
+# 
+#-----[ OPEN ]------------------------------------------------ 
+#
+shop.php
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+	if ( !($user_info = get_userdata($searchid)) )
+	{
+		message_die(GENERAL_MESSAGE, $lang['no_user']); 
+	}
+
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+#
+	$sql = "SELECT *
+		FROM " . USER_ITEMS_TABLE . "
+		WHERE user_id='$searchid'
+			AND worn = 0
+			AND wrapped != '0'";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, $lang['fatal_getting_uinfo']); }
+	$num_rows = $db->sql_numrows($result);
+	for ( $i = 0; $i < $num_rows; $i++ )
+	{
+		$row = $db->sql_fetchrow($result);
+		$rownum = ( $zi++ % 2 ) ? "row1" : "row2";
+
+		$link = ( $searchid == $userdata['user_id'] ) ? '<br /><br /><a href="shop_wrap.php?action=unwrap&id=' . $row['id'] . '" class="gensmall">Click Here to open the Box.</a>' : '';
+		$time_left = ( $row['die_time'] > 0 ) ? '<br /><br /><i>*This item will decay in ' . duration($row['die_time'] - time()) . '!</i>' : '';
+		$amount = ( $board_config['viewinventory'] != 'normal' ) ? '<td class="' . $rownum . '"><span class="gensmall">1</span></td>' : '';
+		$move = ( $searchid == $userdata['user_id'] ) ? '<td class="' . $rownum . '"><span class="gensmall">N/A</span></td>' : '';
+
+		$template->assign_block_vars('list_wrapped', array(
+			'ROW_NUM' => $rownum,
+
+			'WRAPPED' => $row['wrapped'],
+			'WRAPPED_LINK' => $link,
+			'DECAY_TIME' => $time_left,
+			'AMOUNT' => $amount,
+			'MOVE' => $move));
+	}
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+	$sql = "SELECT a.*, count(a.item_name) as amount, b.special_link
+		FROM " . USER_ITEMS_TABLE . " a
+		LEFT JOIN " . SHOP_ITEMS_TABLE . " b
+			ON a.item_id = b.id
+		WHERE a.user_id = $searchid
+			AND ( a.worn = 0 OR a.worn = 1 )
+			AND a.die_time = 0
+		GROUP BY `item_name`
+			UNION SELECT a.*, 1 as amount, b.special_link
+			FROM " . USER_ITEMS_TABLE . " a
+			LEFT JOIN " . SHOP_ITEMS_TABLE . " b
+				ON a.item_id = b.id
+			WHERE a.user_id = $searchid
+				AND a.die_time <> 0
+		ORDER BY `id`";
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+# 
+	$sql = "SELECT a.*, count(a.item_name) as amount, b.special_link
+		FROM " . USER_ITEMS_TABLE . " a
+		LEFT JOIN " . SHOP_ITEMS_TABLE . " b
+			ON a.item_id = b.id
+		WHERE a.user_id='$searchid'
+			AND ( a.worn = 0 OR a.worn = 1 )
+			AND a.wrapped = '0'
+			AND a.die_time = 0
+		GROUP BY `item_name`
+			UNION SELECT a.*, '1' as amount, b.special_link
+			FROM " . USER_ITEMS_TABLE . " a
+			LEFT JOIN " . SHOP_ITEMS_TABLE . " b
+				ON a.item_id = b.id
+			WHERE a.user_id = '$searchid'
+				AND a.wrapped = '0'
+				AND a.die_time != 0
+		ORDER BY `id`";
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+					$trade_items .= ( ( empty($trade_items) ) ? '' : ', ' ) . $row['item_name'];
+				}
+			}
+		}
+
+# 
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+					$row['item_name'] = ( $row['wrapped'] != '0' ) ? $row['wrapped'] : $row['item_name'];
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+					$other_items .= ( ( empty($other_items) ) ? '' : ', ' ) . $row['item_name'];
+				}
+			}
+		}
+
+# 
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+					$row['item_name'] = ( $row['wrapped'] != '0' ) ? $row['wrapped'] : $row['item_name'];
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+		$sql = "INSERT INTO " . USER_ITEMS_TABLE . "
+			(user_id, item_id, item_name, item_l_desc, item_s_desc, worn, die_time, special)
+
+#
+#-----[ IN-LINE FIND ]------------------------------------------
+#
+, special
+
+#
+#-----[ IN-LINE AFTER, ADD ]------------------------------------------
+#
+, wrapped
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+				SELECT user_id, item_id, item_name, item_l_desc, item_s_desc, worn, die_time, special
+
+#
+#-----[ IN-LINE FIND ]------------------------------------------
+#
+, special
+
+#
+#-----[ IN-LINE AFTER, ADD ]------------------------------------------
+#
+, wrapped
+
+
+# 
+#-----[ OPEN ]------------------------------------------------ 
+#
+shop_actions.php
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+	$item_names[] = $row['item_name'];
+	$item_ids[] = $row['item_id'];
+	$item_true_ids[] = $row['id'];
+
+# 
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+	$row['item_name'] = ( $row['wrapped'] == '0' ) ? $row['item_name'] : $row['wrapped'];
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+		$item_names .= ( ( empty($item_names) ) ? '' : ', ' ) . $row['item_name'];
+		$itemname[] = $row['id'];
+
+# 
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+		$row['item_name'] = ( $row['wrapped'] == '0' ) ? $row['item_name'] : $row['wrapped'];
+
+# 
+#-----[ DIY ]------------------------------------------------ 
+# This is set to DIY so EasyMod does not run it...
+# These should ONLY be done if your shop_actions.php file has them in it.
+# The latest shop mod has these already done in the trade function.
+#
+# Different formatting used again so easy mod doesn't pick it up...
+#
+
+## Find ##
+						$trade_items .= ( ( empty($trade_items) ) ? '' : ', ' ) . $row['item_name'];
+
+## Before, Add ##
+						$row['item_name'] = ( $row['wrapped'] != '0' ) ? $row['wrapped'] : $row['item_name'];
+
+## Find ##
+						$other_items .= ( ( empty($other_items) ) ? '' : ', ' ) . $row['item_name'];
+
+## Before, Add ##
+						$row['item_name'] = ( $row['wrapped'] != '0' ) ? $row['wrapped'] : $row['item_name'];
+
+## Find ##
+				$otheruser_items .= '<option value="' . $row['id'] . '">' . $row['item_name'] . '</option>';
+
+## Before, Add ##
+				$row['item_name'] = ( $row['wrapped'] != '0' ) ? $row['wrapped'] : $row['item_name'];
+
+## Find ##
+						$trade_items .= ( ( empty($trade_items) ) ? '' : ', ' ) . $row['item_name'];
+
+# 
+## Before, Add ##
+						$row['item_name'] = ( $row['wrapped'] != '0' ) ? $row['wrapped'] : $row['item_name'];
+
+## Find ##
+						$other_items .= ( ( empty($other_items) ) ? '' : ', ' ) . $row['item_name'];
+
+## Before, Add ##
+						$row['item_name'] = ( $row['wrapped'] != '0' ) ? $row['wrapped'] : $row['item_name'];
+
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+#
+ language/lang_english/lang_main.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+//
+// Wrapping Shop Variables
+//
+$lang['wshop_no_bow'] = 'You do not have a bow to sell, please come back later when you do!';
+$lang['wshop_no_item'] = 'You do not own that item, or it is not wrapped!';
+$lang['wshop_remove_bow'] = 'You first remove the large, beautiful colored bow wrapped around the present.';
+$lang['wshop_wrapped'] = 'That item is already wrapped and cannot be wrapped again!';
+$lang['wshop_donotown'] = 'You do not own that item, and cannot wrap it!';
+$lang['wshop_invalid_paper'] = 'That is not a valid type of wrapping paper!';
+$lang['wshop_not_enough'] = 'You do not have enough %s to wrap that item!';
+
+$lang['wshop_shop_name'] = 'Wrapping Shop';
+$lang['wshop_bow_name'] = 'Wrapping Bow';
+$lang['wshop_bow_short'] = 'A beautiful wrapping bow.';
+$lang['wshop_bow_long'] = 'This beautiful piece of silk fabric was once used to wrap a box and help secure it. It is now practically useless, except for someone who may want to use it to wrap another present.';
+$lang['wshop_bow'] = 'Bow';
+$lang['wshop_box'] = 'Box';
+$lang['wshop_with'] = 'with';
+$lang['wshop_table_title'] = 'Available Wrapping';
+
+$lang['wshop_wrap'] = 'The shop keeper takes the <b>%s</b> and <b>%s %s</b> from you and pulls out a large roll of wrapping paper.<br />In a split second, she spreads the paper out and covers your item in it!<br />She tightly wraps it and hands %s back to you!';
+$lang['wshop_sell_bow'] = 'The shop keeper takes the <b>wrapping bow</b> from you and puts it in a large box filled with bows.<br />"This is just perfect to be reused, thank you!" the shop keeper says.<br />The shop keeper hands you <b>%s</b> %s in return for the bow!';
+$lang['wshop_open_box'] = 'You furiously rip the colored paper off the <b>%s</b> and open the box.<br />You pull the <b>%s</b> out of the box and throw away the torn paper.';
+$lang['wshop_link_back'] = 'Click %shere%s to return to %s.';
+$lang['wshop_forum_index'] = 'the Forum Index';
+
+$lang['wshop_nothing'] = 'You are currently unable to wrap anything.';
+$lang['wshop_sell_bow'] = 'Sell Bow';
+$lang['wshop_wrap_item'] = 'Wrap Item';
+$lang['wshop_color'] = 'Color';
+$lang['wshop_item'] = 'Item';
+$lang['wshop_none'] = 'None';
+$lang['wshop_cost'] = 'Cost';
+$lang['wshop_wrap_paper'] = 'Wrap with Paper';
+$lang['wshop_wrap_bow'] = 'Wrap with Paper and Bow';
+//
+// Wrapping Shop Variables
+//
+
+# 
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------ 
+# 
+# EoM 

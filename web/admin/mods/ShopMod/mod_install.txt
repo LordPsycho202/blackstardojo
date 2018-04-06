@@ -1,0 +1,452 @@
+## EasyMod 0.3.0 Compatible
+##############################################################
+## MOD Title: Shop Mod
+## MOD Author: Zarath < null@null.com > ( Jamie ) http://www.zarath.com
+## MOD Description: A shop system for your forums.
+## MOD Version: 3.0.6
+##
+## Installation Level: Easy-Intermediate
+## Installation Time: 10 Minutes
+## Files To Edit:	includes/constants.php,
+##			includes/page_header.php,
+##			includes/usercp_viewprofile.php
+##			viewtopic.php,
+##			templates/*/overall_header.tpl
+##			templates/*/profile_view_body.tpl
+##			templates/*/viewtopic_body.tpl
+## Included Files:	shop.php
+## 			shop_actions.php
+## 			shop_bs.php
+## 			shop_inventory.php
+## 			admin/admin_shop.php
+## 			language/lang_english/lang_shop.php
+## 			templates/admin/shop_config_body.tpl
+## 			templates/admin/shop_edit_item.tpl
+## 			templates/admin/shop_edit_body.tpl
+## 			templates/admin/shop_edit_user.tpl
+## 			templates/shop/shop_action_discard.tpl
+## 			templates/shop/shop_action_give.tpl
+## 			templates/shop/shop_action_trade.tpl
+## 			templates/shop/shop_buy.tpl
+## 			templates/shop/shop_districts.tpl
+## 			templates/shop/shop_inventory_body.tpl
+## 			templates/shop/shop_item_body.tpl
+## 			templates/shop/shop_list.tpl
+## 			templates/shop/shop_list_body.tpl
+## 			templates/shop/shop_sell.tpl
+## 			images/icon_shop.gif
+##			update/update_items.php
+## License: http://opensource.org/licenses/gpl-license.php GNU General Public License v2
+##############################################################
+## For security purposes, please check: http://www.phpbb.com/mods/
+## for the latest version of this MOD. Although MODs are checked
+## before being allowed in the MODs Database there is no guarantee
+## that there are no security problems within the MOD. No support
+## will be given for MODs not found within the MODs Database which
+## can be found at http://www.phpbb.com/mods/
+##############################################################
+## Author Notes: Please note, I will not give any kind of email 
+##               or PM support. Post in the relevant threads on
+##               http://www.phpbb.com/phpBB/
+##
+## Update Note:	 If you're updating from 3.0.x to 3.0.3 please
+##		 just upload the new files over the old ones.
+##############################################################
+## MOD History:
+##
+##   2006-01-06 - Version 3.0.0
+##      - Complete Rewrite/Re-Release
+##
+##   2006-09-30 - Version 3.0.3
+##	- EasyMod Compatible
+##	- Fixed numerous bugs
+##	- Fixed some missing Language variables
+##	- Fixed some MySQL calls left in the inventory body
+##
+##  2006-10-01 - Version 3.0.5
+##	- Fixed numerous langs in php files
+##	- Updated the trade function
+##
+##  2006-11-09 - Version 3.0.6
+##	- Significant bug fixes and code changes;
+##		-- Updated all SQL queries to no longer quote sanitized integars
+##		-- Fixed numerous breadcrumbs missing a space
+##		-- Fixed several small bugs in the trade function
+##############################################################
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD
+##############################################################
+
+# 
+#-----[ COPY ]------------------------------------------ 
+#
+copy shop.php to shop.php
+copy shop_actions.php to shop_actions.php
+copy shop_bs.php to shop_bs.php
+copy shop_inventory.php to shop_inventory.php
+copy admin/admin_shop.php to admin/admin_shop.php
+copy language/lang_english/lang_shop.php to language/lang_english/lang_shop.php
+copy templates/admin/shop_config_body.tpl to templates/subSilver/admin/shop_config_body.tpl
+copy templates/admin/shop_edit_item.tpl to templates/subSilver/admin/shop_edit_item.tpl
+copy templates/admin/shop_edit_shop.tpl to templates/subSilver/admin/shop_edit_shop.tpl
+copy templates/admin/shop_edit_user.tpl to templates/subSilver/admin/shop_edit_user.tpl
+copy templates/shop/shop_action_discard.tpl to templates/subSilver/shop/shop_action_discard.tpl
+copy templates/shop/shop_action_give.tpl to templates/subSilver/shop/shop_action_give.tpl
+copy templates/shop/shop_action_trade.tpl to templates/subSilver/shop/shop_action_trade.tpl
+copy templates/shop/shop_buy.tpl to templates/subSilver/shop/shop_buy.tpl
+copy templates/shop/shop_districts.tpl to templates/subSilver/shop/shop_districts.tpl
+copy templates/shop/shop_inventory_body.tpl to templates/subSilver/shop/shop_inventory_body.tpl
+copy templates/shop/shop_item_body.tpl to templates/subSilver/shop/shop_item_body.tpl
+copy templates/shop/shop_list.tpl to templates/subSilver/shop/shop_list.tpl
+copy templates/shop/shop_list_body.tpl to templates/subSilver/shop/shop_list_body.tpl
+copy templates/shop/shop_sell.tpl to templates/subSilver/shop/shop_sell.tpl	
+copy images/icon_shop.gif to templates/subSilver/images/icon_shop.gif
+
+#
+#-----[ SQL ]------------------------------------------
+#
+# You can either alter the table prefix and run this through phpMyAdmin or
+# upload the sql_install.php file to your forum index and run it from an
+# admin account. No need to do both... SQL install file is made for MySQL.
+#
+CREATE TABLE `phpbb_shopitems` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(32) NOT NULL default '',
+  `shop` varchar(32) NOT NULL default '',
+  `sdesc` varchar(80) NOT NULL default '',
+  `ldesc` text NOT NULL,
+  `cost` int(10) unsigned default '100',
+  `stock` tinyint(3) unsigned default '10',
+  `maxstock` tinyint(3) unsigned default '100',
+  `sold` int(5) unsigned NOT NULL default '0',
+  `accessforum` int(4) default '0',
+  `special_link` varchar(255) NOT NULL default '',
+  `synth` text NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `name` (`name`)
+);
+
+CREATE TABLE `phpbb_shops` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `shopname` varchar(32) NOT NULL default '',
+  `shoptype` varchar(32) NOT NULL default '',
+  `type` varchar(32) NOT NULL default '',
+  `d_type` tinyint(3) NOT NULL default '0',
+  `district` tinyint(3) NOT NULL default '0',
+  `restocktime` int(10) unsigned default '86400',
+  `restockedtime` int(10) unsigned default '0',
+  `restockamount` int(4) unsigned default '5',
+  `url` varchar(255) default NULL,
+  `shop_owner` varchar(32) NOT NULL default '',
+  `template` varchar(32) NOT NULL default '',
+  `item_template` varchar(32) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `shopname` (`shopname`)
+);
+
+CREATE TABLE `phpbb_transactions` (
+  `id` int(10) NOT NULL auto_increment,
+  `user_id` int(10) NOT NULL default '0',
+  `target_id` int(10) NOT NULL default '0',
+  `target_name` varchar(32) NOT NULL default '',
+  `type` varchar(32) NOT NULL default '',
+  `action` varchar(32) NOT NULL default '',
+  `value` varchar(255) NOT NULL default '',
+  `misc` text NOT NULL,
+  `ip` varchar(16) NOT NULL default '',
+  `timestamp` int(10) default NULL,
+  PRIMARY KEY (`id`)
+);
+
+
+CREATE TABLE `phpbb_user_items` (
+  `id` int(20) NOT NULL auto_increment,
+  `user_id` int(10) NOT NULL default '0',
+  `item_id` int(10) NOT NULL default '0',
+  `item_name` varchar(32) NOT NULL default '',
+  `item_l_desc` text NOT NULL,
+  `item_s_desc` varchar(100) NOT NULL default '',
+  `worn` tinyint(1) NOT NULL default '0',
+  `die_time` int(10) NOT NULL default '0',
+  `special` text NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `item_id` (`item_id`),
+  KEY `user_id` (`user_id`)
+);
+
+INSERT INTO `phpbb_config` VALUES ('multibuys', 'on');
+INSERT INTO `phpbb_config` VALUES ('restocks', 'on');
+INSERT INTO `phpbb_config` VALUES ('sellrate', '55');
+INSERT INTO `phpbb_config` VALUES ('viewtopic', 'images');
+INSERT INTO `phpbb_config` VALUES ('viewprofile', 'images');
+INSERT INTO `phpbb_config` VALUES ('viewinventory', 'grouped');
+INSERT INTO `phpbb_config` VALUES ('viewtopiclimit', '5');
+INSERT INTO `phpbb_config` VALUES ('shop_orderby', 'name');
+INSERT INTO `phpbb_config` VALUES ('shop_give', 'on');
+INSERT INTO `phpbb_config` VALUES ('shop_trade', 'on');
+INSERT INTO `phpbb_config` VALUES ('shop_discard', 'on');
+INSERT INTO `phpbb_config` VALUES ('shop_invlimit', '0');
+INSERT INTO `phpbb_config` VALUES ('shop_owners', 'on');
+INSERT INTO `phpbb_config` VALUES ('shop_districts', 'off');
+ALTER TABLE `phpbb_users` ADD `user_trade` TEXT;
+
+INSERT INTO `phpbb_config` VALUES ('points_name', 'Gold');
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+#
+ This mod requires a folder structure by shop/images/ in
+ your main phpBB forum directory. Within this directory
+ all of your item images should be located!
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+#
+ If you are updating from a previous version of this mod, please use
+ the sql_update.php file and mod_update.txt files.
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+includes/constants.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+define('USER_ITEMS_TABLE', $table_prefix.'user_items');
+define('SHOP_TABLE', $table_prefix.'shops');
+define('SHOP_ITEMS_TABLE', $table_prefix.'shopitems');
+define('TRANS_TABLE', $table_prefix.'transactions');
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+includes/page_header.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+	'L_MEMBERLIST' => $lang['Memberlist'],
+	'L_FAQ' => $lang['FAQ'],
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+	'L_SHOP' => $lang['shops'],
+
+#
+#-----[ FIND ]------------------------------------------
+#
+	'U_LOGIN_LOGOUT' => append_sid($u_login_logout),
+	'U_GROUP_CP' => append_sid('groupcp.'.$phpEx),
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+	'U_SHOP' => append_sid('shop.'.$phpEx),
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+includes/usercp_viewprofile.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+$template->assign_vars(array(
+	'USERNAME' => $profiledata['username'],
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+//
+// Shop Code
+//
+if ( $board_config['viewprofile'] == 'images' )
+{
+	$sql = "SELECT *
+		FROM " . USER_ITEMS_TABLE . "
+		WHERE user_id='{$profiledata['user_id']}'
+			AND ( worn = 0 or worn = 1 )
+		GROuP BY `item_name`
+		ORDER BY `id`";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'SQL Fetch Error retrieving user items.'); }
+	$num_rows = $db->sql_numrows($result);
+
+	$user_items = '<br />';
+
+	for ( $iz = 0; $iz < $num_rows; $iz++ )
+	{
+		$row = $db->sql_fetchrow($result);
+
+		if (file_exists('shop/images/' . $row['item_name'] . '.jpg'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.jpg" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+		elseif (file_exists('shop/images/' . $row['item_name'] . '.png'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.png" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+		elseif (file_exists('shop/images/' . $row['item_name'] . '.gif'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.gif" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+	}
+	$usernameurl = '<a href="'.append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$profiledata['user_id'], true).'" class="gensmall"><b>' . $lang['items'] . '</b></a>: ';
+}
+elseif ( $board_config['viewprofile'] == 'link' )
+{
+	$usernameurl = '<a href="'.append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$profiledata['user_id'], true).'" class="gensmall"><b>' . $lang['items'] . '</b></a>';
+}
+
+#
+#-----[ FIND ]------------------------------------------
+#
+	'YIM' => $yim,
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+	'INVENTORYLINK' => $usernameurl,
+	'INVENTORYPICS' => $user_items,
+
+#
+#-----[ FIND ]------------------------------------------
+#
+	'L_INTERESTS' => $lang['Interests'],
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+	'L_ITEMS' => $lang['items'],
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+#
+ language/lang_english/lang_main.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+$lang['shops'] = 'Shops';
+$lang['items'] = 'Items';
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+viewtopic.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+	$template->assign_block_vars('postrow', array(
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+if ( $board_config['viewtopic'] == 'images' )
+{
+	$sql = "SELECT *
+		FROM " . USER_ITEMS_TABLE . "
+		WHERE user_id='{$postrow[$i]['user_id']}'
+			AND ( worn = 0 or worn = 1 )
+		GROuP BY `item_name`
+		ORDER BY `id`";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'SQL Fetch Error retrieving user items!'); }
+	$num_rows = $db->sql_numrows($result);
+
+	$num_rows = ( ( $num_rows > $board_config['viewtopiclimit'] ) && ( $board_config['viewtopiclimit'] ) )  ? $board_config['viewtopiclimit'] : $num_rows;
+
+	$user_items = '<br />';
+
+	for ( $iz = 0; $iz < $num_rows; $iz++ )
+	{
+		$row = $db->sql_fetchrow($result);
+
+		if (file_exists('shop/images/' . $row['item_name'] . '.jpg'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.jpg" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+		elseif (file_exists('shop/images/' . $row['item_name'] . '.png'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.png" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+		elseif (file_exists('shop/images/' . $row['item_name'] . '.gif'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.gif" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+	}
+	$usernameurl = append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$postrow[$i]['user_id'], true);
+}
+elseif ( $board_config['viewtopic'] == 'link' )
+{
+	$usernameurl = append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$postrow[$i]['user_id'], true);
+}
+
+#
+#-----[ FIND ]------------------------------------------
+#
+		'SIGNATURE' => $user_sig,
+		'EDITED_MESSAGE' => $l_edited_by,
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+		'ITEMSNAME' => $usernameurl,
+		'ITEMS' => $user_items,
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+templates/subSilver/overall_header.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+#
+ hspace="3" />{L_FAQ}</a> 
+
+#
+#-----[ IN-LINE FIND ]------------------------------------------
+#
+ hspace="3" />{L_FAQ}</a>
+
+#
+#-----[ IN-LINE AFTER, ADD ]------------------------------------------
+#
+&nbsp; &nbsp;<a href="{U_SHOP}" class="mainmenu"><img src="templates/subSilver/images/icon_shop.gif" width="12" height="13" border="0" alt="{L_SHOP}" hspace="3" />{L_SHOP}</a>
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+templates/subSilver/profile_view_body.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+#
+		<tr> 
+		  <td valign="top" align="right" nowrap="nowrap"><span class="gen">{L_INTERESTS}:</span></td>
+		  <td> <b><span class="gen">{INTERESTS}</span></b></td>
+		</tr>
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+		<tr> 
+		  <td valign="top" align="right" nowrap="nowrap"><span class="gen">{INVENTORYLINK}</span></td>
+		  <td> <span class="gen">{INVENTORYPICS}</span></td>
+		</tr>
+
+#
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------
+#
+# EoM

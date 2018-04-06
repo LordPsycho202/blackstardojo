@@ -1,0 +1,576 @@
+2009-02-03 03:41:56	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-03 03:41:56	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-05 03:06:42	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-05 03:06:42	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-07 05:10:37	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-07 05:10:37	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-07 05:16:12	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-07 05:16:12	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-07 06:21:13	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-07 06:21:13	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-07 06:31:22	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-07 06:31:22	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-07 06:38:19	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-07 06:38:19	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-08 13:29:58	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-08 13:29:58	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-11 22:32:34	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-11 22:32:34	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-11 22:32:39	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-11 22:32:39	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-11 22:32:44	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-11 22:32:44	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 04:07:11	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 04:07:11	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 04:08:33	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 04:08:33	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 04:42:05	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 04:42:05	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 05:03:06	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 05:03:07	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 06:03:10	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 06:03:10	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 06:26:18	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 06:26:18	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 06:41:40	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 06:41:40	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 06:48:24	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 06:48:24	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 07:25:57	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 07:25:57	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 07:38:23	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 07:38:23	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 07:38:56	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 07:38:56	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 08:03:59	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 08:03:59	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 08:44:03	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 08:44:03	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 09:42:59	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 09:42:59	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 10:53:14	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 10:53:14	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 11:46:18	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 11:46:18	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 12:39:43	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 12:39:44	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 12:47:24	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 12:47:24	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 13:06:28	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 13:06:28	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-12 13:10:09	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-12 13:10:09	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-13 14:06:56	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-13 14:06:56	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-15 18:31:01	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-15 18:31:01	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-16 22:01:53	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-16 22:01:53	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-16 23:14:45	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-16 23:14:45	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-17 02:13:40	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-17 02:13:40	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-17 07:14:08	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-17 07:14:08	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-17 09:08:15	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-17 09:08:15	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-17 10:41:27	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-17 10:41:27	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-17 14:40:26	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-17 14:40:26	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-18 02:20:01	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-18 02:20:01	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-18 02:20:01	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 
+2009-02-18 22:54:03	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-18 22:54:03	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-19 02:44:24	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-19 02:44:24	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-19 02:53:58	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-19 02:53:58	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-19 03:46:50	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-19 03:46:50	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-19 11:29:58	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-19 11:29:58	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-19 19:29:40	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-19 19:29:40	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-20 01:52:19	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-20 01:52:19	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-20 01:52:19	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 
+2009-02-20 17:48:16	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-20 17:48:16	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-20 19:39:00	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-20 19:39:00	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-23 08:08:07	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-23 08:08:07	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-25 16:10:35	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-25 16:10:35	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-25 16:39:39	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-25 16:39:39	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-25 19:32:08	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-25 19:32:08	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-25 21:42:40	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-25 21:42:40	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-25 22:32:04	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-25 22:32:04	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-25 23:05:38	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-25 23:05:38	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 01:21:58	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 01:21:59	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 01:46:16	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 01:46:16	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 01:57:29	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 01:57:29	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 01:59:02	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 01:59:02	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 02:08:14	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 02:08:14	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 02:09:56	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 02:09:56	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 02:38:53	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 02:38:53	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 03:14:46	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 03:14:46	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 03:34:50	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 03:34:50	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-26 04:12:37	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-26 04:12:37	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-27 09:34:21	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-27 09:34:21	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-27 11:38:06	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-27 11:38:06	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-28 05:56:31	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-28 05:56:31	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2009-02-28 09:37:38	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2009-02-28 09:37:39	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 

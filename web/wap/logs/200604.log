@@ -1,0 +1,16 @@
+2006-04-23 12:12:12	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 18, '1984b8fa89', 'I've decided what one I want the trainee one.' )
+2006-04-23 12:12:58	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 19, '1984b8fa89', 'I've decided what one I want the trainee one.' )
+2006-04-27 12:57:13	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 60, '80b7ed9df1', 'Sounds like a great idea to me, though give the idea a little time to settle in first - hard to believe it's been only around 24 hours since this plot started.   :P' )
+2006-04-27 12:57:59	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 61, '80b7ed9df1', 'Sounds like a great idea to me, though give the idea a little time to settle in first - hard to believe it's been only around 24 hours since this plot started.   :P' )

@@ -1,0 +1,191 @@
+## EasyMod 0.0.13 compliant
+############################################################## 
+## MOD Title: BBCode StrikeThrough 
+## MOD Author: Serj21 < mods@zcultfm.com > (Serj) HTTP://zcultfm.com 
+## MOD Description: Allows strikethrough of text using [s]text[/s] 
+## MOD Version: 1.0
+## 
+## Installation Level: Easy
+## Installation Time: ~5 Minutes 
+## Files To Edit: 
+##	includes/bbcode.php 
+##	posting.php 
+##	templates/subSilver/bbcode.tpl 
+##	language/lang_english/lang_main.php 
+##	includes/posting_body.tpl
+## Included Files: n/a
+############################################################## 
+## For Security Purposes, Please Check: http://www.phpbb.com/mods/ for the 
+## latest version of this MOD. Downloading this MOD from other sites could cause malicious code 
+## to enter into your phpBB Forum. As such, phpBB will not offer support for MOD's not offered 
+## in our MOD-Database, located at: http://www.phpbb.com/mods/ 
+############################################################## 
+## Author Notes: Created for use on Z-Cult FM forum after HotRod and Al
+## 		 requested such such a system on forum.
+############################################################## 
+## MOD History: 
+## 
+##   2004-08-21 - Version 1.0.0 
+##      - Initial Release :) 
+## 
+############################################################## 
+# Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD 
+############################################################## 
+
+# 
+#-----[ OPEN ]------------------------------------------
+#
+includes/bbcode.php 
+# 
+#-----[ FIND ]------------------------------------------
+# 
+	// [b] and [/b] for bolding text.
+	$text = str_replace("[b:$uid]", $bbcode_tpl['b_open'], $text);
+	$text = str_replace("[/b:$uid]", $bbcode_tpl['b_close'], $text);
+
+# 
+#-----[ AFTER, ADD ]------------------------------------
+# 
+
+	// [s] and [/s] for striking out text. 
+	$text = str_replace("[s:$uid]", $bbcode_tpl['s_open'], $text); 
+	$text = str_replace("[/s:$uid]", $bbcode_tpl['s_close'], $text); 
+
+# 
+#-----[ FIND ]------------------------------------------
+# 
+	// [b] and [/b] for bolding text.
+	$text = preg_replace("#\[b\](.*?)\[/b\]#si", "[b:$uid]\\1[/b:$uid]", $text);
+
+# 
+#-----[ AFTER, ADD ]------------------------------------
+# 
+	// [s] and [/s] for striking out text. 
+	$text = preg_replace("#\[s\](.*?)\[/s\]#si", "[s:$uid]\\1[/s:$uid]", $text); 
+
+
+# 
+#-----[ OPEN ]------------------------------------------
+# 
+templates/subSilver/bbcode.tpl 
+# 
+#-----[ FIND ]--------------------------------- 
+# 
+
+<!-- BEGIN b_open --><span style="font-weight: bold"><!-- END b_open -->
+<!-- BEGIN b_close --></span><!-- END b_close -->
+
+# 
+#-----[ AFTER, ADD ]------------------------------------
+# 
+
+<!-- BEGIN s_open --><span><s><!-- END s_open --> 
+<!-- BEGIN s_close --></s></span><!-- END s_close --> 
+
+# 
+#-----[ OPEN ]------------------------------------------
+# 
+language/lang_english/lang_main.php
+# 
+#-----[ FIND ]------------------------------------------
+# 
+
+$lang['bbcode_f_help'] = 'Font size: [size=x-small]small text[/size]';
+
+# 
+#-----[ AFTER, ADD ]------------------------------------
+# 
+
+$lang['bbcode_k_help'] = "Strikethrough text: [s]text[/s] (alt+k)"; 
+
+# 
+#-----[ OPEN ]------------------------------------------
+# 
+posting.php 
+# 
+#-----[ FIND ]--------------------------------- 
+# 
+	'L_BBCODE_F_HELP' => $lang['bbcode_f_help'], 
+# 
+#-----[ AFTER, ADD ]------------------------------------
+# 
+	'L_BBCODE_K_HELP' => $lang['bbcode_k_help'], 
+
+# 
+#-----[ OPEN ]------------------------------------------
+# 
+templates/subSilver/posting_body.tpl 
+# 
+#-----[ FIND ]------------------------------------------
+# 
+
+f_help = "{L_BBCODE_F_HELP}"; 
+
+# 
+#-----[ AFTER, ADD ]------------------------------------
+# 
+
+k_help = "{L_BBCODE_K_HELP}"; 
+
+
+# 
+#-----[ FIND ]------------------------------------------
+# 
+
+bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=]','[/list]','[img]','[/img]','[url]','[/url]'); 
+
+# 
+#-----[ REPLACE WITH ]------------------------------------------
+# 
+
+bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=]','[/list]','[img]','[/img]','[url]','[/url]','[s]','[/s]'); 
+
+# NOTE: If you have installed other BBCode mods please make sure you update this section
+# 
+
+# 
+#-----[ FIND ]------------------------------------------
+# 
+
+			<td><span class="genmed"> 
+			  <input type="button" class="button" accesskey="u" name="addbbcode4" value=" u " style="text-decoration: underline; width: 30px" onClick="bbstyle(4)" onMouseOver="helpline('u')" />
+			  </span></td>
+
+
+# 
+#-----[ AFTER, ADD ]------------------------------------
+# 
+
+			<td><span class="genmed"> 
+			  <input type="button" class="button" accesskey="k" name="addbbcode18" value="s" style="text-decoration: strike; width: 30px" onClick="bbstyle(18)" onMouseOver="helpline('k')" /> 
+			  </span></td> 
+
+
+# 
+#-----[ FIND ]--------------------------------- 
+# 
+
+					<select name="addbbcode18" onChange="bbfontstyle('[color=' + this.form.addbbcode18.options[this.form.addbbcode18.selectedIndex].value + ']', '[/color]');this.selectedIndex=0;" onMouseOver="helpline('s')">
+
+# 
+#-----[ REPLACE WITH ]--------------------------------- 
+# 
+
+			                <select name="addbbcode20" onChange="bbfontstyle('[color=' + this.form.addbbcode20.options[this.form.addbbcode20.selectedIndex].value + ']', '[/color]');this.selectedIndex=0;" onMouseOver="helpline('s')">
+
+# 
+#-----[ FIND ]--------------------------------- 
+# 
+
+					</select> &nbsp;{L_FONT_SIZE}:<select name="addbbcode20" onChange="bbfontstyle('[size=' + this.form.addbbcode20.options[this.form.addbbcode20.selectedIndex].value + ']', '[/size]')" onMouseOver="helpline('f')">
+
+# 
+#-----[ REPLACE WITH ]--------------------------------- 
+# 
+
+			                </select> &nbsp;{L_FONT_SIZE}:<select name="addbbcode22" onChange="bbfontstyle('[size=' + this.form.addbbcode22.options[this.form.addbbcode22.selectedIndex].value + ']', '[/size]')" onMouseOver="helpline('f')"> 
+
+# 
+#-----[ SAVE/CLOSE ALL FILES ]--------------------------
+# 
+# EoM

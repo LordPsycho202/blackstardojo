@@ -1,0 +1,12 @@
+2006-06-04 03:48:30	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 1219, '89fa12220b', 'Weren't you gonna write a fictorial piece on her? What happened to that? You get overwhelmed by other stuff?' )
+2006-06-04 03:48:41	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 1220, '89fa12220b', 'Weren't you gonna write a fictorial piece on her? What happened to that? You get overwhelmed by other stuff?' )
+2006-06-04 03:50:10	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 1221, '89fa12220b', 'Weren't you gonna write a fictorial piece on her? What happened to that? You get overwhelmed by other stuff?' )

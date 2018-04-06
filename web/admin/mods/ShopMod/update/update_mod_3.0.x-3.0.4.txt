@@ -1,0 +1,133 @@
+##############################################################
+## MOD Title: Shop Mod
+## MOD Author: Zarath < null@null.com > ( Jamie ) http://www.zarath.com
+## MOD Description: Update for shop from 2.6.0 to 3.0.3
+## MOD Version: 3.0.4
+##
+## Installation Level: Easy-Intermediate
+## Installation Time: 10 Minutes
+## Files To Edit:	includes/auth.php
+##			includes/constants.php,
+##			includes/page_header.php,
+##			includes/usercp_viewprofile.php
+##			language/lang_english/lang_main.php
+##			index.php
+##			viewtopic.php
+##			templates/subSilver/overall_header.tpl
+##			templates/subSilver/profile_view_body.tpl
+##			templates/subSilver/viewtopic_body.tpl
+## Included Files:	shop.php
+## 			shop_actions.php
+## 			shop_bs.php
+## 			shop_inventory.php
+## 			admin/admin_shop.php
+## 			language/lang_english/lang_shop.php
+## 			templates/admin/shop_config_body.tpl
+## 			templates/admin/shop_edit_item.tpl
+## 			templates/admin/shop_edit_body.tpl
+## 			templates/admin/shop_edit_user.tpl
+## 			templates/shop/shop_action_discard.tpl
+## 			templates/shop/shop_action_give.tpl
+## 			templates/shop/shop_action_trade.tpl
+## 			templates/shop/shop_buy.tpl
+## 			templates/shop/shop_districts.tpl
+## 			templates/shop/shop_inventory_body.tpl
+## 			templates/shop/shop_item_body.tpl
+## 			templates/shop/shop_list.tpl
+## 			templates/shop/shop_list_body.tpl
+## 			templates/shop/shop_sell.tpl
+## 			images/icon_shop.gif
+##			update/update_items.php
+## License: http://opensource.org/licenses/gpl-license.php GNU General Public License v2
+##############################################################
+## For security purposes, please check: http://www.phpbb.com/mods/
+## for the latest version of this MOD. Although MODs are checked
+## before being allowed in the MODs Database there is no guarantee
+## that there are no security problems within the MOD. No support
+## will be given for MODs not found within the MODs Database which
+## can be found at http://www.phpbb.com/mods/
+##############################################################
+## Author Notes: Please note, I will not give any kind of email 
+##               or PM support. Post in the relevant threads on
+##               Please use http://forums.knightsofchaos.com
+##		 or http://www.phpBB.com/phpBB
+##
+## Update Note:  If you're updating from 3.0.x to 3.0.3 please
+##		 just upload the new files over the old ones.
+##############################################################
+## MOD History:
+##
+##   2006-01-06 - Version 3.0.0
+##      - Complete Rewrite/Re-Release
+##
+##   2006-09-30 - Version 3.0.3
+##	- EasyMod Compatible
+##	- Fixed numerous bugs
+##	- Fixed some missing Language variables
+##	- Fixed some MySQL calls left in the inventory body
+##
+##  2006-10-01 - Version 3.0.4
+##	- Fixed numerous langs in php files
+##	- Updated the trade function
+##############################################################
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD
+##############################################################
+
+# 
+#-----[ DIY ]------------------------------------------ 
+# 
+If you've installed other mods of mine, relating to shop updates... don't upload the lang_shop.php file over your old one
+or it will wipe all the edits you've done. Manually add these following strings to language/lang_english/lang_shop.php
+
+$lang['district'] = 'District';
+$lang['bottom'] = 'Bottom';
+$lang['request'] = "Request";
+$lang['shop_request_items'] = 'Request Items';
+$lang['ashop_click_shop'] = 'Click %sHere</a> to return to %s Configuration.';
+$lang['ashop_click_index'] = 'Click %sHere%s to return to Shop Configuration.';
+$lang['ashop_click_inventory'] = 'Click %sHere%s to return to Edit %s Inventory';
+$lang['shop_name_type_invalid'] = 'Error, shop name or shop type not filled in correctly!';
+$lang['ashop_shop_exists'] = 'Shop Already Exists!';
+$lang['ashop_shop_updated'] = '%s successfully updated!';
+$lang['ashop_item_exists'] = 'This item already exists!';
+$lang['ashop_item_added'] = '%s successfully added!';
+$lang['ashop_invalid_shop'] = 'Invalid shop name!';
+$lang['ashop_invalid_item'] = 'Invalid item name!';
+$lang['ashop_sdesc_error'] = 'Short description is set incorrectly!';
+$lang['ashop_desc_error'] = 'Description is too short!';
+$lang['ashop_item_updated'] = '%s successfully updated!';
+$lang['ashop_shop_deleted'] = '%s successfully Deleted!';
+$lang['ashop_global_updated'] = 'Global information successfully updated!';
+$lang['ashop_user_no_item'] = 'User does not have this item!';
+$lang['ashop_user_item_deleted'] = '%s removed from %s inventory successfully!';
+$lang['ashop_user_item_added'] = '%s added to %s inventory successfully!';
+$lang['ashop_user_items_cleared'] = '%s inventory successfully Deleted!';
+
+# 
+#-----[ COPY ]------------------------------------------ 
+# 
+copy shop.php to shop.php
+copy shop_actions.php to shop_actions.php
+copy shop_bs.php to shop_bs.php
+copy shop_inventory.php to shop_inventory.php
+copy admin/admin_shop.php to admin/admin_shop.php
+copy language/lang_english/lang_shop.php to language/lang_english/lang_shop.php
+copy templates/admin/shop_config_body.tpl to templates/subSilver/admin/shop_config_body.tpl
+copy templates/admin/shop_edit_item.tpl to templates/subSilver/admin/shop_edit_item.tpl
+copy templates/admin/shop_edit_body.tpl to templates/subSilver/admin/shop_edit_shop.tpl
+copy templates/admin/shop_edit_user.tpl to templates/subSilver/admin/shop_edit_user.tpl
+copy templates/shop/shop_action_discard.tpl to templates/subSilver/shop/shop_action_discard.tpl
+copy templates/shop/shop_action_give.tpl to templates/subSilver/shop/shop_action_give.tpl
+copy templates/shop/shop_action_trade.tpl to templates/subSilver/shop/shop_action_trade.tpl
+copy templates/shop/shop_buy.tpl to templates/subSilver/shop/shop_buy.tpl
+copy templates/shop/shop_districts.tpl to templates/subSilver/shop/shop_districts.tpl
+copy templates/shop/shop_inventory_body.tpl to templates/subSilver/shop/shop_inventory_body.tpl
+copy templates/shop/shop_item_body.tpl to templates/subSilver/shop/shop_item_body.tpl
+copy templates/shop/shop_list.tpl to templates/subSilver/shop/shop_list.tpl
+copy templates/shop/shop_list_body.tpl to templates/subSilver/shop/shop_list_body.tpl
+copy templates/shop/shop_sell.tpl to templates/subSilver/shop/shop_sell.tpl
+
+#
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------
+#
+# EoM

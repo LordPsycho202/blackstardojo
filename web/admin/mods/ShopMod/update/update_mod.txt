@@ -1,0 +1,597 @@
+##############################################################
+## MOD Title: Shop Mod
+## MOD Author: Zarath < null@null.com > ( Jamie ) http://www.zarath.com
+## MOD Description: Update for shop from 2.6.0 to 3.0.6
+## MOD Version: 3.0.6
+##
+## Installation Level: Easy-Intermediate
+## Installation Time: 10 Minutes
+## Files To Edit:	includes/auth.php
+##			includes/constants.php,
+##			includes/page_header.php,
+##			includes/usercp_viewprofile.php
+##			language/lang_english/lang_main.php
+##			index.php
+##			viewtopic.php
+##			templates/subSilver/overall_header.tpl
+##			templates/subSilver/profile_view_body.tpl
+##			templates/subSilver/viewtopic_body.tpl
+## Included Files:	shop.php
+## 			shop_actions.php
+## 			shop_bs.php
+## 			shop_inventory.php
+## 			admin/admin_shop.php
+## 			language/lang_english/lang_shop.php
+## 			templates/admin/shop_config_body.tpl
+## 			templates/admin/shop_edit_item.tpl
+## 			templates/admin/shop_edit_body.tpl
+## 			templates/admin/shop_edit_user.tpl
+## 			templates/shop/shop_action_discard.tpl
+## 			templates/shop/shop_action_give.tpl
+## 			templates/shop/shop_action_trade.tpl
+## 			templates/shop/shop_buy.tpl
+## 			templates/shop/shop_districts.tpl
+## 			templates/shop/shop_inventory_body.tpl
+## 			templates/shop/shop_item_body.tpl
+## 			templates/shop/shop_list.tpl
+## 			templates/shop/shop_list_body.tpl
+## 			templates/shop/shop_sell.tpl
+## 			images/icon_shop.gif
+##			update/update_items.php
+## License: http://opensource.org/licenses/gpl-license.php GNU General Public License v2
+##############################################################
+## For security purposes, please check: http://www.phpbb.com/mods/
+## for the latest version of this MOD. Although MODs are checked
+## before being allowed in the MODs Database there is no guarantee
+## that there are no security problems within the MOD. No support
+## will be given for MODs not found within the MODs Database which
+## can be found at http://www.phpbb.com/mods/
+##############################################################
+## Author Notes: Please note, I will not give any kind of email 
+##               or PM support. Post in the relevant threads on
+##               Please use http://forums.knightsofchaos.com
+##		 or http://www.phpBB.com/phpBB
+##
+## Update Note:  If you're updating from 3.0.x to 3.0.3 please
+##		 just upload the new files over the old ones.
+##############################################################
+## MOD History:
+##
+##   2006-01-06 - Version 3.0.0
+##      - Complete Rewrite/Re-Release
+##
+##   2006-09-30 - Version 3.0.3
+##	- EasyMod Compatible
+##	- Fixed numerous bugs
+##	- Fixed some missing Language variables
+##	- Fixed some MySQL calls left in the inventory body
+##
+##  2006-10-01 - Version 3.0.4
+##	- Fixed numerous langs in php files
+##	- Updated the trade function
+##
+##  2006-11-09 - Version 3.0.6
+##	- Significant bug fixes and code changes;
+##		-- Updated all SQL queries to no longer quote sanitized integars
+##		-- Fixed numerous breadcrumbs missing a space
+##		-- Fixed several small bugs in the trade function
+##############################################################
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD
+##############################################################
+
+# 
+#-----[ COPY ]------------------------------------------ 
+# 
+copy shop.php to shop.php
+copy shop_actions.php to shop_actions.php
+copy shop_bs.php to shop_bs.php
+copy shop_inventory.php to shop_inventory.php
+copy admin/admin_shop.php to admin/admin_shop.php
+copy language/lang_english/lang_shop.php to language/lang_english/lang_shop.php
+copy templates/admin/shop_config_body.tpl to templates/subSilver/admin/shop_config_body.tpl
+copy templates/admin/shop_edit_item.tpl to templates/subSilver/admin/shop_edit_item.tpl
+copy templates/admin/shop_edit_body.tpl to templates/subSilver/admin/shop_edit_shop.tpl
+copy templates/admin/shop_edit_user.tpl to templates/subSilver/admin/shop_edit_user.tpl
+copy templates/shop/shop_action_discard.tpl to templates/subSilver/shop/shop_action_discard.tpl
+copy templates/shop/shop_action_give.tpl to templates/subSilver/shop/shop_action_give.tpl
+copy templates/shop/shop_action_trade.tpl to templates/subSilver/shop/shop_action_trade.tpl
+copy templates/shop/shop_buy.tpl to templates/subSilver/shop/shop_buy.tpl
+copy templates/shop/shop_districts.tpl to templates/subSilver/shop/shop_districts.tpl
+copy templates/shop/shop_inventory_body.tpl to templates/subSilver/shop/shop_inventory_body.tpl
+copy templates/shop/shop_item_body.tpl to templates/subSilver/shop/shop_item_body.tpl
+copy templates/shop/shop_list.tpl to templates/subSilver/shop/shop_list.tpl
+copy templates/shop/shop_list_body.tpl to templates/subSilver/shop/shop_list_body.tpl
+copy templates/shop/shop_sell.tpl to templates/subSilver/shop/shop_sell.tpl	
+copy images/icon_shop.gif to templates/subSilver/images/icon_shop.gif
+
+#
+#-----[ SQL ]------------------------------------------
+#
+# You can either alter the table prefix and run this through phpMyAdmin or
+# upload the sql_update.php file to your forum index and run it from an
+# admin account. No need to do both... SQL install file is made for MySQL.
+# 
+ALTER TABLE `phpbb_shopitems` ADD `special_link` varchar(255) NOT NULL default '';
+ALTER TABLE `phpbb_shopitems` ADD `synth` text NOT NULL;
+
+
+ALTER TABLE `phpbb_shops` DROP `amountearnt`";
+ALTER TABLE `phpbb_shops` ADD `d_type` tinyint(3) NOT NULL default '0';
+ALTER TABLE `phpbb_shops` ADD `district` tinyint(3) NOT NULL default '0';
+ALTER TABLE `phpbb_shops` ADD `url` varchar(255) default NULL;
+ALTER TABLE `phpbb_shops` ADD `shop_owner` varchar(32) NOT NULL default '';
+ALTER TABLE `phpbb_shops` ADD `template` varchar(32) NOT NULL default '';
+ALTER TABLE `phpbb_shops` ADD `item_template` varchar(32) NOT NULL default '';
+
+CREATE TABLE `phpbb_transactions` (
+  `id` int(10) NOT NULL auto_increment,
+  `user_id` int(10) NOT NULL default '0',
+  `target_id` int(10) NOT NULL default '0',
+  `target_name` varchar(32) NOT NULL default '',
+  `type` varchar(32) NOT NULL default '',
+  `action` varchar(32) NOT NULL default '',
+  `value` varchar(255) NOT NULL default '',
+  `misc` text NOT NULL,
+  `ip` varchar(16) NOT NULL default '',
+  `timestamp` int(10) default NULL,
+  UNIQUE KEY `id` (`id`)
+);
+
+CREATE TABLE `phpbb_user_items` (
+  `id` int(10) NOT NULL auto_increment,
+  `user_id` int(10) NOT NULL default '0',
+  `item_id` int(10) NOT NULL default '0',
+  `item_name` varchar(32) NOT NULL default '',
+  `item_l_desc` text NOT NULL,
+  `item_s_desc` varchar(100) NOT NULL default '',
+  `worn` tinyint(1) NOT NULL default '0',
+  `die_time` int(10) NOT NULL default '0',
+  `special` text NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `item_id` (`item_id`),
+  KEY `user_id` (`user_id`)
+);
+
+DELETE FROM `phpbb_config` WHERE config_value = 'specialshop';
+INSERT INTO `phpbb_config` (config_name, config_value) VALUES ('shop_discard', 'on');
+INSERT INTO `phpbb_config` (config_name, config_value) VALUES ('shop_owners', 'on');
+INSERT INTO `phpbb_config` (config_name, config_value) VALUES ('shop_districts', 'off');
+
+ALTER TABLE `phpbb_users` DROP `user_effects`;
+ALTER TABLE `phpbb_users` DROP `user_privs`";
+ALTER TABLE `phpbb_users` DROP `user_custitle`;
+ALTER TABLE `phpbb_users` DROP `user_specmsg`;
+ALTER TABLE `phpbb_users` DROP `user_items`;
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+#
+  If this is installed with easymod, or you manually do the SQL queries
+  you will need to upload the update/update_items.php file and run it 
+  from your browser index. This will update any items your users currently 
+  own to the new database structure.
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+#
+ This is the update file for if you have shop mod 2.6.0 installed. If 
+ you are installing freshly, please use the install folder's files.
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+includes/constants.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+define('USER_ITEMS_TABLE', $table_prefix.'user_items');
+define('SHOP_TABLE', $table_prefix.'shops');
+define('SHOP_ITEMS_TABLE', $table_prefix.'shopitems');
+define('TRANS_TABLE', $table_prefix.'transactions');
+
+#
+#-----[ OPEN ]------------------------------------------
+# 
+includes/auth.php
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+	//start item auths
+	$itemarray = explode('ß', str_replace("Þ", "", $userdata['user_items']));
+
+	$sql = "select name, accessforum from phpbb_shopitems where accessforum != '0'";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, "Database Connection Error!<br>".mysql_error()); }
+	$num_rows = mysql_num_rows($result);
+
+	$itemformaccess = array();
+	for ($x = 0; $x < $num_rows; $x++)
+	{
+		$row = mysql_fetch_array($result);
+		if (in_array($row['name'], $itemarray))
+		{
+			$itemformaccess[] = $row['accessforum'];
+		}
+	}
+
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+# This is supposed to be deleted. No longer supported.
+# 
+
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+			if (in_array($forum_id, $itemformaccess) && (!in_array("auth_sticky",$auth_fields) && !in_array("auth_announce",$auth_fields) && !in_array("auth_delete",$auth_fields) && ($userdata['user_level'] == 0)))
+			{
+				$value = 1;
+			}
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+# This is supposed to be deleted. No longer supported.
+# 
+
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+				if (in_array($forum_id, $itemformaccess) && (!in_array("auth_sticky",$auth_fields) && !in_array("auth_announce",$auth_fields) && !in_array("auth_delete",$auth_fields) && ($userdata['user_level'] == 0)))
+				{
+					$value = 1;
+				}
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+# This is supposed to be deleted. No longer supported.
+# 
+
+
+#
+#-----[ OPEN ]------------------------------------------
+# 
+includes/page_header.php
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+	'SHOP' => '<img src="shop/images/icon_store_rpg.gif" border="0">Shop',
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+# 
+	'L_SHOP' => $lang['shops'],
+
+#
+#-----[ OPEN ]------------------------------------------
+# 
+includes/usercp_viewprofile.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+if ($board_config['viewprofile'] == "images")
+{
+	$itempurge = str_replace("Þ", "", $profiledata['user_items']);
+	$itemarray = explode('ß',$itempurge);
+	$itemcount = count ($itemarray);
+	$user_items = "<br>";
+	for ($xe = 0;$xe < $itemcount;$xe++)
+	{
+		if ($itemarray[$xe] != NULL)
+		{
+			if (file_exists('shop/images/'.$itemarray[$xe].'.jpg'))
+			{
+				$user_items .= ' <img src="shop/images/'.$itemarray[$xe].'.jpg" title="'.$itemarray[$xe].'" alt="'.$itemaray[$xe].'">';
+			}
+			elseif (file_exists('shop/images/'.$itemarray[$xe].'.gif'))
+			{
+				$user_items .= ' <img src="shop/images/'.$itemarray[$xe].'.gif" title="'.$itemarray[$xe].'" alt="'.$itemaray[$xe].'">';
+			}
+		}
+	}
+	$usernameurl = '<a href="'.append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$profiledata['user_id'], true).'" class="nav">Items</a>: ';
+}
+elseif ($board_config['viewprofile'] == "link")
+{
+	$usernameurl = '<a href="'.append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$profiledata['user_id'], true).'" class="nav">Items</a>';
+}
+
+//start of effects store checks
+$shoparray = explode("ß", $board_config['specialshop']);
+$shoparraycount = count ($shoparray);
+$shopstatarray = array();
+for ($x = 0; $x < $shoparraycount; $x++)
+{
+	$temparray = explode("Þ", $shoparray[$x]);
+	$shopstatarray[] = $temparray[0];
+	$shopstatarray[] = $temparray[1];
+}
+//end of effects store checks
+
+$usereffects = explode("ß", $profiledata['user_effects']);
+$userprivs = explode("ß", $profiledata['user_privs']);
+$usercustitle = explode("ß", $profiledata['user_custitle']);
+$userbs = array();
+$usercount = count($userprivs);
+for ($x = 0; $x < $usercount; $x++) { $temppriv = explode("Þ", $userprivs[$x]); $userbs[] = $temppriv[0]; $userbs[] = $temppriv[1]; }
+$usercount = count($usereffects);
+for ($x = 0; $x < $usercount; $x++) { $temppriv = explode("Þ", $usereffects[$x]); $userbs[] = $temppriv[0]; $userbs[] = $temppriv[1]; }
+$usercount = count($usercustitle);
+for ($x = 0; $x < $usercount; $x++) { $temppriv = explode("Þ", $usercustitle[$x]); $userbs[] = $temppriv[0]; $userbs[] = $temppriv[1]; }
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+#
+//
+// Shop Code
+//
+if ( $board_config['viewprofile'] == 'images' )
+{
+	$sql = "SELECT *
+		FROM " . USER_ITEMS_TABLE . "
+		WHERE user_id='{$profiledata['user_id']}'
+			AND ( worn = 0 or worn = 1 )
+		GROuP BY `item_name`
+		ORDER BY `id`";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'Fatal Error!'); }
+	$num_rows = $db->sql_numrows($result);
+
+	$user_items = '<br />';
+
+	for ( $iz = 0; $iz < $num_rows; $iz++ )
+	{
+		$row = $db->sql_fetchrow($result);
+
+		if (file_exists('shop/images/' . $row['item_name'] . '.jpg'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.jpg" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+		elseif (file_exists('shop/images/' . $row['item_name'] . '.png'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.png" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+		elseif (file_exists('shop/images/' . $row['item_name'] . '.gif'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.gif" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+	}
+	$usernameurl = '<a href="'.append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$profiledata['user_id'], true).'" class="gensmall"><b>' . $lang['items'] . '</b></a>: ';
+}
+elseif ( $board_config['viewprofile'] == 'link' )
+{
+	$usernameurl = '<a href="'.append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$profiledata['user_id'], true).'" class="gensmall"><b>' . $lang['items'] . '</b></a>';
+}
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+#
+ language/lang_english/lang_main.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+$lang['shops'] = 'Shops';
+$lang['items'] = 'Items';
+
+#
+#-----[ OPEN ]------------------------------------------
+# 
+index.php
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+	$itemarray = explode('ß', str_replace("Þ", "", $userdata['user_items']));
+
+	$sql = "select name, accessforum from phpbb_shopitems where accessforum != '0' and accessforum > '0'";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, "Database Connection Error!".mysql_error()); }
+	$num_rows = mysql_num_rows($result);
+
+	$itemformaccess = array();
+	$itemcataccess = array();
+	for ($x = 0; $x < $num_rows; $x++)
+	{
+		$row = mysql_fetch_array($result);
+		if (in_array($row['name'], $itemarray))
+		{
+			$itemformaccess[] = $row['accessforum'];
+
+			$sql = "select cat_id from " . FORUMS_TABLE . " where forum_id = '{$row['accessforum']}'";
+			if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, "Database Connection Error: ".mysql_error()); }
+			$row2 = mysql_fetch_array($result);
+
+			$itemcataccess[] = $row2['cat_id'];
+		}
+	}
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+# This is supposed to be deleted. No longer supported.
+# 
+
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+		if (in_array($cat_id, $itemcataccess)) {
+			$display_forums = true;
+		}
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+# This is supposed to be deleted. No longer supported.
+# 
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+						if ( $is_auth_ary[$forum_id]['auth_view'] || in_array($forum_id, $itemformaccess))
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+#
+						if ( $is_auth_ary[$forum_id]['auth_view'] )
+
+#
+#-----[ OPEN ]------------------------------------------
+# 
+viewtopic.php
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+u.user_items, u.user_privs, u.user_effects, u.user_custitle,
+
+#
+#-----[ IN-LINE FIND ]------------------------------------------
+# 
+u.user_items, u.user_privs, u.user_effects, u.user_custitle,
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+#
+ 
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+	if ($board_config['viewtopic'] == "images")
+	{
+		$itempurge = str_replace("Þ", "", $postrow[$i]['user_items']);
+		$itemarray = explode('ß',$itempurge);
+		$itemcount = count ($itemarray);
+		$user_items = "<br>";
+     		for ($xe = 0;$xe < $itemcount;$xe++)
+		{
+			if ($itemarray[$xe] != NULL)
+			{
+				if ($board_config['viewtopiclimit'] < $xe) { $user_items .= ' <a href="'.append_sid("shop.".$phpEx."?action=inventory&searchid=".$postrow[$i]['user_id']).'" title="'.$postrow[$i]['username'].'\'sInventory">more...</a>'; break; }
+				if (file_exists("shop/images/".$itemarray[$xe].".jpg"))
+				{
+					$user_items .= ' <img src="shop/images/'.$itemarray[$xe].'.jpg" title="'.$itemarray[$xe].'" alt="'.$itemaray[$xe].'">';
+				}
+				elseif (file_exists("shop/images/".$itemarray[$xe].".gif"))
+				{
+					$user_items .= ' <img src="shop/images/'.$itemarray[$xe].'.gif" title="'.$itemarray[$xe].'" alt="'.$itemaray[$xe].'">';
+				}
+			}
+		}
+	}
+	$usernameurl = append_sid("shop.".$phpEx."?action=inventory&searchid=".$postrow[$i]['user_id']);
+
+	$usereffects = explode("ß", $postrow[$i]['user_effects']);
+	$userprivs = explode("ß", $postrow[$i]['user_privs']);
+	$usercustitle = explode("ß", $postrow[$i]['user_custitle']);
+	$userbs = array();
+	$usercount = count($userprivs);
+	for ($x = 0; $x < $usercount; $x++) { $temppriv = explode("Þ", $userprivs[$x]); $userbs[] = $temppriv[0]; $userbs[] = $temppriv[1]; }
+	$usercount = count($usereffects);
+	for ($x = 0; $x < $usercount; $x++) { $temppriv = explode("Þ", $usereffects[$x]); $userbs[] = $temppriv[0]; $userbs[] = $temppriv[1]; }
+	$usercount = count($usercustitle);
+	for ($x = 0; $x < $usercount; $x++) { $temppriv = explode("Þ", $usercustitle[$x]); $userbs[] = $temppriv[0]; $userbs[] = $temppriv[1]; }
+	$shoparray = explode("ß", $board_config['specialshop']);
+	$shoparraycount = count ($shoparray);
+	$shopstatarray = array();
+	for ($x = 0; $x < $shoparraycount; $x++)
+	{
+		$temparray = explode("Þ", $shoparray[$x]);
+		$shopstatarray[] = $temparray[0];
+		$shopstatarray[] = $temparray[1];
+	}
+	if (($userbs[10] == on) && ($shopstatarray[12] == on)) { $poster = '<font color="'.$userbs[11].'">'.$poster.'</font>'; }
+	if ((($userbs[12] == on) && ($shopstatarray[14] == on)) || (($userbs[14] == on) && ($shopstataray[16] = on))) {
+		$nameeffects = "<span style=\"width:100";
+		if (($userbs[12] == on) && ($shopstatarray[14] == on)) { $nameeffects .= "; filter:shadow(color=#".$userbs[13].", strength=5)"; }
+		if (($userbs[14] == on) && ($shopstatarray[16] == on)) { $nameeffects .= "; filter:glow(color=#".$userbs[15].", strength=5)"; }
+		$nameeffects .= '">'.$poster.'</span>';
+		$poster = $nameeffects;
+	}
+	if ((($userbs[24] == on) && ($shopstatarray[24] == on)) || (($userbs[20] == on) && ($shopstatarray[22] == on)) || (($userbs[22] == on) && ($shopstataray[20] = on)) || (($userbs[18] == on) && ($shopstatarray[18] == on))) {
+		$titleeffects = '<span style="height:10';
+		if (($userbs[22] == on) && ($shopstatarray[20] == on)) { $titleeffects .= "; filter:shadow(color=#".$userbs[23].", strength=5)"; }
+		if (($userbs[20] == on) && ($shopstatarray[22] == on)) { $titleeffects .= "; filter:glow(color=#".$userbs[21].", strength=5)"; }
+		if (($userbs[24] == on) && ($shopstatarray[24] == on)) { $poster_rank = $userbs[25]; }
+		if (($userbs[18] == on) && ($shopstatarray[18] == on)) { $poster_rank = '<font color="'.$userbs[19].'">'.$poster_rank.'</font>'; }
+		$titleeffects .= '">'.$poster_rank.'</span>';
+		$poster_rank = $titleeffects;
+	}
+	if (($shopstatarray[6] == on) && ($userbs[2] != on) && ($poster_rank != "Site Admin")) { $poster_avatar = ""; }
+	if (($shopstatarray[8] == on) && ($userbs[4] != on) && ($poster_rank != "Site Admin")) { $user_sig = ""; }
+	if (($shopstatarray[10] == on) && ($userbs[6] != on) && ($poster_rank != "Site Admin")) { $poster_rank = "None"; $rank_image = ""; }
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+# 
+if ( $board_config['viewtopic'] == 'images' )
+{
+	$sql = "SELECT *
+		FROM " . USER_ITEMS_TABLE . "
+		WHERE user_id='{$postrow[$i]['user_id']}'
+			AND ( worn = 0 or worn = 1 )
+		GROuP BY `item_name`
+		ORDER BY `id`";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'Fatal Error!'); }
+	$num_rows = $db->sql_numrows($result);
+
+	$num_rows = ( ( $num_rows > $board_config['viewtopiclimit'] ) && ( $board_config['viewtopiclimit'] ) )  ? $board_config['viewtopiclimit'] : $num_rows;
+
+	$user_items = '<br />';
+
+	for ( $iz = 0; $iz < $num_rows; $iz++ )
+	{
+		$row = $db->sql_fetchrow($result);
+
+		if (file_exists('shop/images/' . $row['item_name'] . '.jpg'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.jpg" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+		elseif (file_exists('shop/images/' . $row['item_name'] . '.png'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.png" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+		elseif (file_exists('shop/images/' . $row['item_name'] . '.gif'))
+		{
+			$user_items .= ' <img src="shop/images/' . $row['item_name'] . '.gif" title="' . $row['item_name'] . '" alt="' . $row['item_name'] . '" />';
+		}
+	}
+	$usernameurl = append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$postrow[$i]['user_id'], true);
+}
+elseif ( $board_config['viewtopic'] == 'link' )
+{
+	$usernameurl = append_sid('shop.'.$phpEx.'?action=inventory&searchid='.$postrow[$i]['user_id'], true);
+}
+
+#
+#-----[ OPEN ]------------------------------------------
+# 
+templates/subSilver/overall_header.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+# 
+<a href="{U_SHOP}" class="mainmenu">{SHOP}</a>
+
+#
+#-----[ REPLACE WITH ]------------------------------------------
+# 
+&nbsp; &nbsp;<a href="{U_SHOP}" class="mainmenu"><img src="templates/subSilver/images/icon_shop.gif" width="12" height="13" border="0" alt="{L_SEARCH}" hspace="3" />{L_SHOP}</a>
+
+#
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------
+#
+# EoM

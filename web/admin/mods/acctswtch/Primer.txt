@@ -1,0 +1,42 @@
+The purpose of this mod is for people to be able to link several account together, 
+and easily switch between them all. Here's the super-quick primer on what you need to 
+do to get started.  For purposes of this exercise, you have 3 accounts, Me, It, and Bob. 
+
+
+
+Pick an account 
+
+There isn't really a primary account with this setup, but you can set one with the checkbox 
+if you want to, the name of the primary account will appear below posts by other usernames. 
+Go into the profile for the account you chose, we'll say Me. Scroll down a bit and you'll see 
+a new section that says Account Link. Off to the side, there is a little text that says 
+'Click here to obtain a PID'. Click there. :) You'll be on a page caled PID Request. Enter the 
+usename and password for the account you are in, and then a 5 digit, non-zero Personal ID. 
+Its a very stupid script, if your PID is taken, all it will do is say sorry, that's in use, 
+try again. If its not taken, the script will say your profile has been updated, and it will 
+set your PID in the database. Remember that PID.
+
+Link an account 
+
+Log out of the account you just set your PID in, in our case Me. Login to an account you'd like 
+to link to the first, like It. Go into your profile, and scroll down to Account Link, but 
+instead of clicking to get a PID, you will enter the Username and Password of that first 
+account, in our case Me, and the PID you just set. Submit the profile, and now when you go to 
+the Index, the Switch jumpbox in the upper left should have the two account names listed in it, 
+in this case Me and It. You can now link any number of accounts with your PID and a 
+username/password pair of an account that you have already linked, so if you wanted to link Bob,
+you would use your PID, and either the name and password combination from Me or It. 
+
+Switching Accounts 
+
+Go up to the dropbox in the upper left, choose which linked account you want to switch to, and 
+hit Switch. That's it. The account you were in is logged out, and the one you picked is logged 
+in.  :)
+
+
+For Admins Only Option
+
+There is an option that you can enable through the control panel that only admins can use the 
+Account Switch.  If this option is chosen, you have to start with the admin account, as all other 
+accounts will have the ability to generate a PID locked out in the profile and not see the switch 
+box unless it is an account linked to an admin account. 

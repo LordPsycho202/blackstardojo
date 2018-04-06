@@ -1,0 +1,13 @@
+cp admin/admin_abilities.php ../../../admin/admin_abilities.php
+cp templates/admin/abilities_edit_body.tpl ../../../templates/subSilver/admin/abilities_edit_body.tpl
+cp templates/admin/abilities_edit_body.tpl ../../../templates/guildwars_tree/admin/abilities_edit_body.tpl
+cp templates/admin/abilities_edit_body.tpl ../../../templates/Elveron/admin/abilities_edit_body.tpl
+cp templates/admin/abilities_edit_body.tpl ../../../templates/xhtml_guildwars/admin/abilities_edit_body.tpl
+cp templates/admin/abilities_edit_body.tpl ../../../templates/AcidTechBlood/admin/abilities_edit_body.tpl
+cp templates/admin/abilities_main_body.tpl ../../../templates/subSilver/admin/abilities_main_body.tpl
+cp templates/admin/abilities_main_body.tpl ../../../templates/guildwars_tree/admin/abilities_main_body.tpl
+cp templates/admin/abilities_main_body.tpl ../../../templates/Elveron/admin/abilities_main_body.tpl
+cp templates/admin/abilities_main_body.tpl ../../../templates/xhtml_guildwars/admin/abilities_main_body.tpl
+cp templates/admin/abilities_main_body.tpl ../../../templates/AcidTechBlood/admin/abilities_main_body.tpl
+cp ../../../includes/constants.php backups/includes/constants.php.txt
+cp processed/includes/constants.php.txt ../../../includes/constants.php

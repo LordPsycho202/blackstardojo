@@ -1,0 +1,10 @@
+cp shop_synth.php ../../../shop_synth.php
+cp templates/shop/shop_synth_body.tpl ../../../templates/subSilver/shop/shop_synth_body.tpl
+cp templates/shop/shop_synth_body.tpl ../../../templates/guildwars_tree/shop/shop_synth_body.tpl
+cp templates/shop/shop_synth_body.tpl ../../../templates/Elveron/shop/shop_synth_body.tpl
+cp ../../../includes/functions.php backups/includes/functions.php.txt
+cp processed/includes/functions.php.txt ../../../includes/functions.php
+cp ../../../language/lang_english/lang_main.php backups/language/lang_english/lang_main.php.txt
+cp processed/language/lang_english/lang_main.php.txt ../../../language/lang_english/lang_main.php
+cp ../../../language/lang_english/lang_shop.php backups/language/lang_english/lang_shop.php.txt
+cp processed/language/lang_english/lang_shop.php.txt ../../../language/lang_english/lang_shop.php

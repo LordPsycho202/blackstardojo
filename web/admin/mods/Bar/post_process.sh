@@ -1,0 +1,12 @@
+cp shop_bar.php ../../../shop_bar.php
+cp templates/shop/shop_bar_body.tpl ../../../templates/subSilver/shop/shop_bar_body.tpl
+cp templates/shop/shop_bar_body.tpl ../../../templates/guildwars_tree/shop/shop_bar_body.tpl
+cp templates/shop/shop_bar_body.tpl ../../../templates/Elveron/shop/shop_bar_body.tpl
+cp ../../../includes/functions.php backups/includes/functions.php.txt
+cp processed/includes/functions.php.txt ../../../includes/functions.php
+cp ../../../includes/functions_post.php backups/includes/functions_post.php.txt
+cp processed/includes/functions_post.php.txt ../../../includes/functions_post.php
+cp ../../../language/lang_english/lang_main.php backups/language/lang_english/lang_main.php.txt
+cp processed/language/lang_english/lang_main.php.txt ../../../language/lang_english/lang_main.php
+cp ../../../language/lang_english/lang_shop.php backups/language/lang_english/lang_shop.php.txt
+cp processed/language/lang_english/lang_shop.php.txt ../../../language/lang_english/lang_shop.php

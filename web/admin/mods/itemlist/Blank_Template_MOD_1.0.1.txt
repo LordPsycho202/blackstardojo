@@ -1,0 +1,167 @@
+############################################################## 
+## MOD Title: Blank Template MOD 
+## MOD Author: psychowolfman < admin@saskmetal.com > (Brent Upton) N/A 
+## MOD Description: An easy way to add a blank page to your forum that uses session management 
+## MOD Version: 1.0.1 
+## 
+## Installation Level: (Easy) 
+## Installation Time: 5 Minutes 
+## Files To Edit: includes/page_header.php
+##		  viewonline.php
+##		  admin/index.php
+##		  language/lang_english/lang_main.php
+##		  includes/constants.php
+##
+## Included Files: templates/subsilver/shop_list.tpl
+##		   shop_list.php
+############################################################## 
+## For Security Purposes, Please Check: http://www.phpbb.com/mods/ for the 
+## latest version of this MOD. Downloading this MOD from other sites could cause malicious code 
+## to enter into your phpBB Forum. As such, phpBB will not offer support for MOD's not offered 
+## in our MOD-Database, located at: http://www.phpbb.com/mods/ 
+############################################################## 
+## Author Notes: Wherever you see TEMPLATE or Template or template, replace with whatever you
+## want to call your new page.  Add a link to the page if you want to in your overall header.
+## TO DO: Add a page in ACP to add/edit/remove new pages automatically.  I have no clue how this
+## would be done, so if someone that actually KNOWS php and the phpbb standard coding practices
+## wants to take this and run, that would be stellar cool.
+## 
+############################################################## 
+## MOD History: 
+## 
+##   2003-10-06 - Version 1.0.0  MOD Submitted and denied based on improper syntax
+##   2003-10-09 - Version 1.0.1  Syntax corrected
+## 
+############################################################## 
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD 
+############################################################## 
+
+# 
+#-----[ COPY ]------------------------------------------ 
+# 
+# rename shop_list.php and shop_list.tpl to whatever your new page will be called.
+# 
+# edit the following lines in shop_list.php to point to whatever you called templates/subsilver/shop_list.tpl:
+# // assign template 
+# $shop_list->set_filenames(array( 
+#         'body' => 'shop_list.tpl') 
+# ); 
+# 
+# edit templates/subsilver/template.tpl to have whatever content you want to display.
+# 
+# 
+copy shop_list.php to shop_list.php
+copy templates/subsilver/shop_list.tpl to templates/subsilver/shop_list.tpl
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+includes/page_header.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+	'U_GROUP_CP' => append_sid('groupcp.'.$phpEx),
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+	'L_shop_list' => $lang['shop_list'],
+	'U_shop_list' => append_sid('shop_list.'.$phpEx),
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+viewonline.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+				case PAGE_FAQ:
+					$location = $lang['Viewing_FAQ'];
+					$location_url = "faq.$phpEx";
+					break;
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+				case PAGE_shop_list:
+					$location = $lang['shop_list'];
+					$location_url = "shop_list.$phpEx";
+					break;.
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+admin/index.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+						case PAGE_FAQ:
+							$location = $lang['Viewing_FAQ'];
+							$location_url = "index.$phpEx?pane=right";
+							break;
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+						case PAGE_shop_list:
+							$location = $lang['shop_list'];
+							$location_url = "shop_list.$phpEx?pane=right";
+							break;
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+					case PAGE_FAQ:
+						$location = $lang['Viewing_FAQ'];
+						$location_url = "index.$phpEx?pane=right";
+						break;
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+					case PAGE_shop_list:
+						$location = $lang['shop_list'];
+						$location_url = "shop_list.$phpEx?pane=right";
+						break;
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+language/lang_english/lang_main.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+//
+// That's all, Folks!
+// -------------------------------------------------
+
+# 
+#-----[ BEFORE, ADD ]------------------------------------------ 
+# 
+$lang['shop_list'] = 'Item List';
+
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+includes/constants.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+# 
+define('PAGE_GROUPCP', -11);
+
+# 
+#-----[ AFTER, ADD ]------------------------------------------ 
+# 
+define('PAGE_shop_list', -18);
+
+
+# 
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------ 
+# 
+# EoM 

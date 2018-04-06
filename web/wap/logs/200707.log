@@ -1,0 +1,152 @@
+2007-07-01 09:53:15	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-01 09:53:15	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-01 16:00:26	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-01 16:00:26	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-01 18:20:01	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-01 18:20:01	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-02 13:09:03	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-02 13:09:03	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-02 13:09:55	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-02 13:09:55	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-02 13:09:55	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 
+2007-07-02 20:42:32	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 
+2007-07-02 21:30:23	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-02 21:30:23	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-02 22:25:25	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-02 22:25:25	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-03 12:49:42	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-03 12:49:42	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-03 16:06:29	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-03 16:06:29	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-05 19:25:13	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-05 19:25:13	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-07 23:27:04	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-07 23:27:04	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-12 06:10:51	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-12 06:10:51	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-14 14:30:46	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-14 14:30:46	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-14 14:30:46	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 
+2007-07-31 16:45:36	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-31 16:45:37	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-31 16:45:37	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 
+2007-07-31 16:45:37	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-31 16:45:37	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-31 16:45:37	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 
+2007-07-31 23:15:29	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-07-31 23:15:30	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-07-31 23:15:30	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 

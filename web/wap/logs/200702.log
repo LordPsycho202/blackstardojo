@@ -1,0 +1,56 @@
+2007-02-07 05:08:49	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 13009, '9c7e835e2c', 'Don't know if you've seen the topic in The Closed Doors or not but I've hit on a slight problem with the forum:
+
+I'm supposed to be in charge of approving people for yellow and red belts and I got my first applicant a few days ago.  Then realised I couldn't confirm wether he was eligable or not because I can't see the section the RP is in.
+
+Since I also can't buy an Orb of Clear Viewing at the moment I was wondering if it would be possible for me to be allowed to see (but not post in) all RP boards, so I can check up on wether people have actually fufilled the requirements.
+
+Or if you have a better idea, but thats the best I (or rather Net) could come up with.' )
+2007-02-07 05:18:05	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 13010, '9c7e835e2c', 'Don't know if you've seen the topic in The Closed Doors or not but I've hit on a slight problem with the forum:
+
+I'm supposed to be in charge of approving people for yellow and red belts and I got my first applicant a few days ago.  Then realised I couldn't confirm wether he was eligable or not because I can't see the section the RP is in.
+
+Since I also can't buy an Orb of Clear Viewing at the moment I was wondering if it would be possible for me to be allowed to see (but not post in) all RP boards, so I can check up on wether people have actually fufilled the requirements.
+
+Or if you have a better idea, but thats the best I (or rather Net) could come up with.' )
+2007-02-07 05:18:16	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 13011, '9c7e835e2c', 'Don't know if you've seen the topic in The Closed Doors or not but I've hit on a slight problem with the forum:
+
+I'm supposed to be in charge of approving people for yellow and red belts and I got my first applicant a few days ago.  Then realised I couldn't confirm wether he was eligable or not because I can't see the section the RP is in.
+
+Since I also can't buy an Orb of Clear Viewing at the moment I was wondering if it would be possible for me to be allowed to see (but not post in) all RP boards, so I can check up on wether people have actually fufilled the requirements.
+
+Or if you have a better idea, but thats the best I (or rather Net) could come up with.' )
+2007-02-07 05:18:49	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 13012, '9c7e835e2c', 'Don't know if you've seen the topic in The Closed Doors or not but I've hit on a slight problem with the forum:
+
+I'm supposed to be in charge of approving people for yellow and red belts and I got my first applicant a few days ago.  Then realised I couldn't confirm wether he was eligable or not because I can't see the section the RP is in.
+
+Since I also can't buy an Orb of Clear Viewing at the moment I was wondering if it would be possible for me to be allowed to see (but not post in) all RP boards, so I can check up on wether people have actually fufilled the requirements.
+
+Or if you have a better idea, but thats the best I (or rather Net) could come up with.' )
+2007-02-21 06:32:20	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-02-21 06:32:20	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-02-21 16:50:16	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-02-21 16:50:16	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 

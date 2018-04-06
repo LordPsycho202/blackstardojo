@@ -1,0 +1,13 @@
+  <table width="100%" cellspacing="2" cellpadding="2" border="0" align="center">
+	<tr> 
+	  <td align="left"><span class="nav"><a href="{U_INDEX}" class="nav">{L_INDEX}</a>{SHOPLOCATION}</span></td>
+	</tr>
+  </table>
+<table width="99%" cellpadding="4" cellspacing="1" border="0" align="center" class="forumline">
+	<tr> 
+	  <th class="thHead" colspan="3">{L_ITEM_LIST}</th>
+	</tr>
+	 <tr>
+	  <td class="row3"><span class="gen"><b>{L_DISTRICT_NAME}</b></span></td>
+	  <td class="row3"><span class="gen"><b>{L_DISTRICT_TYPE}</b></span></td>
+	</tr>

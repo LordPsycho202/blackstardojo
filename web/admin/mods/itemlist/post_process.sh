@@ -1,0 +1,12 @@
+cp shop_list.php ../../../shop_list.php
+cp templates/subsilver/shop_list.tpl ../../../templates/subsilver/shop_list.tpl
+cp ../../../includes/page_header.php backups/includes/page_header.php.txt
+cp processed/includes/page_header.php.txt ../../../includes/page_header.php
+cp ../../../viewonline.php backups/viewonline.php.txt
+cp processed/viewonline.php.txt ../../../viewonline.php
+cp ../../../admin/index.php backups/admin/index.php.txt
+cp processed/admin/index.php.txt ../../../admin/index.php
+cp ../../../language/lang_english/lang_main.php backups/language/lang_english/lang_main.php.txt
+cp processed/language/lang_english/lang_main.php.txt ../../../language/lang_english/lang_main.php
+cp ../../../includes/constants.php backups/includes/constants.php.txt
+cp processed/includes/constants.php.txt ../../../includes/constants.php

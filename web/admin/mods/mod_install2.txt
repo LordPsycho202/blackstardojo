@@ -1,0 +1,116 @@
+## EasyMod 0.3.0 Compatible
+############################################################## 
+## MOD Title: Abilities Admin Mod
+## MOD Author: DP <darkpsycho@blackstardojo.org> http://www.blackstardojo.org
+## MOD Description: Prepare for the Abilities Mod
+## MOD Version: 0.0.1
+## 
+## Installation Level: Easy
+## Installation Time: 5 Minutes 
+## Files To Edit: includes/constants.php
+##		  
+## Included Files: admin/admin_abilities.php
+##		   templates/subSilver/admin/abilities_edit_body.tpl
+##		   templates/subSilver/admin/abilities_main_body.tpl
+## License: http://opensource.org/licenses/gpl-license.php GNU General Public License v2
+############################################################## 
+## Author Notes: Please check
+## http://forums.zarath.com if you're having any troubles before
+## posting. Any major problems or bug fixes will be posted there. 
+## Also make sure you're using the latest version of the mod.
+## Which is available at http://www.zarath.com
+############################################################## 
+## MOD History:
+## v1.0.0  First version.
+## v2.0.0  Second version
+##	- Compatibility with shop 3.x
+##	- Compatibility with EasyMod
+##	- Language Files
+##	- DBAL Compliant
+##	- Search Feature added
+##	- Several bug fixes added
+## v2.0.1  Update
+##	- Fixed several lang variables missing
+##	- Fixed PMing owner when item is bought
+############################################################## 
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD 
+##############################################################
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+#
+You can also run the following SQL query to add the user shops to your main shop list, and remove the code from your overall_header.tpl
+INSERT INTO `phpbb_shops` (`shopname`, `shoptype`, `url`) VALUES('User Shops', 'Miscellaneous', 'shop_users.php'); # This may be renamed.
+
+# 
+#-----[ COPY ]------------------------------------------ 
+#
+
+copy admin/admin_abilities.php to admin/admin_abilities.php
+copy templates/admin/abilities_edit_body.tpl to templates/subSilver/admin/abilities_edit_body.tpl
+copy templates/admin/abilities_main_body.tpl to templates/subSilver/admin/abilities_main_body.tpl
+
+#
+#-----[ SQL ]------------------------------------------
+#
+# You can either alter the table prefix and run this through phpMyAdmin or
+# upload the sql_install.php file to your forum index and run it from an
+# admin account. No need to do both... SQL install file is made for MySQL.
+#
+
+CREATE TABLE `phpbb_abilities` (
+  `id` INT( 10) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR ( 32 ) NOT NULL ,
+  `desc` VARCHAR ( 128 ) NOT NULL ,
+  `start` INT ( 3 ) NOT NULL ,
+  `master` INT ( 3 ) NOT NULL ,
+  `max` INT ( 3 ) NOT NULL ,
+  `inc` INT ( 1 ) NOT NULL ,
+  `pre1` INT ( 10 ) NOT NULL ,
+  `pre2` INT ( 10 ) NOT NULL,
+  `trade_item` INT ( 10 ) NOT NULL, 
+  INDEX ( `id` ),
+);
+
+CREATE TABLE `phpbb_user_abilities` (
+  `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
+  `user_id` INT( 20 ) NOT NULL ,
+  `aid` INT( 10 ) NOT NULL ,
+  `name` VARCHAR ( 32 ) NOT NULL ,
+  `desc` VARCHAR ( 128 ) NOT NULL ,
+  `start` INT ( 3 ) NOT NULL ,
+  `master` INT ( 3 ) NOT NULL ,
+  `max` INT ( 3 ) NOT NULL ,
+  `inc` INT ( 1 ) NOT NULL ,
+  `pre1` INT ( 1O ) NOT NULL ,
+  `pre2` INT ( 10 ) NOT NULL,
+  `trade_item` INT ( 10 ) NOT NULL, 
+  INDEX ( `id` ),
+);
+
+INSERT INTO `phpbb_config` (config_name, config_value) VALUES ('abilities_enabled', '0');
+
+ALTER TABLE phpbb_users ADD last_ability INT(11) DEFAULT NULL;
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# /
+includes/constants.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+
+DEFINE('ABILITIES_TABLE', $table_prefix . 'abilities');
+DEFINE('ABILITIES_USER_TABLE', $table_prefix.'user_abilities');
+
+#
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------
+#
+# EoM

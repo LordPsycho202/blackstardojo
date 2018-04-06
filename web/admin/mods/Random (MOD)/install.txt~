@@ -1,0 +1,233 @@
+############################################################# 
+## MOD Title: Random Item or Money Finder
+## MOD Author: RCTycooner < tom.wuyts@a-d-e.net > (Tom Wuyts) http://www.wuyts.org/tom/phpbb2/ 
+## MOD Description: With this MOD, a user will sometimes find money or an item "on the floor" :)
+## MOD Version: 1.0.0
+## 
+## Installation Level: Easy
+## Installation Time: 10 Minutes 
+## Files To Edit: 	page_header.php, 
+##			overall_header.tpl, 
+##			lang_main.php
+##			lang_admin.php
+##			
+## Included Files: 	admin_itemfinder.php
+##			itemfinder_config_body.tpl
+##			itemfinder_db_update.php
+##
+############################################################## 
+## For Security Purposes, Please Check: http://www.wuyts.org/tom/ for the 
+## latest version of this MOD. Downloading this MOD from other sites could cause malicious code 
+## to enter into your phpBB Forum. As such, RCTycooner will not offer support for MOD's not offered 
+## in our MOD-Database, located at: http://www.wuyts.org/tom/ 
+############################################################## 
+## Author Notes: 
+##	Remember to read and execute the notes found beneath!
+##	If you do not understand the explanation, please go to
+##	< http://www.wuyts.org/tom > and ask your question in the forum
+##
+## REQUIRES:
+##	- The Points- or Cash-mod (requires the field "user_points" in the database)
+##	- Shop MOD v1.x.x
+## 
+############################################################## 
+## MOD History: 
+## 
+##   2007-01-06 - Version 1.0.0 
+##      - First Release 
+## 
+############################################################## 
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD 
+############################################################## 
+#
+#
+#
+#-----[ COPY ]------------------------------------------ 
+# remember to upload the itemfinder_config_body.tpl file to each template you have.
+
+copy admin_itemfinder.php to root/admin/admin_itemfinder.php
+copy itemfinder_config_body.tpl to root/template/xxx/admin/itemfinder_config_body.tpl
+
+#
+#-----[ RUN ]------------------------------------------ 
+# upload, run and delete if finished
+
+itemfinder_db_update.php
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+#
+
+includes/page_header.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+
+// 
+// The following assigns all _common_ 
+
+#
+#----------------[ BEFORE, ADD ]-------------------------------- 
+#
+
+// -----------------------------------------------------------------
+// Random item or money finder mod by RCTycooner - tom.wuyts@a-d-e.net
+// v1.0.0
+if( $userdata['session_logged_in'] )
+{ //check if the user is logged in.
+	$item_message = '';
+	
+	//retrieve the configurations:
+	$enabled = $board_config['itemfinder_enabled'];
+	$odds_items = $board_config['itemfinder_odds_items'];
+	$odds_money = $board_config['itemfinder_odds_money'];
+	$items = $board_config['itemfinder_items'];
+	$money_min = $board_config['itemfinder_money_min'];
+	$money_max = $board_config['itemfinder_money_max'];
+	
+	//check if this mod is enabled:
+	if( $enabled )
+	{
+		//money:
+		if( $odds_money > 0 )
+		{ //money can be found
+			$newrand = rand(1, $odds_money);
+			if( $newrand == 1 )
+			{ //money is found:
+				$amount_found = rand($money_min, $money_max);
+				$newmoney = $userdata['user_points'] + $amount_found;
+				
+				$sql = 'UPDATE '. USERS_TABLE .' SET user_points = '. $newmoney .' WHERE user_id = '. $userdata['user_id'];
+				if(! ($result = $db->sql_query($sql)) ) 
+				{
+					message_die(GENERAL_ERROR, 'Fatal Error Giving User money!', '', __LINE__, __FILE__ ,$sql);
+				}
+				
+				$item_message = sprintf($lang['itemfinder_moneyfound'], $amount_found, $board_config['points_name']); //this string must contain one %d and one %s !
+			}
+		}
+		
+		//item:
+		if( $odds_items > 0 )
+		{ //an item can be found
+			$newrand = rand(1, $odds_items);
+			if( $newrand == 1 )
+			{ //an item is found
+				//count the amount of items:
+				$itemsarray = explode(";", $items);
+				$total_items = count($itemsarray);
+				
+				//wich items shall be given?
+				$newrand = rand(1, $total_items);
+				$item_found = $itemsarray[$newrand-1];
+				
+				$useritems_new = substr_replace ($userdata['user_items'], "ß".$item_found."Þ", 0, 0);
+		      	$sql = "UPDATE ". USERS_TABLE ."
+						 SET user_items='$useritems_new'
+						  WHERE user_id=".$userdata['user_id'];
+		      	if ( !($db->sql_query($sql)) ) 
+		      	{ 
+		       		message_die(GENERAL_ERROR, 'Fatal Error giving a '.$item_found, '', __FILE__, __LINE__); 
+		      	}
+		      	
+		      	$item_message = sprintf($lang['itemfinder_itemfound'], $item_found); //replaces a %s with the $item_found;
+			}
+		}
+		
+	}
+}
+// END Random item or money finder mod
+// -----------------------------------------------------------------
+
+#
+# ----------------[ FIND ]-------------------------------- 
+#
+
+	'PRIVATE_MESSAGE_INFO_UNREAD' => $l_privmsgs_text_unread,
+	'PRIVATE_MESSAGE_NEW_FLAG' => $s_privmsg_new,
+
+#
+#----------------[ AFTER, ADD ]-------------------------------- 
+#
+
+	'RANDOM_ITEM_MESSAGE' => $item_message, 
+
+#
+#----------------[ OPEN ]-------------------------------- 
+# Do this for every template you have.
+
+templates/xxx/overall_header.tpl 
+
+#
+# ----------------[ FIND ]-------------------------------- 
+# 
+# The bottom of the file.
+#
+# ----------------[ AFTER, ADD ]-------------------------------- 
+#
+
+<b>{RANDOM_ITEM_MESSAGE}</b>
+<br />
+
+#
+#----------------[ OPEN ]-------------------------------- 
+# Do this for every language you have.
+
+language/lang_xxx/lang_main.php
+
+#
+# ----------------[ FIND ]-------------------------------- 
+# 
+
+//
+// That's all, Folks!
+// -------------------------------------------------
+
+#
+# ----------------[ BEFORE, ADD ]-------------------------------- 
+#
+
+//
+// Random Item or Money Finder MOD - RC-Technologies
+//
+$lang['itemfinder_moneyfound'] = 'You find %d %s on the floor!';   //attention: the %d must come BEFORE %s !! (%d = amount of money found; %s = name of the currency/points).
+$lang['itemfinder_itemfound'] = 'You find a %s on the floor!'; //the %s will be replaced with the amount found.
+
+#
+#----------------[ OPEN ]-------------------------------- 
+# Do this for every language you have.
+
+language/lang_xxx/lang_admin.php
+
+#
+# ----------------[ FIND ]-------------------------------- 
+# 
+
+//
+// That's all, Folks!
+// -------------------------------------------------
+
+#
+# ----------------[ BEFORE, ADD ]-------------------------------- 
+#
+
+//
+// Random Item or Money Finder MOD - RC-Technologies
+//
+$lang['admin_submit'] = 'Submit';
+$lang['admin_return'] = 'Return';
+$lang['admin_itemfinder_header'] = 'Random Item or Money Finder';
+$lang['admin_itemfinder_desc'] = 'Here you can define what the users can find.';
+$lang['admin_itemfinder_enabled'] = 'Enable this MOD: ';
+$lang['admin_itemfinder_oddsItems'] = 'The chance (1 in x) of a user finding an item (enter 0 (zero) to disable this): ';
+$lang['admin_itemfinder_items'] = 'The items that can be found, seperate each item with a ";" ';
+$lang['admin_itemfinder_oddsMoney'] = 'The chance (1 in x) of a user finding money (eneter 0 (zero) to disable this): ';
+$lang['admin_itemfinder_money_min'] = 'The minimum amount of money a user can find: ';
+$lang['admin_itemfinder_money_max'] = 'The maximum amount of money a user can find:';
+$lang['admin_itemfinder_updated'] = 'New settings updated.';
+
+# 
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------ 
+# 
+# EoM

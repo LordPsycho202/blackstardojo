@@ -1,0 +1,351 @@
+## EasyMod 0.3.0 Compatible
+############################################################## 
+## MOD Title: Auction Mod
+## MOD Author: Zarath < null@null.com > ( Jamie ) http://www.zarath.com
+## Special thanks to Moogie, for the base original code.
+## MOD Description: Adds ability for users to auction items
+## MOD Version: 2.0.4
+## 
+## Installation Level: Easy
+## Installation Time: 5 Minutes 
+## Files To Edit: includes/constants.php
+##		  includes/functions.php
+##                includes/page_header.php
+##		  includes/usercp_viewprofile.php
+##		  language/lang_english/lang_main.php
+##                templates/subSilver/profile_view_body.tpl
+##                templates/subSilver/overall_header.tpl
+##
+## Included Files: shop_auctions.php
+##                 images/icon_auctions.gif
+##                 templates/auction_add.tpl
+##                 templates/auction_body.tpl
+##                 templates/auction_view.tpl
+## License: http://opensource.org/licenses/gpl-license.php GNU General Public License v2
+############################################################## 
+## For Security Purposes, Please Check: http://www.phpbb.com/mods/ for the 
+## latest version of this MOD. Downloading this MOD from other sites could cause malicious code 
+## to enter into your phpBB Forum. As such, phpBB will not offer support for MOD's not offered 
+## in our MOD-Database, located at: http://www.phpbb.com/mods/ 
+############################################################## 
+## Author Notes: IMPORTANT
+## Requires Zarath Technologies' Shop Mod v3.0.0+ & cash mod
+##
+## If you're updating from 2.0.3 to 2.0.4, just upload shop_auctions.php over old one.
+############################################################## 
+## MOD History: 
+##
+##   2006-10-07 - Version 2.0.4
+##	- Fixed a PM problem, that caused an email error and PM to be sent to wrong person.
+##
+##   2006-09-29 - Version 2.0.3
+##      - Fixed problem with latest bank mod causing problems due to column rename.
+##
+##   2006-09-20 - Version 2.0.2
+##      - Updated to be compatible with other mods using duration function
+##	- EasyMod Compatible
+##	- Added lang variables for entire mod
+##
+##   2006-09-07 - Version 2.0.1
+##      - Added lang variables for duration function.
+##	- Fixed minor template problems.
+##	- Changed minor wording.
+##
+##   2006-09-04 - Version 2.0.0
+##      - Complete rewrite of original auction mod to work with 
+##	  shop 3.0.0.
+## 
+############################################################## 
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD 
+############################################################## 
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+#
+Open your shop_auctions.php and edit the follow piece to fit your forums.
+
+//--------------------VARIABLES--------------------------//
+$maxauctions = 3; // maximum auctions one user can run at a time
+$maxitems = 5; // maximum items per auction
+$itemrow = 5; // items per row on auction view page
+
+//define('BANK_TABLE', $table_prefix.'bank'); // Uncomment this if your bank is installed, but it's an old version.
+//--------------------END VARIABLES--------------------------//
+
+
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+# 
+You might also want to add something like this to your FAQ language file (or at least read it)
+
+$faq[] = array("How do I use the auction system?", "You may have up to 5 auctions running at once, with up to 10 items in each auction set. 
+	From the main auction page, you can create a new auction, browse existing auctions or place a bid. A 'buy price' can be set for auctions, 
+	however this disappears after a bid is placed.<P> The system is mostly automated, so when you start an auction, the items you are selling are 
+	removed from your collection, and stored in the auction. When the winning bidder pays at the end of the auction, the items are automatically 
+	given to them, and the Gold transferred to you. If the auction ends with no winner, it will automatically close and return the items to you. Winners have 3 days in which to pay for the auction, after which time the seller may close the auction and retrieve their items. If after 7 days the winner has not paid, and the seller has not closed the auction, it will be automatically closed and the items returned to the seller.<P> Various notifications are sent via the Private Message system to let you know when an auction has been paid, bought, closed etc, or if you are the winning bidder.");
+
+
+# 
+#-----[ COPY ]------------------------------------------ 
+# If your template is not subSilver, change it here.
+#
+copy shop_auctions.php to shop_auctions.php
+copy images/icon_auctions.gif to templates/subSilver/images/icon_auctions.gif
+copy templates/auction_add.tpl to templates/subSilver/auction_add.tpl
+copy templates/auction_body.tpl to templates/subSilver/auction_body.tpl
+copy templates/auction_view.tpl to templates/subSilver/auction_view.tpl
+
+#
+#-----[ SQL ]------------------------------------------
+# If you use a table prefix other than phpbb_  you will 
+# need to change all references to this in the script & 
+# instructions/edits.
+#
+CREATE TABLE `phpbb_shopauctions` (
+  `id` mediumint(8) unsigned NOT NULL auto_increment,
+  `seller` mediumint(8) unsigned NOT NULL default '0',
+  `items` text NOT NULL,
+  `startprice` mediumint(8) unsigned NOT NULL default '0',
+  `increment` mediumint(8) unsigned NOT NULL default '0',
+  `buyprice` mediumint(8) unsigned NOT NULL default '0',
+  `starttime` int(11) NOT NULL default '0',
+  `endtime` int(11) NOT NULL default '0',
+  `description` text NOT NULL,
+  `bidhistory` text NOT NULL,
+  `title` varchar(32) NOT NULL default '',
+  `currentprice` mediumint(8) unsigned NOT NULL default '0',
+  `bids` mediumint(8) unsigned NOT NULL default '0',
+  `notify1` tinyint(1) unsigned NOT NULL default '0',
+  `notify2` tinyint(1) unsigned NOT NULL default '0',
+  KEY `id` (`id`)
+) TYPE=MyISAM;
+
+ALTER TABLE `phpbb_users` ADD `auctions_paid` mediumint(8) unsigned NOT NULL default '0';
+ALTER TABLE `phpbb_users` ADD `auctions_unpaid` mediumint(8) unsigned NOT NULL default '0';
+
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+ includes/constants.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+define('AUCTIONS_TABLE', $table_prefix.'shopauctions');
+
+#
+#-----[ OPEN ]------------------------------------------
+# You can skip these 3 steps if you've installed the function script before.
+#
+
+ includes/functions.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+if ( !(function_exists(duration)) )
+{
+	function duration($seconds)
+	{
+		global $lang;
+
+		if ( $seconds > 86399 )
+		{
+			$days = floor($seconds / 86400);
+			$seconds = ($seconds - ($days * 86400));
+			$string .= ( $days > 1 ) ? $days .' ' . $lang['jobs_days'] . ', ' : $days .' ' . $lang['jobs_day'] . ', ';
+		}
+		if ( $seconds > 3599 )
+		{
+			$hours = floor($seconds / 3600);
+
+			if ( $seconds != 0 )
+			{
+				$string .= ( $hours > 1 ) ? $hours .' ' . $lang['jobs_hours'] . ', ' : $hours .' ' . $lang['jobs_hour'] . ', ';
+			}
+
+			$seconds = ( $days > 0 ) ? 0 : ( $seconds - ($hours * 3600) );
+		}
+		if ( $seconds > 59 )
+		{
+			$minutes = floor($seconds / 60);
+			if ( $seconds != 0 )
+			{
+				$string .= ( $minutes > 1) ? $minutes .' ' . $lang['jobs_minutes'] . ', ' : $minutes .' ' . $lang['jobs_minute'] . ', ';
+			}
+
+			$seconds = ( $hours > 0 ) ? 0 : ($seconds - ($minutes * 60));
+		}
+		if ( $seconds > 0 )
+		{
+			$string .= ( $seconds > 1 ) ? $seconds . ' ' . $lang['jobs_seconds'] . ', ' : $seconds . ' ' . $lang['jobs_second'] . ', ';
+		}
+
+		$string = substr($string, 0, -2);
+		return $string;
+	}
+}
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+ includes/page_header.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+	'L_MEMBERLIST' => $lang['Memberlist'],
+	'L_FAQ' => $lang['FAQ'],
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+	'L_AUCTIONS' => $lang['auctions'],
+
+#
+#-----[ FIND ]------------------------------------------
+#
+	'U_SHOP' => append_sid('shop.'.$phpEx),
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+
+	'U_AUCTIONS' => append_sid('shop_auctions.'.$phpEx),
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+
+ includes/usercp_viewprofile.php
+
+#
+#-----[ FIND ]------------------------------------------
+#
+//
+// Generate page
+//
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+$auctions_won = $profiledata['auctions_paid']+$profiledata['auctions_unpaid']; 
+$auctions_unpaid = ($profiledata['auctions_unpaid'] > 0) ? ', <span style="color:red">'.$profiledata['auctions_unpaid'].' ' . $lang['auctions_unpaid'] . '</font>' : "";
+
+#
+#-----[ FIND ]------------------------------------------
+#
+	'AVATAR_IMG' => $avatar_img,
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+	'AUCTIONS_WON' => $auctions_won, 
+	'AUCTIONS_UNPAID' => $auctions_unpaid, 
+
+
+#
+#-----[ FIND ]------------------------------------------
+#
+	'L_INTERESTS' => $lang['Interests'],
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+	'L_AUCTIONS' => $lang['auctions'],
+	'L_WON' => $lang['auctions_won'],
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# You can skip the jobs vars if you're added them before.
+#
+language/lang_english/lang_main.php
+
+
+#
+#-----[ FIND ]------------------------------------------
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------
+#
+// Duration Function Variables
+$lang['jobs_second'] = 'Second';
+$lang['jobs_seconds'] = 'Seconds';
+$lang['jobs_minute'] = 'Minute';
+$lang['jobs_minutes'] = 'Minutes';
+$lang['jobs_hour'] = 'Hour';
+$lang['jobs_hours'] = 'Hours';
+$lang['jobs_day'] = 'Day';
+$lang['jobs_days'] = 'Days';
+
+// Auction lang variables!
+$lang['auctions'] = 'Auctions';
+$lang['auctions_won'] = 'won';
+$lang['auctions_unpaid'] = 'unpaid';
+$lang['auctions_name'] = 'Shop Auctions';
+
+#
+#-----[ OPEN ]------------------------------------------
+#
+templates/subSilver/overall_header.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+#
+ alt="{L_FAQ}" hspace="3" />{L_FAQ}</a> 
+
+#
+#-----[ IN-LINE FIND ]------------------------------------------
+#
+ hspace="3" />{L_FAQ}</a>
+
+#
+#-----[ IN-LINE AFTER, ADD ]------------------------------------------
+#
+&nbsp; &nbsp;<a href="{U_AUCTIONS}" class="mainmenu"><img src="templates/subSilver/images/icon_auctions.gif" width="12" height="13" border="0" alt="{L_AUCTIONS}" hspace="3" />{L_AUCTIONS}</a>
+
+
+
+#
+#-----[ OPEN ]------------------------------------------
+# This does not require subSilver template...
+#
+
+templates/subSilver/profile_view_body.tpl
+
+#
+#-----[ FIND ]------------------------------------------
+#
+		<tr> 
+		  <td valign="top" align="right" nowrap="nowrap"><span class="gen">{L_INTERESTS}:</span></td>
+		  <td> <b><span class="gen">{INTERESTS}</span></b></td>
+		</tr>
+
+#
+#-----[ AFTER, ADD ]------------------------------------------
+#
+		<tr> 
+		  <td valign="top" align="right" nowrap="nowrap"><span class="gen">{L_AUCTIONS}:</span></td>
+		  <td> <b><span class="gen">{AUCTIONS_WON} {L_WON} {AUCTIONS_UNPAID}</span></b></td>
+		</tr>
+
+
+#
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------
+#
+# EoM

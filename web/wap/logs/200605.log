@@ -1,0 +1,8 @@
+2006-05-18 12:10:14	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 610, '2b631d5924', 'I notice you still don't have a moderator for the Norn Gardens board. I would like to volunteer for that' )
+2006-05-18 12:10:19	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 611, '2b631d5924', 'I notice you still don't have a moderator for the Norn Gardens board. I would like to volunteer for that' )

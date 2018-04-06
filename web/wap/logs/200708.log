@@ -1,0 +1,117 @@
+2007-08-05 23:34:49	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-05 23:34:49	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-11 11:02:40	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-11 11:02:40	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-11 11:02:40	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 
+2007-08-11 11:07:53	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-11 11:07:53	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-11 11:16:24	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-11 11:16:24	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-12 23:06:59	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-12 23:07:00	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-12 23:42:52	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-12 23:42:52	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-13 00:24:58	Insert into PRIVMSGS_TEXT_TABLE failed.
+	INSERT INTO phpbb_privmsgs_text 
+	        ( privmsgs_text_id, privmsgs_bbcode_uid, privmsgs_text ) 
+	    VALUES ( 18573, '556899c10d', 'You signed your message in such a way that it came to me as &quot;Fudgemen&quot;.  If you are the real fudgeman, I am at your service.
+
+No, I am not the person you indicated, but you do know me as a player.  Please erase this after you have read it so the new guard doesn't read it.  Here is a hint:
+
+I just moved, I can only get online from work, (it is an IP address that they won't recognize or figure out who I am, and if this character gets banned, it won't matter.)  My other characters MAY be able to come online tomorrow or the next day.
+
+Please keep my profession confidential, it is a job that comes with stereotypes and preconceptions.
+
+Shouldn't we refuse to play along?  Shouldn't we do things to be disruptive to the general game playing?
+
+If there is anything I can do to help, let me know.  I got your e-mail.
+
+sort of a &quot;Dumbledor's Army&quot; thing,
+I think that the D'arque Sycho really Rox
+
+ :D 
+
+((man, I hope this was not a ploy PM to get me to tell an EC member this information))' )
+2007-08-14 07:30:17	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-14 07:30:17	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-15 09:18:04	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-15 09:18:04	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-15 09:18:04	Get FORUMS_TABLE failed.
+	SELECT cat_id, forum_topics, auth_read, auth_post, auth_reply 
+	    FROM phpbb_forums 
+	    WHERE forum_id = 
+2007-08-16 01:28:14	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-16 01:28:14	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-16 21:46:52	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-16 21:46:52	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 
+2007-08-19 00:11:21	Get POSTS_TEXT_TABLE failed.
+	SELECT post_subject, post_text 
+	    FROM phpbb_posts_text 
+	    WHERE post_id = 
+2007-08-19 00:11:21	Get USERS_TABLE failed.
+	SELECT username, user_password, user_email 
+	    FROM phpbb_users 
+	    WHERE user_id = 

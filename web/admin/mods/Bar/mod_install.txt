@@ -1,0 +1,352 @@
+## EasyMod 0.3.0 Compatible
+##############################################################
+## MOD Title: Bar Shop
+## MOD Author: Zarath < null@null.com > ( Jamie ) http://www.zarath.com
+## MOD Description: Adds a bar shop to your shop list, lets your users get drunk
+## MOD Version: 1.0.0
+##
+## Installation Level: Easy
+## Installation Time: <5 Minutes
+## Files To Edit:	includes/functions.php
+##			language/lang_english/lang_main.php
+##			language/lang_english/lang_shop.php
+## Included Files:	shop_bar.php
+## 			templates/shop/shop_bar_body.tpl
+## License: http://opensource.org/licenses/gpl-license.php GNU General Public License v2
+##############################################################
+## For security purposes, please check: http://www.phpbb.com/mods/
+## for the latest version of this MOD. Although MODs are checked
+## before being allowed in the MODs Database there is no guarantee
+## that there are no security problems within the MOD. No support
+## will be given for MODs not found within the MODs Database which
+## can be found at http://www.phpbb.com/mods/
+##############################################################
+## Author Notes: Please note, I will not give any kind of email 
+##               or PM support. Post on http://forums.zarath.com
+##		 or http://www.phpbbhacks.com
+##
+##		 All my mods & services are at http://www.zarath.com
+##
+##############################################################
+## MOD History:
+##
+##   2006-09-10 - Version 1.0.0
+##      - Initial Release
+##
+##############################################################
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD
+##############################################################
+
+#
+#-----[ DIY INSTRUCTIONS ]------------------------------------------
+# 
+Just a little info... You can make "coffee" to sober up users. Doesn't have to be called that. Just set the time to negative instead of positive.
+
+There is a max of 2hrs of "drunkness" a user can drink worth. Once they reach that, it stops them drinking.
+
+All posts made while the user is drunk will remain "slurred".
+
+Slurring is dependant on how drunk the person is. The more drunk they are, the more it will slurr their posts.
+
+No images required for this mod, currently.
+
+All drinks & food/whatever you want can be added to the "Bar" shop normally. You may rename it as you see fit.
+
+Intoxication length (in seconds) should be set in the "short description" field.
+
+# 
+#-----[ COPY ]------------------------------------------ 
+# Remember to add the template to each of your template folders!
+#
+copy shop_bar.php to shop_bar.php
+copy templates/shop/shop_bar_body.tpl to templates/subSilver/shop/shop_bar_body.tpl
+
+#
+#-----[ SQL ]------------------------------------------
+#
+# You can either alter the table prefix and run this through phpMyAdmin or
+# upload the sql_install.php file to your forum index and run it from an
+# admin account. No need to do both... SQL install file is made for MySQL.
+#
+
+INSERT INTO `phpbb_shops` (`shopname`, `shoptype`, `url`) VALUES('Bar', 'Alcohol', 'shop_bar.php'); # This may be renamed.
+
+ALTER TABLE `phpbb_users` ADD user_drunk INT (10) DEFAULT '0';
+
+# 
+#-----[ OPEN ]------------------------------------------------ 
+#
+ includes/functions.php
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+?>
+
+# 
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+if ( !(function_exists(duration)) )
+{
+	function duration($seconds)
+	{
+		global $lang;
+
+		if ( $seconds > 86399 )
+		{
+			$days = floor($seconds / 86400);
+			$seconds = ($seconds - ($days * 86400));
+			$string .= ( $days > 1 ) ? $days .' ' . $lang['jobs_days'] . ', ' : $days .' ' . $lang['jobs_day'] . ', ';
+		}
+		if ( $seconds > 3599 )
+		{
+			$hours = floor($seconds / 3600);
+
+			if ( $seconds != 0 )
+			{
+				$string .= ( $hours > 1 ) ? $hours .' ' . $lang['jobs_hours'] . ', ' : $hours .' ' . $lang['jobs_hour'] . ', ';
+			}
+
+			$seconds = ( $days > 0 ) ? 0 : ( $seconds - ($hours * 3600) );
+		}
+		if ( $seconds > 59 )
+		{
+			$minutes = floor($seconds / 60);
+			if ( $seconds != 0 )
+			{
+				$string .= ( $minutes > 1) ? $minutes .' ' . $lang['jobs_minutes'] . ', ' : $minutes .' ' . $lang['jobs_minute'] . ', ';
+			}
+
+			$seconds = ( $hours > 0 ) ? 0 : ($seconds - ($minutes * 60));
+		}
+		if ( $seconds > 0 )
+		{
+			$string .= ( $seconds > 1 ) ? $seconds . ' ' . $lang['jobs_seconds'] . ', ' : $seconds . ' ' . $lang['jobs_second'] . ', ';
+		}
+
+		$string = substr($string, 0, -2);
+		return $string;
+	}
+}
+
+//
+// Start drunk create functions...
+//
+function drunk_letters($rand, $higher)
+{
+	$alpha = array_merge(range("a", "z"));
+	$return_alpha = array();
+	for ($i = 0; $i < 26; $i++)
+	{
+		if ( rand(1,$rand) > $higher ) { $return_alpha[] = $alpha[$i]; }
+	}
+	return $return_alpha;
+}
+
+function drunk_replace($alpha)
+{
+	$alpha_count = count($alpha);
+	$replaces = array();
+	for ($i = 0; $i < $alpha_count; $i++)
+	{
+		$replaces[] = "/" . $alpha[$i] . "/";
+	}
+
+	return $replaces;
+}
+function drunk_replaces($alpha)
+{
+	//
+	// Create drunk replacement vars!
+	//
+	$drunk_a = array('aa', 'ah', 'oa', 'aa', 'ah', 'oa', 'A', 'ahhh');
+	$drunk_b = array('B', 'vb', 'vb');
+	$drunk_c = array('C', 'cj', 'sj', 'zj', 'cj', 'sj', 'zj');
+	$drunk_d = array('D');
+	$drunk_e = array('E', 'eh', 'eh');
+	$drunk_f = array('F', 'fFf', 'fff', 'fFf', 'fff');
+	$drunk_g = array('G');
+	$drunk_h = array('H', 'hh', 'hhh', 'Hhh', 'HhH', 'hh', 'hhh', 'Hhh', 'HhH');
+	$drunk_i = array('I', 'Ii', 'ii', 'Iii', 'iI', 'Ii', 'ii', 'Iii', 'iI');
+	$drunk_j = array('J', 'jj', 'Jj', 'jj', 'Jj');
+	$drunk_k = array('K');
+	$drunk_l = array('L');
+	$drunk_m = array('M', 'mM', 'MmM', 'mm', 'mmm', 'mmmm', 'mmmmm', 'mM', 'MmM', 'mm', 'mmm', 'mmmm', 'mmmmm');
+	$drunk_n = array('N', 'Nn', 'nn', 'nnn', 'nNn', 'Nn', 'nn', 'nnn', 'nNn');
+	$drunk_o = array('ao', 'oo', 'aOoo', 'ooo', 'Ooo', 'ooOo');
+	$drunk_p = array('P', 'pah');
+	$drunk_q = array('Q', 'ku', 'kukeleku', 'ququ', 'ku', 'kukeleku', 'ququ');
+	$drunk_r = array('R', 'erR', 'Rr');
+	$drunk_s = array('ss', 'sSss', 'ZSssS', 'sSzzsss', 'zzZzssZ');
+	$drunk_t = array('T');
+	$drunk_u = array('U', 'Uh', 'uhhu', 'uhU', 'Uhuhhuh');
+	$drunk_v = array('V', 'vz');
+	$drunk_w = array('W', 'Ww');
+	$drunk_x = array('X', 'xz', 'kz', 'iks', 'xz', 'kz', 'iks');
+	$drunk_y = array('Y');
+	$drunk_z = array('Z', 'zZ', 'Zzz', 'ZSz', 'ZzzZz', 'szz', 'sZZz', 'Zsszzsz', 'zZ', 'Zzz', 'ZSz', 'ZzzZz', 'szz', 'sZZz', 'Zsszzsz');
+	//
+	// End drunk replacement vars!
+	//
+
+	$alpha_count = count($alpha);
+	$replaces = array();
+	for ($i = 0; $i < $alpha_count; $i++)
+	{
+		$temp_var = 'drunk_' . $alpha[$i];
+		$rand = rand(0, count(${$temp_var})-1);
+		$replaces[] = ${$temp_var}[$rand];
+	}
+
+	return $replaces;
+}
+//
+// End drunk create functions...
+//
+
+# 
+#-----[ OPEN ]------------------------------------------------ 
+#
+ includes/functions_post.php
+
+# 
+#-----[ FIND ]------------------------------------------------ 
+# 
+	if ($mode == 'editpost')
+	{
+		remove_search_post($post_id);
+	}
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+	// Drunk Code //
+	if ( $userdata['user_drunk'] > time() )
+	{
+
+		$message_words = explode(' ', str_replace("\r\n", ' ', $post_message));
+		$msg_num = count($message_words);
+		for ($ix = 0; $ix < $msg_num; $ix++)
+		{
+			$word_array = '';
+
+			if ( trim($message_words[$ix]) != '<br />' && trim($message_words[$ix]) != '<br>' )
+			{
+				if ( is_numeric(trim($message_words[$ix])) )
+				{
+					$word_len = strlen($message_words[$ix]);
+					$message_words[$ix] = rand('0', str_repeat('9', $word_len));
+				}
+				else
+				{
+					$switch = ((time() - $userdata['user_drunk']) / 600);
+					switch ($switch)
+					{
+						case $switch > 6:
+							$rand = 10;
+							$higher = 1;
+							break;
+						case $switch > 5:
+							$rand = 7;
+							$higher = 1;
+							break;
+						case $switch > 4:
+							$rand = 4;
+							$higher = 1;
+							break;
+						case $switch > 3:
+							$rand = 5;
+							$higher = 2;
+							break;
+						case $switch > 2:
+							$rand = 5;
+							$higher = 3;
+							break;
+						case $switch > 1:
+							$rand = 3;
+							$higher = 2;
+							break;
+						default:
+							$rand = 7;
+							$higher = 5;
+					}
+
+					$str_letters = drunk_letters($rand, $higher);
+					$str_replace = drunk_replace($str_letters);
+					$str_replaces = drunk_replaces($str_letters);
+
+					$message_words[$ix] = preg_replace($str_replace, $str_replaces, $message_words[$ix]);
+				}
+			}
+
+
+		}
+		$post_message = implode(' ', $message_words);
+	}
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# You can skip the jobs vars if you're added them before.
+#
+ language/lang_english/lang_main.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+$lang['jobs_second'] = 'Second';
+$lang['jobs_seconds'] = 'Seconds';
+$lang['jobs_minute'] = 'Minute';
+$lang['jobs_minutes'] = 'Minutes';
+$lang['jobs_hour'] = 'Hour';
+$lang['jobs_hours'] = 'Hours';
+$lang['jobs_day'] = 'Day';
+$lang['jobs_days'] = 'Days';
+
+# 
+#-----[ OPEN ]------------------------------------------ 
+# 
+ language/lang_english/lang_shop.php
+
+# 
+#-----[ FIND ]------------------------------------------ 
+#
+?>
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------ 
+#
+//
+// Bar Shop Variables
+//
+$lang['bar_intox_left'] = 'You will remain intoxicated for another %s.';
+$lang['bar_available_drinks'] = 'Available Drinks';
+$lang['bar_no_drink'] = 'Sorry, that drink is not sold here!';
+$lang['bar_none'] = 'None';
+$lang['bar_sold_out'] = 'Sorry, we are currently sold out of that drink!<br />Try again later...';
+$lang['bar_return'] = 'Click %shere%s to return to the main bar.';
+$lang['bar_no_money'] = 'Sorry, you do not have enough %s to purchase that drink!<br />Please return when you have enough gold...';
+$lang['bar_too_drunk'] = 'Looks like you have already had more than enough to drink!<br />Come back when you sober up a little...';
+$lang['bar_buy_drink'] = 'You quickly drink down a %s and the liquid quickly takes affect.';
+$lang['bar_drink_name'] = 'Drink Name';
+$lang['bar_description'] = 'Description';
+$lang['bar_intox_dur'] = 'Intoxication Duration';
+$lang['bar_empty'] = 'There are no drinks for sale at the moment!';
+
+$lang['bar_drunk_1'] = 'You are now sober!';
+$lang['bar_drunk_2'] = 'You become slightly tipsy!';
+$lang['bar_drunk_3'] = 'You become rather drunk!';
+$lang['bar_drunk_4'] = 'You become highly intoxicated!';
+$lang['bar_drunk_5'] = 'You are totally smashed!';
+//
+// Bar Shop Variables
+//
+
+# 
+#-----[ SAVE/CLOSE ALL FILES ]------------------------------------------ 
+# 
+# EoM 
