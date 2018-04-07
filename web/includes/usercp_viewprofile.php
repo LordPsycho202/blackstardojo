@@ -32,6 +32,7 @@ if ( empty($HTTP_GET_VARS[POST_USERS_URL]) || $HTTP_GET_VARS[POST_USERS_URL] == 
 	message_die(GENERAL_MESSAGE, $lang['No_user_id_specified']);
 }
 $profiledata = get_userdata($HTTP_GET_VARS[POST_USERS_URL]);
+
 // Medal MOD
 $sql = "SELECT m.medal_id, mu.user_id
 	FROM " . MEDAL_TABLE . " m, " . MEDAL_USER_TABLE . " mu
@@ -115,6 +116,7 @@ $ranks_sql = query_ranks();
 $template->set_filenames(array(
 	'body' => 'profile_view_body.tpl')
 );
+
 make_jumpbox('viewforum.'.$phpEx);
 
 //
@@ -226,39 +228,39 @@ $yim = ( $profiledata['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/sen
 $temp_url = append_sid("search.$phpEx?search_author=" . urlencode($profiledata['username']) . "&amp;showresults=posts");
 $search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . sprintf($lang['Search_user_posts'], $profiledata['username']) . '" title="' . sprintf($lang['Search_user_posts'], $profiledata['username']) . '" border="0" /></a>';
 $search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_user_posts'], $profiledata['username']) . '</a>';
-if ( $board_config['vault_display_profile'] )
-{
-	$template->assign_block_vars('display_shares',array());
-
-	$sql = " SELECT e.* , eu .* FROM " . VAULT_EXCHANGE_TABLE . " e 
-		LEFT JOIN " . VAULT_EXCHANGE_USERS_TABLE . " eu ON ( eu.user_id =  " . $profiledata['user_id'] . " AND e.stock_id = eu.stock_id ) "; 
-	if( !($result = $db->sql_query($sql))) 
-	{ 
-		message_die(GENERAL_ERROR, 'Could not obtain accounts information', "", __LINE__, __FILE__, $sql); 
-	} 
-	$shares = $db->sql_fetchrowset($result); 
-
-	for ( $i = 0 ; $i < count($shares) ; $i ++ ) 
-	{ 
-		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2']; 
-
-		$template->assign_block_vars('display_shares.shares' , array( 
-			'SHARE_ROW' => $row_class,
-			'SHARE_NAME' => vault_get_lang($shares[$i]['stock_name']),  
-			'SHARE_SUM' => intval($shares[$i]['stock_amount']), 
-		)); 
-	} 
-
-	$sql = " SELECT * FROM " . VAULT_USERS_TABLE . " 
-		WHERE owner_id = " . $profiledata['user_id']; 
-	if( !($result = $db->sql_query($sql))) 
-	{ 
-		message_die(GENERAL_ERROR, 'Could not obtain accounts information', "", __LINE__, __FILE__, $sql); 
-	} 
-	$accounts = $db->sql_fetchrow($result); 
-
-	$on_account = ( $accounts['account_protect'] && $userdata['user_level'] != ADMIN && $accounts['owner_id'] != $userdata['user_id'] ) ? $lang['Vault_confidential'] : intval($accounts['account_sum']).'&nbsp;'.$board_config['points_name'];
-	$loan = ( $accounts['loan_protect'] && $userdata['user_level'] != ADMIN && $accounts['owner_id'] != $userdata['user_id'] ) ? $lang['Vault_confidential'] : intval($accounts['loan_sum']).'&nbsp;'.$board_config['points_name'];
+if ( $board_config['vault_display_profile'] )
+{
+	$template->assign_block_vars('display_shares',array());
+
+	$sql = " SELECT e.* , eu .* FROM " . VAULT_EXCHANGE_TABLE . " e 
+		LEFT JOIN " . VAULT_EXCHANGE_USERS_TABLE . " eu ON ( eu.user_id =  " . $profiledata['user_id'] . " AND e.stock_id = eu.stock_id ) "; 
+	if( !($result = $db->sql_query($sql))) 
+	{ 
+		message_die(GENERAL_ERROR, 'Could not obtain accounts information', "", __LINE__, __FILE__, $sql); 
+	} 
+	$shares = $db->sql_fetchrowset($result); 
+
+	for ( $i = 0 ; $i < count($shares) ; $i ++ ) 
+	{ 
+		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2']; 
+
+		$template->assign_block_vars('display_shares.shares' , array( 
+			'SHARE_ROW' => $row_class,
+			'SHARE_NAME' => vault_get_lang($shares[$i]['stock_name']),  
+			'SHARE_SUM' => intval($shares[$i]['stock_amount']), 
+		)); 
+	} 
+
+	$sql = " SELECT * FROM " . VAULT_USERS_TABLE . " 
+		WHERE owner_id = " . $profiledata['user_id']; 
+	if( !($result = $db->sql_query($sql))) 
+	{ 
+		message_die(GENERAL_ERROR, 'Could not obtain accounts information', "", __LINE__, __FILE__, $sql); 
+	} 
+	$accounts = $db->sql_fetchrow($result); 
+
+	$on_account = ( $accounts['account_protect'] && $userdata['user_level'] != ADMIN && $accounts['owner_id'] != $userdata['user_id'] ) ? $lang['Vault_confidential'] : intval($accounts['account_sum']).'&nbsp;'.$board_config['points_name'];
+	$loan = ( $accounts['loan_protect'] && $userdata['user_level'] != ADMIN && $accounts['owner_id'] != $userdata['user_id'] ) ? $lang['Vault_confidential'] : intval($accounts['loan_sum']).'&nbsp;'.$board_config['points_name'];
 }
 $user_sig = '';
 if ( $profiledata['user_attachsig'] && $board_config['allow_sig'] )
@@ -294,7 +296,6 @@ if ( $profiledata['user_attachsig'] && $board_config['allow_sig'] )
     $template->assign_block_vars('switch_user_sig_block', array());
 }
 
-
 $auctions_won = $profiledata['auctions_paid']+$profiledata['auctions_unpaid']; 
 $auctions_unpaid = ($profiledata['auctions_unpaid'] > 0) ? ', <span style="color:red">'.$profiledata['auctions_unpaid'].' ' . $lang['auctions_unpaid'] . '</font>' : "";
 
@@ -303,6 +304,7 @@ $auctions_unpaid = ($profiledata['auctions_unpaid'] > 0) ? ', <span style="color
 //
 $page_title = $lang['Viewing_profile'];
 include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+
 display_upload_attach_box_limits($profiledata['user_id']);
 
 
@@ -401,9 +403,9 @@ $template->assign_vars(array(
 
 	'SEARCH_IMG' => $search_img,
 	'SEARCH' => $search,
-	'L_ON_ACCOUNT' => $lang['Vault_on_account'], 
-	'L_LOAN' => $lang['Vault_loan_account'],
-	'ON_ACCOUNT' => $on_account,
+	'L_ON_ACCOUNT' => $lang['Vault_on_account'],
+	'L_LOAN' => $lang['Vault_loan_account'],
+	'ON_ACCOUNT' => $on_account,
 	'LOAN' => $loan,
 	'PM_IMG' => $pm_img,
 	'PM' => $pm,
@@ -473,7 +475,6 @@ $template->assign_vars(array(
 	'S_PROFILE_ACTION' => append_sid("profile.$phpEx"))
 );
 
-$cm_viewprofile->post_vars($template,$profiledata,$userdata);
 
 if ( $board_config['store_view_profile'] )
 {
