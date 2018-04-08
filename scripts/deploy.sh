@@ -34,6 +34,11 @@ then
 	exit 1;
 fi
 
+echo "Commit ID: $COMMIT"
+echo "Build ID: $BUILD"
+echo "Deploy Directory: $DEPLOY_DIR"
+echo "Workspace: $CWD"
+
 echo "Tarring up old site for archiving"
 sudo tar -cvzf $CWD/blackstar-backup-$COMMIT-$BUILD.tar.gz $DEPLOY_DIR
 
