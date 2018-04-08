@@ -1,5 +1,6 @@
 #! /bin/bash
 
+CWD=$(pwd)
 DEPLOY_DIR=""
 COMMIT=""
 BUILD=""
@@ -34,10 +35,10 @@ then
 fi
 
 echo "Tarring up old site for archiving"
-sudo tar -cvzf blackstar-backup-$COMMIT-$BUILD.tar.gz $DEPLOY_DIR
+sudo tar -cvzf $CWD/blackstar-backup-$COMMIT-$BUILD.tar.gz $DEPLOY_DIR
 
 echo "Copying config file to new deployment"
-sudo /bin/cp -vrf $DEPLOY_DIR/config.php web/
+sudo /bin/cp -vrf $DEPLOY_DIR/config.php $CWD/web/
 
 echo "Copying new site files to deploy directory"
-sudo /bin/cp -vrf web/* $DEPLOY_DIR
+sudo /bin/cp -vrf $CWD/web/* $DEPLOY_DIR
