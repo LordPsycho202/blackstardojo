@@ -34,10 +34,10 @@ then
 fi
 
 echo "Tarring up old site for archiving"
-tar -cvzf blackstar-backup-$COMMIT-$BUILD.tar.gz $DEPLOY_DIR
+sudo tar -cvzf blackstar-backup-$COMMIT-$BUILD.tar.gz $DEPLOY_DIR
 
 echo "Copying config file to new deployment"
-/bin/cp -vrf $DEPLOY_DIR/config.php web/
+sudo /bin/cp -vrf $DEPLOY_DIR/config.php web/
 
 echo "Copying new site files to deploy directory"
-/bin/cp -vrf web/* $DEPLOY_DIR
+sudo /bin/cp -vrf web/* $DEPLOY_DIR
