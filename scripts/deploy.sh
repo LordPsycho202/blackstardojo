@@ -38,13 +38,12 @@ echo "Commit ID: $COMMIT"
 echo "Build ID: $BUILD"
 echo "Deploy Directory: $DEPLOY_DIR"
 echo "Workspace: $CWD"
-echo "Jenkins reported workspace: $WORKSPACE"
 
 echo "Tarring up old site for archiving"
-#sudo tar -cvzf $CWD/blackstar-backup-$COMMIT-$BUILD.tar.gz $DEPLOY_DIR
+sudo tar -cvzf $CWD/blackstar-backup-$COMMIT-$BUILD.tar.gz $DEPLOY_DIR
 
 echo "Copying config file to new deployment"
-#sudo /bin/cp -vrf $DEPLOY_DIR/config.php $CWD/web/
+sudo /bin/cp -vrf $DEPLOY_DIR/config.php $CWD/web/
 
 echo "Copying new site files to deploy directory"
-#sudo /bin/cp -vrf $CWD/web/* $DEPLOY_DIR
+sudo /bin/cp -vrf $CWD/web/* $DEPLOY_DIR
